@@ -1,0 +1,18 @@
+```{r, echo=FALSE}
+# source('reportEnvironment.R'); build.report(c(2,4));
+```
+.  
+4. Reference frequent itemsets created by euclat-algorithm
+-------------------
+```{r,results='hide'}
+courses.tr <- read.transactions('course-text.txt', rm.duplicates=TRUE)
+```
+
+```{r, fig.width=10, fig.height=4}
+ptm <- proc.time()
+fisets <- eclat(courses.tr, parameter=list(support=minsup, minlen=mink, maxlen=maxk))
+proc.time() - ptm
+image(items(sort(fisets, by="support")))
+inspect(head(sort(fisets, by="support"), n=3))
+str(LIST(items(sort(fisets, by="support"))))
+```

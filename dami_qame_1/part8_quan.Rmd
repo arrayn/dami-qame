@@ -1,0 +1,109 @@
+```{r, echo=FALSE}
+# source('reportEnvironment.R'); build.report(c(2,4,8));
+```
+.  
+8. Quan Nguyen (try own implementation of apriori-algorithm)
+------
+```{r}
+Candidate <- function(F)
+{
+  n =ncol(F);
+  m = nrow(F);
+  cnt = 1;
+  Cdt = list(0);
+  
+  if(m>1)
+  {
+    for(i in 1:n)
+    {
+      ii = i+1;
+      while(ii <= n)
+      {
+        if(identical(F[1:m-1, i], F[1:m-1, ii]))
+        {
+          Cdt[[1]][cnt] = list(c(F[,i], F[m, ii]));
+          cnt = cnt + 1;
+        }
+        ii = ii + 1;
+      }
+    }
+  }
+  else
+  {
+    for(i in 1:n)
+    {
+      ii = i+1;
+      while(ii <= n)
+      {
+          Cdt[[1]][cnt] = list(c(F[i], F[ii]));
+          cnt = cnt + 1;
+          ii = ii + 1;
+      }
+    }
+  }
+  return(Cdt);
+}
+```
+
+```{r}
+Apriori <- function(D, thres)
+{
+  X = unique(unlist(D));
+  threshold = thres*length(D);
+  cnt = 1;
+  F = list(0);
+  
+  for(i in 1:length(X))
+  {
+    s = 0;
+    for(ii in 1:length(D))
+    {
+      s = s + sum(which(D[[ii]]==X[i])!=0);
+    }
+    if(s >= threshold)
+    {
+      F[[1]][cnt] = X[i];
+      cnt = cnt + 1;
+    }
+  }
+  
+  k=1;
+  while(1)
+  {
+    if(k==1)
+    {
+      Cdt = Candidate(do.call(rbind, F[1]));
+    }
+    else
+    {
+      Cdt = Candidate(t(do.call(rbind, F[[k]])));
+    }
+      
+    k = k + 1;
+    sup = matrix(0, 1, length(Cdt[[1]]));
+    for(ii in 1:length(Cdt[[1]]))
+    {
+      for(iii in 1:length(D))
+      {
+        if(sum(which(match(rbind(Cdt[[1]][[ii]]), rbind(D[[iii]]))!=0)!=0) == k)
+        {
+          sup[ii] = sup[ii]+1;
+        }
+      }
+    }
+    F[[k]] = Cdt[[1]][which(sup >= threshold)];
+    if(length(F[[k]])==0)
+    {
+      break
+    }
+  }
+  return(F);
+}
+```
+
+```{r}
+ptm <- proc.time()
+F.list = Apriori(strsplit(readLines("course-text.txt"), ' '), minsup);
+proc.time() - ptm
+str(F.list)
+```

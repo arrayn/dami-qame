@@ -1,0 +1,86 @@
+```{r, echo=FALSE}
+# source('reportEnvironment.R'); build.report(c(1,2,3));
+```
+.  
+1. Report summary
+-------------------
+
+### 1.1. Substance
+
+goal:
+
+The goal of this problem is to make you (very!) familiar with the concept of frequent itemset, including their search space, the Apriori algorithm for finding them, as well as practical use and implications of finding frequent itemsets in real data.
+
+
+    How did you approach the problem? What kind of choices did you make and why?
+* languages, tools, libraries, R+arules
+* teamtools: irc, google-docs
+* Read the subchapter 6.1 - 6.2
+* tried out eclat and R arules to get some reference
+* explored the data with simple statistics, plots
+* Tried to implement our Apriori-algorithm
+* explore changing threshold (plot steal from books or invent new
+
+    What kind of results did you get? What did you learn from them?
+* TODO
+* depends on the threshold
+* Data-results: something, sparse, uneven,
+* Try-implementation-results: candidate generation is the hardest part
+
+    What kind of difficulties did you face?
+* command line eclat 32-bit vs 64-bit, AND getting to work (saved by R-library)
+* removed duplicates (but only 13/2000 so it’s ok)
+* implemenation was hard
+* book was “short” especially on prepruning part of Fk-1
+
+    In hindsight, propose improvements to solving the problem.
+* dense-dense matrix for candidate generator , makes sense?
+
+
+Remember that many of the problems are open and no perfect or right solutions exist, so do not try to find one. Instead, try to understand and describe what the methods you consider can do and what not. Propose ideas that could perhaps be helpful in solving the remaining issues.
+
+### 1.2. Group learning:
+
+    What did you set as your learning objectives for this problem?
+* To get ourselves familiar with problem based learning
+* really get to understand the frequent itemsets
+
+    How did you study and learn as a group?
+* meeting face-to-face after the lectures
+* IRC (hints of extra material)
+* googledocs
+
+    How did you divide and organize work in the group?
+* mostly everyone does everything
+* if specail intrerest, do that
+* e.g. treshold-plots who has time
+* understanding this particular data
+* implementation details of algorithms, data-stuructures
+
+### 1.3. Group self evaluation:
+
+    Did the group work well together? Why?
+* we can speak , why wouldn’t it?
+
+    Did all group members contribute at least satisfactorily?
+* yes
+    How will you improve the way your group works?
+* we use more googe-docs and IRC
+
+### 1.4. Evaluation of the problem and teaching:
+
+    Was the problem too large or too small? Was it too difficult or too easy? Too specific or too vague?
+* positive: you can scale easily to how much time you have
+* vague but ok, left room for creativity
+
+    Did you have, as a group, suitable background to work on the problem?
+* yes.
+
+    How could the problem description be improved (for the next course of later problems in this course)?
+* What chapters to read exactly
+    How could teaching be improved?
+* not enough time for group working
+
+### 1.5. Other comments, ideas, observations, feedback?
+
+* none so far

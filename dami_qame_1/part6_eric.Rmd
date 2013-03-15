@@ -1,0 +1,6 @@
+```{r, echo=FALSE}
+# source('reportEnvironment.R'); build.report(c(2,4,6));
+```
+.  
+6. Eric Andrews (try own implementation of apriori-algorithm)
+------
