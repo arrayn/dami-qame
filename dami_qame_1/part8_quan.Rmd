@@ -2,6 +2,7 @@
 # source('reportEnvironment.R'); build.report(c(2,4,8));
 ```
 .  
+
 8. Quan Nguyen (try own implementation of apriori-algorithm)
 ------
 ```{r}

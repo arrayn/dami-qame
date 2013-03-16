@@ -2,5 +2,6 @@
 # source('reportEnvironment.R'); build.report(c(2,4,7));
 ```
 .  
+
 7. Mirva Toivonen (try own implementation of apriori-algorithm)
 ------

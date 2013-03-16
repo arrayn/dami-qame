@@ -1,7 +1,8 @@
 ```{r, echo=FALSE}
-# source('reportEnvironment.R'); build.report(c(2,4,5));
+# source('reportEnvironment.R'); build.report(c(2,4,5), do.pdf=TRUE);
 ```
 .  
+
 5. Arto Nissinen (try own implementation of apriori-algorithm)
 ------
 * Used data-structures: from R package 'arules' (itemMatrix, itemsets, transactions) that all use sparse-matrix implementation 'ngCMatrix' from the R package 'Matrix'.
@@ -10,7 +11,7 @@
 * Cons: Unnecessary complexity for data this small.
 * Used: from the R arules-library read.transactions() and support() to count supports, which resulted in considerable speed-up.
 
-```{r, fig.width=10, fig.height=4}
+```{r, fig.width=10, fig.height=3.5}
 courses.tr <- read.transactions('course-text.txt', rm.duplicates=TRUE)
 
 myapriori.gen <- function(Fk_1){
@@ -117,7 +118,7 @@ inspect(head(sort(temp, by="support"), n=3))
 str(LIST(items(sort(temp, by="support"))))
 ```
 
-```{r,fig.width=10, fig.height=7}
+```{r,fig.width=10, fig.height=6}
 matplot(ret$counts, pch=1:3, lwd=2, col=mycolors[1:3], type="b", log="y", xlab="k", ylab="count", main="Candidates: generated, pruned, supported")
 grid(lty=2)
 legend("topright", pch=1:3, lwd=2, lty=1:3, col=mycolors[1:3], legend=colnames(ret$counts))
