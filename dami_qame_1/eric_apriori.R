@@ -1,0 +1,149 @@
+# To read the lines from "course_text" use readLines("course_text.txt")
+apriori_frequent_itemset_gen <- function(vec_of_strings, minsup=0.4, debug_frequents=F, debug_candidates=F) {
+    odf <- occurence_data_frame(vec_of_strings)
+    min_support_count <- minsup * nrow(odf)
+
+    if (debug_frequents || debug_candidates) {
+        cat("****************************************************\n")
+        cat("Minimum support count is", min_support_count, "\n")
+    }
+
+    # Find frequent 1-itemsets
+
+    frequent_itemsets <- list()
+    frequent_itemsets[[1]] <- find_frequent_1_itemsets(odf, min_support_count)
+
+    if (debug_frequents || debug_candidates) {
+        cat("------------------------ k =", 1, "-------------------------\n")
+        cat("FREQUENT ITEMSETS", "\n")
+        print(frequent_itemsets[[1]])
+        readLines("stdin", n = 1) # wait for input in console
+    }
+
+    # If no frequent 1-itemsets found, abort.
+    if (length(frequent_itemsets[[1]]) == 0) {
+        return(NULL)
+    }
+
+    # Find frequent k-itemsets
+
+    k <- 1
+    repeat {
+        k <- k + 1
+
+        if (debug_frequents || debug_candidates) {
+            cat("------------------------ k =", k, "-------------------------\n")
+        }
+
+        candidate_itemsets <- apriori_gen(odf, frequent_itemsets[[k-1]], k)
+        new_freq_itemsets <- NULL
+
+        if (debug_candidates) {
+            cat("CANDIDATES", "\n")
+            print(candidate_itemsets)
+            readLines("stdin", n = 1) # wait for input in console
+        }
+
+        if (!is.null(candidate_itemsets)) {
+            for (i in 1:nrow(candidate_itemsets)) { # for each candidate itemset
+                candidate <- candidate_itemsets[i,]
+                if (sum(rowSums(odf[,candidate]) == k) >= min_support_count) {
+                    new_freq_itemsets <- rbind(new_freq_itemsets, candidate)
+                }
+            }
+        }
+
+        if (debug_frequents) {
+            cat("\nFREQUENT ITEMSETS", "\n")
+            if (is.null(new_freq_itemsets)) {
+                print("{}")
+            } else {
+                for (i in 1:nrow(new_freq_itemsets)) {
+                    itset <- new_freq_itemsets[i,]
+                    support_count <- sum(rowSums(odf[,itset]) == k)
+                    cat(itset, support_count, "\n")
+                }
+            }
+            readLines("stdin", n = 1) # wait for input in console
+        }
+
+        if (is.null(new_freq_itemsets)) break
+        frequent_itemsets[[k]] <- new_freq_itemsets
+
+    }
+    return(frequent_itemsets)
+}
+# Given a string of vectors (where each element represents a transaction),
+# creates a data frame where each row represents a transaction and each column
+# a word. The value of a row-column pair (TRUE or FALSE) indicates whether the
+# word (column) was present in the transaction (row) in the original given
+# string of vectors.
+#
+# Notice that with sparse data, this is very inefficient because for every word
+# , in the given vector of strings, a column must be created. Thus the space
+# complexity is O(|T|*|W|), where |T| is the number of transactions and |W| is
+# the total number of unique words.
+occurence_data_frame <- function(vec_of_strings) {
+
+    # Get itemset for each transaction (element) in vector.
+    itemsets <- lapply(vec_of_strings, words_from_str)
+
+    # Flatten itemsets together and remove duplicates, to obtain a list of all
+    # items.
+    items <- unique(unlist(itemsets))
+
+    # Set-up inner data structure (list) for data frame.
+    occurences <- list()
+    for (i in 1:length(items)) {
+
+        # For each item, check its presence in each itemset, and create a
+        # column out of this. Add the column to the previously created list,
+        # under the name of the item.
+        col <- sapply(itemsets, function(itemset) items[i] %in% itemset)
+        occurences[[items[i]]] <- col
+    }
+
+    return(data.frame(occurences))
+}
+
+# Splits a string into a vector of words.
+# E.g. words_from_str("i am mario") => c("i", "am", "mario")
+words_from_str <- function(str) strsplit(str, split="\\s")[[1]]
+
+
+
+# Find frequent 1-itemsets that have a support count equal to or greater than
+# `min_support_count`. Returns a 1-column matrix, where each row is  an item
+# (name).
+find_frequent_1_itemsets <- function(odf, min_support_count) {
+    item_support_counts <- colSums(odf)
+    items <- colnames(odf)
+    candidates <- sort(items[item_support_counts >= min_support_count])
+    return(matrix(candidates, ncol=1))
+}
+
+apriori_gen <- function(odf, last_frequent_itemsets, k) {
+    new_candidates <- NULL
+    if (nrow(last_frequent_itemsets) == 1) { # only one itemset
+        return(new_candidates)
+    }
+    if (k == 2) {
+        for (i in 1:(length(last_frequent_itemsets)-1)) {
+            for (j in (i+1):length(last_frequent_itemsets)) {
+                new_candidates <- rbind(new_candidates, c(last_frequent_itemsets[i], last_frequent_itemsets[j]))
+            }
+        }
+    } else if (k > 2) {
+        prefixes <- matrix(last_frequent_itemsets[,1:(k-2)], ncol=k-2) # leave out last elem
+        for (i in 1:(nrow(last_frequent_itemsets)-1)) {
+            for (j in (i+1):nrow(last_frequent_itemsets)) {
+                if (!all(prefixes[i,] == prefixes[j,])) break
+                new_candidate <- c(last_frequent_itemsets[i,], last_frequent_itemsets[j,k-1])
+                new_candidates <- rbind(new_candidates, new_candidate)
+            }
+        }
+    }
+
+    return(new_candidates)
+}
+
