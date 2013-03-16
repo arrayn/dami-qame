@@ -161,7 +161,5 @@ vec_of_strings <- readLines('course-text.txt')
 ptm <- proc.time()
 ret <- apriori_frequent_itemset_gen(vec_of_strings)
 proc.time() - ptm
-str(ret[[1]])
-str(ret[[2]])
-
+ret
 ```
