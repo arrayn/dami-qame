@@ -1,6 +1,10 @@
 # reportEnvironment.R
 
-# source this manually and keep it commented like this: 
+# to build the whole report, run:
+# setwd("~/atlinks/dami-qame/dami_qame_1")
+# source('reportEnvironment.R'); build.report(c(1,2,3,4,5,6,7,8));
+
+# source this file manually and keep it commented like this: 
 # ```{r, echo=FALSE}
 # # source('reportEnvironment.R'); build.report(c(2,4));
 # ```
@@ -38,4 +42,3 @@ build.report <- function(chosen.parts=c(2)){
   knit2html('dami_qame_1.Rmd')
   if(interactive()) browseURL('dami_qame_1.html')
 }
-
