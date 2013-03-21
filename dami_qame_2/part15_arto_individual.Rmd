@@ -1,5 +1,5 @@
 ```{r, echo=FALSE}
-# source('reportEnvironment.R'); build.report("dami_nissinen_2", c(15), do.pdf=TRUE, toc=TRUE);
+# source('reportEnvironment.R'); build.report("dami_nissinen_2", c(15), do.pdf=FALSE, toc=TRUE);
 ```
 .  
 
@@ -8,16 +8,18 @@ DAMI_2 - algorithm implementation - Arto Nissinen
 
 1. Libraries
 -----------
+
 ```{r}
 library('knitr') 
 library('RColorBrewer')
 library('arules')
 mycolors <- brewer.pal(8, "Dark2")
-sessionInfo()
+# sessionInfo()
 ```
 
 2. Own implementation
 ----------------------
+
 * Used data-structures: from R package 'arules' (itemMatrix, itemsets, transactions) that all use sparse-matrix implementation 'ngCMatrix' from the R package 'Matrix'.
 * Why? I wanted to learn how to use sparse-matrices and S4-objects.
 * Pros: Efficient memory usage. Easy to plot debug-visualizations.
@@ -28,19 +30,36 @@ source('arto_implementation.R')
 mycat.monospace('arto_implementation.R')
 ```
 
-
 3. Trying implementation out
 ----------------------
-```{r, fig.height=3}
-minsup <- 0.32 # minimal treshold that still yields a 4-itemset
-mink   <- 2    # 1-itemsets are not very interesting
+```{r}
+minsup <- 0.30 # minimal treshold that still yields a 4-itemset
+mink   <- 1    # 1-itemsets are not very interesting
 maxk   <- 15   # just something big enough
 
-# Calling the function
-courses.tr <- read.transactions('../dami_qame_1/course-text.txt', rm.duplicates=TRUE)
-system.time( ret <- arto.apriori(courses.tr, minsup=minsup, mink=mink, maxk=maxk) )
-temp <- ret$fisets
-inspect(head(sort(temp, by="support"), n=3))
-image(items(sort(temp, by="support")))
+# Reading the data in
+courses.tr <- read.transactions('courses_num.txt', rm.duplicates=TRUE)
+summary(courses.tr)
+image(courses.tr[order(size(courses.tr), decreasing=T)[1:500],])
+# ---- big matrix at the end of the document ----
+```
 
+```{r}
+# reference results from library-algorithm
+# system.time( ret.eclat <- eclat(courses.tr, parameter=list(support=minsup)) )
+# summary(ret.eclat)
+# dim(items(ret.eclat))
+
+# own algorithm
+# system.time( ret <- arto.apriori(courses.tr, minsup=minsup, mink=mink, maxk=maxk) )
+# temp <- ret$fisets
+# inspect(head(sort(temp, by="support"), n=3))
+# image(items(sort(temp, by="support")))
+
+```
+
+4. Big Matrix of transactions x courses
+----------------------
+```{r, bigmatrix, fig.height=180, results='hide'}
+image(courses.tr[order(size(courses.tr), decreasing=T),])
 ```
