@@ -44,6 +44,7 @@ arto.apriori.gen <- function(Fk_1){
   list(Ck=ret, counts=c(count.generated, length(ret)))
 }
 
+
 arto.apriori <- function(data.tr, minsup=0.4, mink=1, maxk=100){
   Fk.list <- list()
   counts.list <- list()
@@ -93,3 +94,41 @@ arto.apriori <- function(data.tr, minsup=0.4, mink=1, maxk=100){
   # returning
   list(fisets=ret, counts=counts)
 }
+
+
+arto.ruleCandidates  <- function(fisets_list){
+  antece.list <- list()
+  conseq.list <- list()
+  for(i in 1:length(fisets_list)){
+    onerow <- fisets_list[[i]]
+    # print(onerow)
+    for(j in 1:length(onerow)){
+      antece.list <- c(antece.list, list(onerow[-j]))
+      conseq.list <- c(conseq.list, list(onerow[j]))
+      # cat(antece.list[[length(antece.list)]], "-->", conseq.list[[length(conseq.list)]], "\n")
+    }
+  }
+  list(antece.list=antece.list, conseq.list=conseq.list)
+}
+
+
+arto.ruleInduction <- function(fisets, transactions, minconfidence){
+  k2plus <- which(size(fisets) >= 2)
+  fisets_list <- LIST(items(fisets)[k2plus], decode=FALSE)
+  print(system.time( temp1 <- arto.ruleCandidates(fisets_list) ))
+  print(system.time( temp1 <- artoCppRuleCandidates(fisets_list) ))
+  antece.list <- temp1$antece.list
+  conseq.list <- temp1$conseq.list
+  antece.im <- encode(antece.list, itemLabels=itemLabels(fisets), itemMatrix=TRUE)
+  conseq.im <- encode(conseq.list, itemLabels=itemLabels(fisets), itemMatrix=TRUE)
+  myrules <- new("rules", lhs=antece.im, rhs=conseq.im)
+  mysupport <- support(items(myrules), transactions)
+  myantece.support  <- support(lhs(myrules), transactions)
+  myconfidence <- mysupport/myantece.support
+  myquality <- data.frame(support=mysupport, confidence=myconfidence)
+  quality(myrules) <- myquality
+  myrules <- subset(myrules, subset= confidence>=minconfidence)
+  # print(as(temp, "data.frame"))
+  myrules
+}
+

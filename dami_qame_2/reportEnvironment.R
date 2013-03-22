@@ -22,7 +22,7 @@ opts_chunk$set(fig.width=10, fig.height=6)
 
 mycat.monospace <- function(filepath, highlight="r"){
   x <- readLines(filepath)
-  cat("```", highlight,"\n")
+  cat("```", highlight,"\n",sep="")
   cat(x, sep="\n")
   cat("```\n")
 }
@@ -40,7 +40,7 @@ build.report <- function(filename="dami_qame_2", chosen.parts, do.pdf=FALSE, toc
   if(6 %in% chosen.parts) r <- c(r, readLines('part6_eric.Rmd'))
   if(7 %in% chosen.parts) r <- c(r, readLines('part7_mirva.Rmd'))
   if(8 %in% chosen.parts) r <- c(r, readLines('part8_quan.Rmd'))
-  if(15 %in% chosen.parts) r <- c(r, readLines('part15_arto_individual.Rmd'))
+  if(15 %in% chosen.parts) r <- c(r, readLines('../arto/part15_arto_individual.Rmd'))
   if(16 %in% chosen.parts) r <- c(r, readLines('part16_eric_individual.Rmd'))
   if(17 %in% chosen.parts) r <- c(r, readLines('part17_mirva_individual.Rmd'))
   if(18 %in% chosen.parts) r <- c(r, readLines('part18_quan_individual.Rmd'))

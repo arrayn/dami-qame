@@ -1,5 +1,5 @@
 ```{r, echo=FALSE}
-# source('reportEnvironment.R'); build.report("dami_nissinen_2", c(15), do.pdf=FALSE, toc=TRUE);
+# source('../reportEnvironment.R'); build.report("dami_nissinen_2", c(15), do.pdf=FALSE, toc=TRUE);
 ```
 .  
 
@@ -26,6 +26,8 @@ mycolors <- brewer.pal(8, "Dark2")
 * Cons: Unnecessary complexity for data this small.
 * Used: from the R arules-library read.transactions() and support() to count supports, which resulted in considerable speed-up.
 ```{r, results='asis'}
+sourceCpp('arto_implementation.cpp')
+mycat.monospace('arto_implementation.cpp', 'cpp')
 source('arto_implementation.R')
 mycat.monospace('arto_implementation.R')
 ```
@@ -33,27 +35,39 @@ mycat.monospace('arto_implementation.R')
 3. Trying implementation out
 ----------------------
 ```{r}
-minsup <- 0.30 # minimal treshold that still yields a 4-itemset
+minsup <- 0.08 # 0.16 yields 4-itemsets
 mink   <- 1    # 1-itemsets are not very interesting
 maxk   <- 15   # just something big enough
+minconfidence <- 0.8 
 
 # Reading the data in
-courses.tr <- read.transactions('courses_num.txt', rm.duplicates=TRUE)
+courses.tr <- read.transactions('../courses_num.txt', rm.duplicates=TRUE)
 summary(courses.tr)
-image(courses.tr[order(size(courses.tr), decreasing=T)[1:500],])
-# ---- big matrix at the end of the document ----
 ```
 
 ```{r}
 # reference results from library-algorithm
-# system.time( ret.eclat <- eclat(courses.tr, parameter=list(support=minsup)) )
-# summary(ret.eclat)
-# dim(items(ret.eclat))
+paraml <- list(support=minsup, ext=TRUE)
+contrl <- list(verbose=FALSE)
+system.time( fisets.bm <- eclat(courses.tr, parameter=paraml, control=contrl) )
+system.time( rules.bm <- ruleInduction(fisets.bm, confidence=minconfidence, control=contrl) )
+system.time( closed.bm <- apriori(courses.tr, parameter=c(paraml, target="closed"), control=contrl) )
+system.time( maximal.bm <- apriori(courses.tr, parameter=c(paraml, target="maximal"), control=contrl) )
+
+summary(fisets.bm)
+summary(closed.bm)
+summary(maximal.bm)
+summary(setdiff(fisets.bm, closed.bm))
+summary(rules.bm)
 
 # own algorithm
-# system.time( ret <- arto.apriori(courses.tr, minsup=minsup, mink=mink, maxk=maxk) )
-# temp <- ret$fisets
-# inspect(head(sort(temp, by="support"), n=3))
+system.time( ret <- arto.apriori(courses.tr, minsup=minsup, mink=mink, maxk=maxk) )
+fisets.arto <- ret$fisets
+system.time( rules.arto <- arto.ruleInduction(fisets.arto, courses.tr, minconfidence=minconfidence))
+summary(rules.arto)
+summary(rules.bm)
+
+# inspect(head(sort(rules.arto, by="confidence")))
 # image(items(sort(temp, by="support")))
 
 ```
@@ -61,5 +75,5 @@ image(courses.tr[order(size(courses.tr), decreasing=T)[1:500],])
 4. Big Matrix of transactions x courses
 ----------------------
 ```{r, bigmatrix, fig.height=180, results='hide'}
-image(courses.tr[order(size(courses.tr), decreasing=T),])
+image(courses.tr[order(size(courses.tr), decreasing=T),order(itemFrequency(courses.tr), decreasing=T)])
 ```
