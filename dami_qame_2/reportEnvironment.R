@@ -15,10 +15,16 @@
 
 # install.packages('arules') # only once
 
+# libraries
+# presentation
 library('knitr') 
 library('RColorBrewer')
-library('arules')
 opts_chunk$set(fig.width=10, fig.height=6)
+mycolors <- brewer.pal(8, "Dark2")
+# computation
+library('Rcpp')
+library('arules')
+Sys.setenv("PKG_CXXFLAGS"="-std=c++11")
 
 mycat.monospace <- function(filepath, highlight="r"){
   x <- readLines(filepath)

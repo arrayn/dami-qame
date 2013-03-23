@@ -1,43 +1,12 @@
-# arto_implementation.R
 
-arto.apriori.gen <- function(Fk_1){
-  out.list <- list()
-  count.generated <- 0
-  mat <- items(Fk_1)
-  m <- nrow(mat)
-  n <- ncol(mat)
-  idx.list <- LIST(mat, decode=FALSE)
-  k_1 <- length(idx.list[[1]])
-  idx.mat <- sapply(idx.list, identity) # note! it's transposed
-  print(dim(idx.mat))
-  for(i in 1:m){
-    ouridxs <- idx.list[[i]]
-    ourj <- ouridxs[k_1]
-    k2match <- rep(TRUE,m)
-    if(k_1>=2){
-      k2match <- colSums(idx.mat[1:(k_1-1), ,drop=F] == ouridxs[1:(k_1-1)])
-      k2match <- k2match == (k_1-1)
-    }
-    tempsizes <- size(mat[, (ourj):n])
-    for(ti in 1:m){
-      if(k2match[ti] & tempsizes[ti]>0 & ti!=i){
-        theiridxs <- idx.list[[ti]]
-        candi <- c(ouridxs, theiridxs[length(theiridxs)])
-        count.generated <- count.generated + 1
-        # pruning-step: split to (k-1)-subsets and check that they are frequent
-        subsetfreqsum <- 0
-        if(k_1>=2){
-          for(j in 1:length(candi)){
-            subo <- candi[-j]
-            k1match <- colSums(idx.mat == subo)
-            k1match <- k1match == k_1
-            if(sum(k1match)>0) subsetfreqsum <- subsetfreqsum+1
-          }
-        }else{subsetfreqsum <- k_1+1}
-        if(subsetfreqsum==k_1+1) out.list <- c(out.list, list(candi))
-      }
-    }
-  }
+# just a wrapper for C++ function
+arto.apriori.gen <- function(Fk_1, debug=FALSE){
+  idx.list <- LIST(items(Fk_1), decode=FALSE)
+  if(debug) {
+    print(system.time( temp <- artoCppAprioriGen(idx.list) ))
+  }else{ temp <- artoCppAprioriGen(idx.list)}
+  out.list <- temp$candidates;
+  count.generated <- temp$generated;
   ret <- encode(out.list, itemLabels=itemLabels(Fk_1), itemMatrix=TRUE)
   ret <- new("itemsets", items=ret)
   # returning:
@@ -45,7 +14,7 @@ arto.apriori.gen <- function(Fk_1){
 }
 
 
-arto.apriori <- function(data.tr, minsup=0.4, mink=1, maxk=100){
+arto.apriori <- function(data.tr, minsup=0.4, mink=1, maxk=100, debug=FALSE){
   Fk.list <- list()
   counts.list <- list()
   k <- 1 # line 1
@@ -65,15 +34,17 @@ arto.apriori <- function(data.tr, minsup=0.4, mink=1, maxk=100){
   cont <- TRUE # line 3: repeat
   while(cont){ 
     k <- k+1   # line 4
-    cat("k = ",k,"\n")
-    ret <- arto.apriori.gen(Fk.list[[k-1]]) # line 5: generate candidate itemsets
+    if(debug) cat("k = ",k,"\n")
+    ret <- arto.apriori.gen(Fk.list[[k-1]], debug) # line 5: generate candidate itemsets
     Ck <-ret$Ck
     counts <- ret$counts
     if(length(Ck)==0) {
       cont <- FALSE
     }else{
-      cat("Ck=",k," image of candidates after pruning:\n")
-      print(image(items(Ck), main="Ck candidates"))
+      if(debug){
+        cat("Ck=",k," image of candidates after pruning:\n")
+        print(image(items(Ck), main="Ck candidates"))
+      }
     }
     #lines 6-11: calculate supports for candidates
     supports <- support(Ck, data.tr)
@@ -96,39 +67,45 @@ arto.apriori <- function(data.tr, minsup=0.4, mink=1, maxk=100){
 }
 
 
-arto.ruleCandidates  <- function(fisets_list){
-  antece.list <- list()
-  conseq.list <- list()
-  for(i in 1:length(fisets_list)){
-    onerow <- fisets_list[[i]]
-    # print(onerow)
-    for(j in 1:length(onerow)){
-      antece.list <- c(antece.list, list(onerow[-j]))
-      conseq.list <- c(conseq.list, list(onerow[j]))
-      # cat(antece.list[[length(antece.list)]], "-->", conseq.list[[length(conseq.list)]], "\n")
-    }
-  }
-  list(antece.list=antece.list, conseq.list=conseq.list)
-}
-
 
 arto.ruleInduction <- function(fisets, transactions, minconfidence){
   k2plus <- which(size(fisets) >= 2)
   fisets_list <- LIST(items(fisets)[k2plus], decode=FALSE)
-  print(system.time( temp1 <- arto.ruleCandidates(fisets_list) ))
+  
+  # rule-candidate generation c++ implementation is roughly 200 times faster
+  # print(system.time( temp1 <- arto.ruleCandidates(fisets_list) ))
   print(system.time( temp1 <- artoCppRuleCandidates(fisets_list) ))
   antece.list <- temp1$antece.list
   conseq.list <- temp1$conseq.list
-  antece.im <- encode(antece.list, itemLabels=itemLabels(fisets), itemMatrix=TRUE)
-  conseq.im <- encode(conseq.list, itemLabels=itemLabels(fisets), itemMatrix=TRUE)
+  
+  # this conversion is slow ( 0.700 sec a piece), ok for now 
+  print(system.time( antece.im <- encode(antece.list, itemLabels=itemLabels(fisets), itemMatrix=TRUE) ))
+  print(system.time( conseq.im <- encode(conseq.list, itemLabels=itemLabels(fisets), itemMatrix=TRUE) ))
   myrules <- new("rules", lhs=antece.im, rhs=conseq.im)
-  mysupport <- support(items(myrules), transactions)
-  myantece.support  <- support(lhs(myrules), transactions)
-  myconfidence <- mysupport/myantece.support
-  myquality <- data.frame(support=mysupport, confidence=myconfidence)
-  quality(myrules) <- myquality
+  
+  # counting the supports from fisets, not from data is 
+  # 0.020 vs 0.568 secs (28 times faster)
+  f <- function(){
+    idx <- match(items(myrules), items(fisets))
+    mysupport <- quality(fisets)[idx, "support"]
+    idx <- match(lhs(myrules), items(fisets))
+    myantece.support <- quality(fisets)[idx, "support"]
+    idx <- match(rhs(myrules), items(fisets))
+    myconseq.support <- quality(fisets)[idx, "support"]
+    # mysupport <- support(items(myrules), transactions)
+    # myantece.support  <- support(lhs(myrules), transactions)
+    list(support=mysupport, antece.support=myantece.support, conseq.support=myconseq.support)
+  }
+  print(system.time( temp <- f() ))
+  mysupport  <- temp$support
+  myantece.support <- temp$antece.support
+  myconseq.support <- temp$conseq.support
+
+  myconfidence <- mysupport / myantece.support
+  mylift <- myconfidence / myconseq.support
+  
+  quality(myrules) <- data.frame(support=mysupport, confidence=myconfidence, lift=mylift)
   myrules <- subset(myrules, subset= confidence>=minconfidence)
-  # print(as(temp, "data.frame"))
   myrules
 }
 
