@@ -72,3 +72,40 @@ List artoCppRuleCandidates(List fisets_list){
 }
 
 
+
+// [[Rcpp::export]]
+List artoCppClosedItemsets(const List fisets_ranked, const NumericVector supports_ranked){
+  // process the frequent itemset ranked by support
+  // go one support-equal block at a time
+  // then go one itemset at a time and check if any of the equals are immediate superset
+  // if is, then we are NOT a closed itemset, otherwise we are closed
+  std::vector<IntegerVector> closed_fisets;
+  std::vector<double> closed_supports;
+  const int m = fisets_ranked.size();
+  int begeq = 0, endeq=0; // begin, end of index of equal-support-block
+  double equsup = -1.0; // support of the equal-support-block
+  for(int h=0 ; h<m ; h++){
+    const IntegerVector us = fisets_ranked[h];
+    if (h == endeq) { // new equ-block started
+      begeq = h, endeq = h+1, equsup = supports_ranked[h];
+      while(endeq < m && supports_ranked[endeq]==equsup){endeq++;}
+    }
+    // test if any of the equ-block-friends is a superset of us
+    bool closed = true;
+    for(int hh=begeq ; hh<endeq ; hh++){
+      const IntegerVector them = fisets_ranked[hh];
+      if(h!=hh && std::includes(them.begin(), them.end(), us.begin(), us.end())){
+        closed = false;
+        break;
+      }
+    }
+    if(closed){
+      closed_fisets.push_back(us);
+      closed_supports.push_back(equsup);
+    }
+  }
+  return Rcpp::List::create(_["closed_fisets"] = closed_fisets,
+                            _["support"] = closed_supports);
+}
+
+

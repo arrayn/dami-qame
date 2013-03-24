@@ -109,3 +109,14 @@ arto.ruleInduction <- function(fisets, transactions, minconfidence){
   myrules
 }
 
+
+# wrapper for a C++ function
+arto.closed.itemsets <- function(fisets){
+  fisets.ranked <- sort(fisets, by="support")
+  fisets.ranked.aslist  <- LIST(items(fisets.ranked), decode=FALSE)
+  print(system.time( temp <- artoCppClosedItemsets(fisets.ranked.aslist, quality(fisets.ranked)[,"support"]) ))
+  temp.items <- encode(temp$closed_fisets, itemLabels=itemLabels(fisets.ranked), itemMatrix=TRUE)
+  temp.quality <- data.frame(support=temp$support)
+  closed.arto  <- new("itemsets", items=temp.items, quality= temp.quality)
+  closed.arto
+}

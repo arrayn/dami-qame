@@ -1,82 +1,170 @@
 DAMI_2 - algorithm implementation - Arto Nissinen
 =================================================
 
-Contents
---------
-1. Libraries
-2. My implementation
-3. Benchmarking
 
-------------
+1. Summary
+----------------------
 
-1. Libraries
-------------
+
+### 1.1. Personal Goals
+Explore and learn both course-specific and general concepts/tools. Course-specific concepts include frequent itemsets, association rules, closed itemsets and maximal itemsets. General tools include multiple programming language integration and leveraging existing libraries. 
+
+
+### 1.2. Design choices and findings
+
+#### Libraries: 
+I used R library 'arules' to read in the data, to do support-counting, set-operations etc., to verify the results from my implementations, for visualizations and for ideas how these algorithms/datastructures are implemented in real life.
+
+#### Apriori algorithm for mining frequent itemsets:
+On initial data exploration I found out that on this dataset one has to set the minimum support threshold as low as 0.08 in order to get non-closed-frequent-itemsets (see plot in 3.2). My original R apriori implementation took about 25 seconds to mine frequent itemsets with this threshold. This prompted me to learn how to write some parts in C++ using the 'Rcpp'-package. Indeed, the new version only takes about 2.5 seconds.
+
+#### Association rules mining:
+The 'arules' library mines only for rules whose consequent is of size 1, so I did the same to be able to verify my results. 
+
+#### Closed-frequent-itemsets extraction from frequent itemsets:
+Definition: "An itemset X is closed if none of its immediate supersets has exactly the same support count as X." See plot in 3.3. for motivation visualization. I ranked the input by support and only searched for supersets inside the support-equivalence class at a time. This dropped the required average comparisons per frequent itemset in the benchmark run from 1246 to about 5. And was indeed fast implementation with C++. But the results were not in vertical lexicographical order. It might be worth sorting it afterwards.
+
+#### Maximal frequent-itemsets extraction from frequent itemsets:
+Conceptually, we want to check for each frequent itemset whether any of the other frequent itemsets are it's superset. This turned out to be a one-liner with 'arules' is.subset function. And execution speed is good. Downside of is.subset is that it creates a n^2 size logical matrix, so with many frequent itemsets it's not feasible. On the other hand, looping is.subset one itemset at a time turned out to be very slow. 
+
+#### General tools findings:
+Compared to the library implementations in the benchmark runs, my old implementation was about 500 times slower and my new implementation is about 50 times slower. I.e. my new implementation is about 10 times faster than my old implementation.
+
+R runs slow on the parts that require explicit looping or mutating/growing datastructures. However, implementing those parts as C++ functions and calling those functions from R turned out to be relatively easy and hassle-free using the 'Rcpp' library. These "tight-spot" C++ functions ran e.g. roughly 200 times faster than the equivalent R functions. It's worth noting that this was the first time I programmed in C++.
+
+Most performance was lost when converting between regular R list of integer vectors and  'itemMatrix' from 'arules' library. The library implementations utilize the underlying sparse 'ngCMatrix' from the R package 'Matrix'. I used refular lists because I assumed that trying to use 'ngCMatrix' properties myself would distract me too much from learning the high level concepts. I am satisfied with this combination that allowed reasonable performance and good visualization and debugging.
+
+
+2. Reproducible Research Initialization
+---------------------------------------
 ```{r}
 # report build command: # setwd("~/atlinks/dami-qame/dami_qame_2/arto"); source('../reportEnvironment.R'); build.report("dami_nissinen_2", c(15), do.pdf=TRUE, toc=TRUE);
 
-# libraries
 # presentation
-library('knitr') 
-library('RColorBrewer')
-opts_chunk$set(fig.width=10, fig.height=6)
-mycolors <- brewer.pal(8, "Dark2")
-# computation
-library('Rcpp')
-library('arules')
+library('knitr'); 
+library('RColorBrewer'); 
+opts_chunk$set(fig.width=10, fig.height=6);
+mycolors <- brewer.pal(8, "Dark2");
+#computation
+library('Rcpp'); 
+library('arules'); 
 Sys.setenv("PKG_CXXFLAGS"="-std=c++11")
 # sessionInfo()
 ```
 
 
-2. My implementation
-----------------------
+3. Data Exploration
+-------------------
 
 
-### 2.1. Personal Goals
-Explore and learn both course-specific and general concepts/tools. Course-specific concepts include frequent itemsets, association rules, closed itemsets and maximal itemsets. General tools include multiple programming language integration and leveraging existing libraries. 
+### 3.1. Initialization
+```{r}
+sourceCpp('arto_implementation.cpp')
+source('arto_implementation.R')
+
+# common parameters:
+minsup <- 0.08 # yields also non-closed frequent itemsets
+mink   <- 1    # all
+maxk   <- 15   # just something big enough
+minconfidence <- 0.8 # default in library
+
+# debug parameters for library implementations
+paraml <- list(support=minsup, ext=TRUE)
+contrl <- list(verbose=FALSE)
+
+# Reading the data in
+courses.tr <- read.transactions('../courses_num.txt', rm.duplicates=TRUE) 
+dim(courses.tr)
+fisets.bm <- eclat(courses.tr, parameter=paraml, control=contrl)
+ret <- arto.apriori(courses.tr, minsup=minsup, mink=mink, maxk=maxk)
+fisets.arto <- ret$fisets
+counts.generated  <- ret$counts
+rules.bm <- ruleInduction(fisets.bm, confidence=minconfidence, control=contrl)
+closed.bm <- apriori(courses.tr, parameter=c(paraml, target="closed"), control=contrl)
+maximal.bm <- apriori(courses.tr, parameter=c(paraml, target="maximal"), control=contrl)               
+```
 
 
-### 2.2. Design choices
-
-#### Algorithms: 
-I implemented the apriori algorithm for frequent itemsets mining and association rules mining. The library mines only for rules whose consequent is of size 1, so I did the same.
-
-#### Languages: 
-Combination of R and C++ using R 'Rcpp' library.
-
-#### Libraries: 
-I used R library 'arules' to read in the data, to do support-counting, set-operations etc., to verify the results from my implementations, for visualizations and for ideas how these algorithms/datastructures are implemented in real life.
-
-
-### 2.3. Findings
-
-#### Course-specific concepts findings:
-I gained intuition about the concepts by trying things out. We will include more of this in our group report.
-
-#### General tools findings:
-Compared to the library implementations, my old implementation was about 500 times slower and my new implementation is about 50 times slower. I.e. my new implementation is about 10 times faster than my old implementation.
-
-R runs slow on the parts that require explicit looping or mutating/growing datastructures. However, implementing those parts as C++ functions and calling those functions from R turned out to be relatively easy and hassle-free using the 'Rcpp' library. These "tight-spot" C++ functions ran e.g. roughly 200 times faster than the equivalent R functions.
-
-Most performance was lost when converting between regular R list of integer vectors and  'itemMatrix' from 'arules' library. The library implementations utilize the underlying sparse 'ngCMatrix' from the R package 'Matrix'. I used refular lists because I assumed that trying to use 'ngCMatrix' properties myself would distract me too much from learning the high level concepts. I am satisfied with this combination that allowed reasonable performance and good visualization and debugging.
+### 3.2. Frequent, closed and maximal itemsets and 1-rules
+Note that the rules include only rules that have consequent size of 1.
+```{r}
+tabu005 <- tabulate(size(fisets.bm))
+tabu010 <- tabulate(size(closed.bm))
+tabu020 <- tabulate(size(maximal.bm))
+tabu040 <- tabulate(size(rules.bm))
+counts <- matrix(1,length(tabu005),4)
+counts[1:length(tabu005),1] <- tabu005
+counts[1:length(tabu010),2] <- tabu010
+counts[1:length(tabu020),3] <- tabu020
+counts[1:length(tabu040),4] <- tabu040
+matplot(counts, pch=1:4, lwd=2, col=mycolors,type="b", log="y", xlab="size of itemset", ylab="Number of frequent itemsets", main="Frequent, closed and maximal itemsets and rules")
+grid(lty=2)
+legend("topleft", pch=1:4, lwd=2, lty=1:4, col=mycolors, legend=c("frequent", "closed", "maximal", "1-rules"))
+```
 
 
-### 2.4. C++ source code
+
+### 3.3. Items with same supports (for closed frequnt itemsets mining)
+We can see from the plot below that mostly itemsets have the same frequencies with few or none of the other items. This prompted me to think that in closed frequent itemset extraction maybe we should sort the input itemsets by support and iterate one support-equal group at a time. This approach turned out to be quite fast.  
+```{r}
+par(mfrow=c(1,2))
+plot(table(quality(fisets.bm)[,"support"]), main="support-equal groups")
+plot(table(table(quality(fisets.bm)[,"support"])), main="histogram of group-sizes")
+par(mfrow=c(1,1))
+```
+
+
+### 3.4. Frequent itemset candidates: generated, pruned, supported
+As with the first dataset, pruning is more effective as k increases.
+```{r}
+matplot(counts.generated, pch=1:3, lwd=2, col=mycolors[1:3], type="b", log="y", xlab="k", ylab="count", main="Candidates: generated, pruned, supported")
+grid(lty=2)
+legend("topright", pch=1:3, lwd=2, lty=1:3, col=mycolors[1:3], legend=colnames(ret$counts))
+```
+
+
+### 3.5. Effect of support treshold on the number of frequent itemsets
+```{r}
+fisets005 <- eclat(courses.tr, parameter=list(support=0.02, maxlen=99), control=contrl)
+fisets010 <- eclat(courses.tr, parameter=list(support=0.04, maxlen=99), control=contrl)
+fisets020 <- eclat(courses.tr, parameter=list(support=0.08, maxlen=99), control=contrl)
+tabu005 <- tabulate(size(fisets005))
+tabu010 <- tabulate(size(fisets010))
+tabu020 <- tabulate(size(fisets020))
+counts <- matrix(1,length(tabu005),3)
+counts[1:length(tabu005),1] <- tabu005
+counts[1:length(tabu010),2] <- tabu010
+counts[1:length(tabu020),3] <- tabu020
+matplot(counts, pch=1:3, lwd=2, col=mycolors,type="b", log="y", xlab="size of itemset", ylab="Number of frequent itemsets", main="Effect of support treshold on the number of frequent itemsets")
+grid(lty=2)
+legend("bottomleft", pch=1:3, lwd=2, lty=1:3, col=mycolors, legend=c(paste("treshold=",c(0.02, 0.04, 0.08), sep="")))
+```
+
+```{r, bigmatrix, fig.height=180, results='hide'}
+# image(courses.tr[order(size(courses.tr), decreasing=T),order(itemFrequency(courses.tr), decreasing=T)])
+# system.time( interestMeasure(fisets.arto, c("allConfidence"), courses.tr) )
+```
+
+
+4. Source Code and Benchmarking
+-------------------------------
+
+
+### 4.1. C++ source code
 ```{r, results='asis'}
 sourceCpp('arto_implementation.cpp')
 mycat.monospace('arto_implementation.cpp', 'cpp')
 ```
 
-### 2.5. R source code
+
+### 4.2. R source code
 ```{r, results='asis'}
 source('arto_implementation.R')
 mycat.monospace('arto_implementation.R')
 ```
 
-3. Benchmarking
-----------------------
 
-### 3.1. Initialization
+### 4.3. Initialization
 ```{r}
 # common parameters:
 minsup <- 0.08 # yields also non-closed frequent itemsets
@@ -93,7 +181,8 @@ system.time( courses.tr <- read.transactions('../courses_num.txt', rm.duplicates
 dim(courses.tr)
 ```
 
-### 3.2. Frequent itemsets
+
+### 4.4. Frequent itemsets
 ```{r}
 system.time( fisets.bm <- eclat(courses.tr, parameter=paraml, control=contrl) )
 system.time( ret <- arto.apriori(courses.tr, minsup=minsup, mink=mink, maxk=maxk) )
@@ -101,39 +190,27 @@ fisets.arto <- ret$fisets
 setequal(fisets.arto, fisets.bm)
 ```
 
-### 3.3. Association rules
+### 4.5. Association rules
 ```{r}
 system.time( rules.bm <- ruleInduction(fisets.bm, confidence=minconfidence, control=contrl) )
 system.time( rules.arto <- arto.ruleInduction(fisets.arto, courses.tr, minconfidence=minconfidence))
 setequal(rules.arto, rules.bm)
 ```
 
-### 3.4. Closed itemsets
+### 4.6. Closed itemsets
 ```{r}
 system.time( closed.bm <- apriori(courses.tr, parameter=c(paraml, target="closed"), control=contrl) )
+system.time( closed.arto <- arto.closed.itemsets(fisets.arto) )
+setequal(closed.arto, closed.bm)
+
+# note that my version is not in vertical lexicographical order:
+as(setdiff(fisets.bm, closed.bm), "data.frame")
+as(setdiff(fisets.arto, closed.arto), "data.frame")
 ```
 
-### 3.5. Maximal itemsets
+### 4.7. Maximal itemsets
 ```{r}
 system.time( maximal.bm <- apriori(courses.tr, parameter=c(paraml, target="maximal"), control=contrl) )
-```
-
-### 3.6. Junkyard
-```{r}
-# summary(fisets.bm)
-# summary(closed.bm)
-# summary(maximal.bm)
-# summary(setdiff(fisets.bm, closed.bm))
-# summary(rules.bm)
-
-inspect(head(sort(rules.arto, by="support"), n=2))
-inspect(head(sort(rules.bm, by="support"), n=2))
-# image(items(sort(temp, by="support")))
-
-system.time( interestMeasure(fisets.arto, c("allConfidence"), courses.tr) )
-
-```
-
-```{r, bigmatrix, fig.height=180, results='hide'}
-# image(courses.tr[order(size(courses.tr), decreasing=T),order(itemFrequency(courses.tr), decreasing=T)])
+system.time( maximal.arto  <- fisets.bm[rowSums(is.subset(fisets.bm, proper=TRUE))==0] )
+setequal(maximal.arto, maximal.bm)
 ```
