@@ -10,3 +10,4 @@ library('arules')
 
 source("item_id_to_course_name.R")
 
+courses.tr <- read.transactions('courses_num.txt', rm.duplicates=TRUE)

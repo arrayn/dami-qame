@@ -2,24 +2,22 @@
 Eric's "staging for groupreport"-file
 =================================================
 
+Exploratory analysis
+--------------------
+Some item ids in `courses_num.txt` don't have an entry in the file
+`courses_details.txt`. This means that we don't have any name, year or other
+details about these courses. The following item ids have no course details:
+
 ```{r}
-courses.tr <- read.transactions('courses_num.txt', rm.duplicates=TRUE)
-courses.mat <- as(courses.tr, "matrix")
-courses.tidlists <- as(courses.tr, "tidLists")
-courses.tidlists.aslist <- as(courses.tidlists, "list")
-sourceCpp('arto/arto_implementation.cpp')
-source('arto/arto_implementation.R')
+item.ids <- itemLabels(courses.tr)
+indices <- which(sapply(item.ids, function(x) is.null(GetNameForItem(x))))
+item.ids[indices]
 ```
+So about `r length(item.ids[indices]) / length(item.ids)` of all items have no
+name associated with them.
 
 Algorithm related findings
 --------------------------
 
 Substance data findings
 --------------------------
-
-Reproducible Research
-----------------------
-```{r, results='asis'}
-# report build command: # source('init1.R'); source('init2.R'); build.report(c(6));
-cat(c('```r', readLines('init1.R'), '```'), sep="\n")
-```
