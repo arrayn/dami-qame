@@ -25,6 +25,13 @@ convert.item.ids.to.names  <- function(course.codes ,item.id.to.course.name){
   lab
 }
 
+GetNamesForItems <- function(ids) {
+    if (length(item.id.to.course.name) == 0) {
+        ReadInData()
+    }
+    convert.item.ids.to.names(ids, item.id.to.course.name)
+}
+
 # Given an item id, returns the course name. E.g.
 # GetNameForItem(195) == "information_systems_project"
 GetNameForItem <- function(id) {

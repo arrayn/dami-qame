@@ -1,4 +1,4 @@
-source("occurrence_matrix.R")
+source("eric/occurrence_matrix.R")
 
 eric.apriori <- function(occurrence.mat, min.support=0.1, min.confidence=0.7) {
     fis <- frequent.itemset.generation(occurrence.mat, min.support)
@@ -44,10 +44,14 @@ rule.generation <- function(freq.itemsets.and.counts, min.confidence=0.7) {
     return(rules.and.counts)
 }
 
-print.rule.set <- function(rules.and.counts) {
+print.rule.set <- function(rules.and.counts, convert.name.func=identity) {
     n <- length(rules.and.counts)
-    lhs <- sapply(rules.and.counts, function(r) paste("{", paste(r$lhs, collapse=", "), "}"))
-    rhs <- sapply(rules.and.counts, function(r) paste("{", paste(r$rhs, collapse=", "), "}"))
+    lhs <- sapply(rules.and.counts, function(r) {
+        paste("{", paste(convert.name.func(r$lhs), collapse=", "), "}")
+    })
+    rhs <- sapply(rules.and.counts, function(r) {
+         paste("{", paste(convert.name.func(r$rhs), collapse=", "), "}")
+    })
     confs <- sapply(rules.and.counts, function(r) r$confidence)
     df <- data.frame(lhs, rhs, confs)
     df <- df[order(df["confs"], decreasing=T),]
