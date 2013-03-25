@@ -8,3 +8,5 @@ library('Rcpp')
 Sys.setenv("PKG_CXXFLAGS"="-std=c++11")
 library('arules')
 
+source("item_id_to_course_name.R")
+
