@@ -1,4 +1,7 @@
-
+```{r, echo=F}
+source("init1.R")
+source("eric/occurrence_matrix.R")
+```
 Eric's "staging for groupreport"-file
 =================================================
 
@@ -15,6 +18,20 @@ item.ids[indices]
 ```
 So about `r length(item.ids[indices]) / length(item.ids)` of all items have no
 name associated with them.
+
+While last week only a couple of transactions had duplicate items, this week
+even more transactions have duplicate items. An extreme case of this is
+transaction #846 which contains 158 duplicates.
+
+```{r}
+lines <- readLines("courses_num.txt")
+lines.of.items <- lapply(lines, split.to.words)
+ind <- which(lapply(lines.of.items, length) > 150)
+tr <- lines.of.items[[ind]]
+cat("Line number", ind)
+print(tr)
+cat("Number of duplicates", length(tr) - length(unique(tr)))
+```
 
 Algorithm related findings
 --------------------------
