@@ -7,6 +7,8 @@ Eric's "staging for groupreport"-file
 
 Exploratory analysis
 --------------------
+
+### Missing course details
 Some item ids in `courses_num.txt` don't have an entry in the file
 `courses_details.txt`. This means that we don't have any name, year or other
 details about these courses. The following item ids have no course details:
@@ -19,13 +21,25 @@ item.ids[indices]
 So about `r length(item.ids[indices]) / length(item.ids)` of all items have no
 name associated with them.
 
+### Duplicate items
 While last week only a couple of transactions had duplicate items, this week
-even more transactions have duplicate items. An extreme case of this is
-transaction #846 which contains 158 duplicates.
+more than half of the transactions have duplicate items.
+The following is a distribution of duplicates in transactions:
 
 ```{r}
 lines <- readLines("courses_num.txt")
 lines.of.items <- lapply(lines, split.to.words)
+t <- table(sapply(lines.of.items, function(x) length(x) - length(unique(x))))
+t
+```
+
+So `r t["0"]` transactions have no (0) duplicates, `r t["1"]` transactions have
+one duplicate, `r t["2"]` have two duplicates and so on.
+
+An extreme case of this is
+transaction #846 which contains 158 duplicates.
+
+```{r}
 ind <- which(lapply(lines.of.items, length) > 150)
 tr <- lines.of.items[[ind]]
 cat("Line number", ind)
