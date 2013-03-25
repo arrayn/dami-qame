@@ -3,3 +3,8 @@
 
 # Example code in package build process
 *-Ex.R
+
+# Produced html / markdown etc. files
+dami_qame_*.html
+dami_qame_*.Rmd
+dami_qame_*.md
