@@ -3,19 +3,53 @@ Arto's "staging for groupreport"-file
 =================================================
 
 ```{r}
-courses.tr <- read.transactions('courses_num.txt', rm.duplicates=TRUE)
-courses.mat <- as(courses.tr, "matrix")
-courses.tidlists <- as(courses.tr, "tidLists")
-courses.tidlists.aslist <- as(courses.tidlists, "list")
+# sourcing:
+source('init1.R')
 sourceCpp('arto/arto_implementation.cpp')
 source('arto/arto_implementation.R')
+
+# reading the data in:
+courses.tr.old <- read.transactions('../dami_qame_1/course-text.txt', rm.duplicates=TRUE)
+courses.tr <- read.transactions('courses_num.txt', rm.duplicates=TRUE)
+courses.tidlists <- as(courses.tr, "tidLists")
+courses.tidlists.aslist <- as(courses.tidlists, "list")
+
+# parameters:
+minsup <- 0.04 # 0.08 yields also non-closed frequent itemsets
+minconfidence <- 0.8 # default in library
 ```
 
 Algorithm related findings
 --------------------------
 
+### Frequent, closed and maximal itemsets and 1-rules
+In the new dataset we observe that almost all of the frequent itemsets are also closed itemsets. Threshold has to be set to 0.08 to get at least some non-closed frequent itemsets. Even setting the threshold to 0.04 does not yield many non-closed itemsets, as we can see from the plot below (note that in the plot the rules include only rules that have consequents of size 1). 
+
+The old dataset on comparison had much more non-closed itemsets as we can see from the plots. We thought that this could be related to the fact that old datasets density, 0.130863, is much bigger than the new dataset's density, 0.02010921. 
+```{r, fig.height=12, echo=FALSE}
+par(mfrow=c(2,2))
+bm <- myget.allbm(courses.tr.old, 0.20, minconfidence)
+myplot.fcmr(bm, mycolors, " OLD-DATASET (support=0.20)")
+bm <- myget.allbm(courses.tr, 0.08, minconfidence)
+myplot.fcmr(bm, mycolors, " NEW-DATASET (support=0.08)")
+bm <- myget.allbm(courses.tr.old, 0.10, minconfidence)
+myplot.fcmr(bm, mycolors, "OLD-DATASET (support=0.10)")
+bm <- myget.allbm(courses.tr, 0.04, minconfidence)
+myplot.fcmr(bm, mycolors, "NEW-DATASET (support=0.04)")
+par(mfrow=c(1,1))
+
+
+# system.time( interestMeasure(fisets.arto, c("allConfidence"), courses.tr) )
+```
+
+
 Substance data findings
 --------------------------
+
+### Big Matrix View of the whole dataset (scroll down)
+```{r, bigmatrix, fig.height=180}
+image(courses.tr[order(size(courses.tr), decreasing=T),order(itemFrequency(courses.tr), decreasing=T)])
+```
 
 Reproducible Research
 ----------------------

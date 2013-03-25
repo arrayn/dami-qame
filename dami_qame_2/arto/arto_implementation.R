@@ -120,3 +120,26 @@ arto.closed.itemsets <- function(fisets){
   closed.arto  <- new("itemsets", items=temp.items, quality= temp.quality)
   closed.arto
 }
+
+
+
+myget.allbm  <- function(courses.tr, minsup, minconfidence){
+  paraml <- list(support=minsup, minlen=1, maxlen=999, ext=TRUE)
+  contrl <- list(verbose=FALSE)
+  bm <- list()
+  bm$fisets  <- eclat(courses.tr, parameter=paraml, control=contrl)
+  bm$closed  <- apriori(courses.tr, parameter=c(paraml, target="closed"), control=contrl)
+  bm$maximal <- apriori(courses.tr, parameter=c(paraml, target="maximal"), control=contrl) 
+  bm$rules   <- ruleInduction(bm$fisets, confidence=minconfidence, control=contrl)
+  bm
+}
+
+
+
+myplot.fcmr <- function(bm, mycolors, titleend){
+  counts <- sapply(bm, function(x){tabulate(size(x))})
+  counts[counts==0] <- NA
+  matplot(counts, pch=1:4, lwd=2, col=mycolors,type="b", log="y", xlab="size of itemset", ylab="Number of frequent itemsets", main=paste("FCMR-plot", titleend))
+  grid(lty=2)
+  legend("topleft", pch=1:4, lwd=2, lty=1:4, col=mycolors, legend=c("frequent", "closed", "maximal", "1-rules"))
+}

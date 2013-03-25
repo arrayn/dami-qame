@@ -63,9 +63,9 @@ sourceCpp('arto_implementation.cpp')
 source('arto_implementation.R')
 
 # common parameters:
-minsup <- 0.10 # 0.08 yields also non-closed frequent itemsets
+minsup <- 0.08 # 0.08 yields also non-closed frequent itemsets
 mink   <- 1    # all
-maxk   <- 15   # just something big enough
+maxk   <- 99   # just something big enough
 minconfidence <- 0.8 # default in library
 
 # debug parameters for library implementations
@@ -104,7 +104,7 @@ counts <- matrix(1,length(tabu005),4)
 counts[1:length(tabu005),1] <- tabu005
 counts[1:length(tabu010),2] <- tabu010
 counts[1:length(tabu020),3] <- tabu020
-# counts[1:length(tabu040),4] <- tabu040
+counts[1:length(tabu040),4] <- tabu040
 matplot(counts, pch=1:4, lwd=2, col=mycolors,type="b", log="y", xlab="size of itemset", ylab="Number of frequent itemsets", main="Frequent, closed and maximal itemsets and rules")
 grid(lty=2)
 legend("topleft", pch=1:4, lwd=2, lty=1:4, col=mycolors, legend=c("frequent", "closed", "maximal", "1-rules"))
