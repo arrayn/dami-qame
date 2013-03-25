@@ -13,6 +13,18 @@ ReadInData <- function() {
     }
 }
 
+# Inputs and returns a character[450]
+# usage: lab <- convert.item.ids.to.names(itemLabels(courses.tr), item.id.to.course.name) 
+# uses names when found, otherwise keeps the original item id string
+convert.item.ids.to.names  <- function(course.codes ,item.id.to.course.name){
+  lab <- course.codes
+  for(i in 1:length(lab)){
+    temp <- item.id.to.course.name[[lab[i]]]
+    if(!is.null(temp)){lab[i] <- temp}
+  }
+  lab
+}
+
 # Given an item id, returns the course name. E.g.
 # GetNameForItem(195) == "information_systems_project"
 GetNameForItem <- function(id) {

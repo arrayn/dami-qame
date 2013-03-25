@@ -37,19 +37,37 @@ myplot.fcmr(bm, mycolors, "OLD-DATASET (support=0.10)")
 bm <- myget.allbm(courses.tr, 0.04, minconfidence)
 myplot.fcmr(bm, mycolors, "NEW-DATASET (support=0.04)")
 par(mfrow=c(1,1))
-
-
-# system.time( interestMeasure(fisets.arto, c("allConfidence"), courses.tr) )
 ```
 
 
 Substance data findings
 --------------------------
 
+
+### Interestigness measures comparison
+```{r}
+bm <- myget.allbm(courses.tr, 0.08, minconfidence)
+ReadInData()
+ntop <- 8
+collecto  <- head(sort(bm$rules, by="lift"), n=ntop)
+# collecto  <- union(collecto, head(sort(bm$rules, by="confidence"), n=ntop))
+collecto
+
+lab <- itemLabels(courses.tr)
+lab <- convert.item.ids.to.names(itemLabels(courses.tr), item.id.to.course.name) 
+temp <- rhs(collecto); itemLabels(temp) <- lab; rhs(collecto) <- temp
+temp <- lhs(collecto); itemLabels(temp) <- lab; lhs(collecto) <- temp
+as(collecto, "data.frame")
+
+# temp <- interestMeasure(bm$rules, c("allConfidence"), courses.tr)
+```
+
+
 ### Big Matrix View of the whole dataset (scroll down)
 ```{r, bigmatrix, fig.height=180}
 image(courses.tr[order(size(courses.tr), decreasing=T),order(itemFrequency(courses.tr), decreasing=T)])
 ```
+
 
 Reproducible Research
 ----------------------
