@@ -1,0 +1,25 @@
+
+Mirva's "staging for groupreport"-file
+=================================================
+
+```{r}
+courses.tr <- read.transactions('courses_num.txt', rm.duplicates=TRUE)
+courses.mat <- as(courses.tr, "matrix")
+courses.tidlists <- as(courses.tr, "tidLists")
+courses.tidlists.aslist <- as(courses.tidlists, "list")
+sourceCpp('arto/arto_implementation.cpp')
+source('arto/arto_implementation.R')
+```
+
+Algorithm related findings
+--------------------------
+
+Substance data findings
+--------------------------
+
+Reproducible Research
+----------------------
+```{r, results='asis'}
+# report build command: # source('init1.R'); source('init2.R'); build.report(c(7));
+cat(c('```r', readLines('init1.R'), '```'), sep="\n")
+```

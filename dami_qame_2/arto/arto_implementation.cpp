@@ -109,3 +109,21 @@ List artoCppClosedItemsets(const List fisets_ranked, const NumericVector support
 }
 
 
+
+// [[Rcpp::export]]
+List artoCppEclat(const List tidlist, const int minsup_abs){
+  std::vector<std::vector<int> > fisets;
+  std::vector<int> support_abs;
+  // step 1: form a new "index" of only frequent items
+  std::vector<int> fitems;
+  for(int i=0 ; i<tidlist.size(); i++){
+    const IntegerVector temp = tidlist[i];
+    if(temp.size() >= minsup_abs) fitems.push_back(i);
+  }
+  // return
+  return Rcpp::List::create(_["fisets"]  = fitems,
+                            _["support_abs"] = support_abs);
+}
+// artoCppEclat(list(1), 2)
+// artoCppEclat(courses.tidlists.aslist, 3000)
+
