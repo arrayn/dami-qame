@@ -47,6 +47,15 @@ par(mfrow=c(1,1))
 Substance data findings
 --------------------------
 
+### Most frequent courses
+These will be interesting to compare later how much of the most interesting rules are based on itemfrequency (or lack of it). 
+```{r, echo=FALSE}
+temp <- courses.tr
+itemLabels(temp) <- lab
+itemFrequencyPlot(temp, topN=20, cex.names=0.75)
+```
+
+
 ### Non-closed frequent itemsets and rule-confidence=1 relation
 With support threshold=0.08 we get 6 itemsets that are not closed frequent. These itemsets are exactly the rule antecedents (left hand sides, LHS) of the only 1-consequent-rules that have confidence of 1 as we can see from output below. This means unioning these LHS with the rule consequent (right hand sides, RHS), item 80 (data_structures) in this case, we get itemsets whose supports are exactly the same as LHS alone. Therefore these LHS+RHS union itemsets are closed itemsets that close over their respective LHS-part (which are not closed themselves).
 
