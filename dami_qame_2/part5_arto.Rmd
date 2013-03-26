@@ -2,20 +2,24 @@
 Arto's "staging for groupreport"-file
 =================================================
 
-```{r}
+```{r, echo=FALSE, results='hide'}
 # sourcing:
+# setwd("~/atlinks/dami-qame/dami_qame_2")
 source('init1.R')
 sourceCpp('arto/arto_implementation.cpp')
 source('arto/arto_implementation.R')
 
 # reading the data in:
+
 courses.tr.old <- read.transactions('../dami_qame_1/course-text.txt', rm.duplicates=TRUE)
 courses.tr <- read.transactions('courses_num.txt', rm.duplicates=TRUE)
 courses.tidlists <- as(courses.tr, "tidLists")
 courses.tidlists.aslist <- as(courses.tidlists, "list")
+ReadInData()
+lab <- convert.item.ids.to.names(itemLabels(courses.tr), item.id.to.course.name)
 
 # parameters:
-minsup <- 0.04 # 0.08 yields also non-closed frequent itemsets
+minsup <- 0.08 # 0.08 yields also non-closed frequent itemsets
 minconfidence <- 0.8 # default in library
 ```
 
@@ -43,23 +47,41 @@ par(mfrow=c(1,1))
 Substance data findings
 --------------------------
 
+### Non-closed frequent itemsets and rule-confidence=1 relation
+With support threshold=0.08 we get 6 itemsets that are not closed frequent. These itemsets are exactly the rule antecedents (left hand sides, LHS) of the only 1-consequent-rules that have confidence of 1 as we can see from output below. This means unioning these LHS with the rule consequent (right hand sides, RHS), item 80 (data_structures) in this case, we get itemsets whose supports are exactly the same as LHS alone. Therefore these LHS+RHS union itemsets are closed itemsets that close over their respective LHS-part (which are not closed themselves).
 
-### Interestigness measures comparison
+Also, Items 131 (introduction_to_the_use_of_computers), 194 (data_structures_project) and 83 (introduction_to_programming) appear in all of those 6 itemsets. But a rule {131,194,83} => {80} has a confidence of 0.9973118. This means that the itemset {131,194,83} have slightly higher support than the combined itemset {131,194,83,80}. Also, by knowing that {131,194,83} is not a closed itemset, we could immediately say that all of it's supersets must have lower support than it.
 ```{r}
 bm <- myget.allbm(courses.tr, 0.08, minconfidence)
-ReadInData()
-ntop <- 8
-collecto  <- head(sort(bm$rules, by="lift"), n=ntop)
-# collecto  <- union(collecto, head(sort(bm$rules, by="confidence"), n=ntop))
-collecto
+inspect(head(mynamify(sort(bm$rules, by="confidence"), lab), n=1))
+as(setdiff(bm$fisets, bm$closed), "data.frame")
+as(head(sort(bm$rules, by="confidence"), n=30), "data.frame")
+```
 
-lab <- itemLabels(courses.tr)
-lab <- convert.item.ids.to.names(itemLabels(courses.tr), item.id.to.course.name) 
-temp <- rhs(collecto); itemLabels(temp) <- lab; rhs(collecto) <- temp
-temp <- lhs(collecto); itemLabels(temp) <- lab; lhs(collecto) <- temp
-as(collecto, "data.frame")
 
-# temp <- interestMeasure(bm$rules, c("allConfidence"), courses.tr)
+### Interestigness measures for itemsets comparison
+```{r}
+
+
+# "allConfidence" (see, Omiencinski, 2003) is defined on itemsets as the minimum confidence of all possible rule generated from the itemset. [arules vignette]
+
+fisets <- bm$fisets
+temp <- interestMeasure(fisets, c("allConfidence"), courses.tr)
+quality(fisets) <- cbind(quality(fisets), allConfidence=temp)
+temp <- items(fisets); itemLabels(temp) <- lab; items(fisets) <- temp
+q <- quality(fisets)
+ex <- q[, "allConfidence"] == 1
+ord <- order(q[!ex, "allConfidence"], decreasing=TRUE)
+top.allConfidence  <- head(fisets[!ex,][ord])
+# inspect(head(sort(fisets, by="allConfidence"), n=35))
+# as(topim$allConfidence, "data.frame")
+inspect(top.allConfidence)
+
+# are these two somehow related?
+
+topim <- list()
+topim$lift  <- head(sort(bm$rules, by="lift"), n=8)
+as(mynamify(topim$lift, lab), "data.frame")
 ```
 
 

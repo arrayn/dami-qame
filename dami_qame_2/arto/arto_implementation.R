@@ -124,7 +124,7 @@ arto.closed.itemsets <- function(fisets){
 
 
 myget.allbm  <- function(courses.tr, minsup, minconfidence){
-  paraml <- list(support=minsup, minlen=1, maxlen=999, ext=TRUE)
+  paraml <- list(support=minsup, minlen=1, maxlen=999, ext=FALSE)
   contrl <- list(verbose=FALSE)
   bm <- list()
   bm$fisets  <- eclat(courses.tr, parameter=paraml, control=contrl)
@@ -132,6 +132,20 @@ myget.allbm  <- function(courses.tr, minsup, minconfidence){
   bm$maximal <- apriori(courses.tr, parameter=c(paraml, target="maximal"), control=contrl) 
   bm$rules   <- ruleInduction(bm$fisets, confidence=minconfidence, control=contrl)
   bm
+}
+
+
+mynamify  <- function(x, lab){
+  temp <- rhs(x); itemLabels(temp) <- lab; rhs(x) <- temp
+  temp <- lhs(x); itemLabels(temp) <- lab; lhs(x) <- temp
+  x
+}
+
+
+
+mynamify.is  <- function(x, lab){
+  temp <- items(x); itemLabels(temp) <- lab; items(x) <- temp
+  x
 }
 
 
