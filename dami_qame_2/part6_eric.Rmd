@@ -36,17 +36,37 @@ t
 So `r t["0"]` transactions have no (0) duplicates, `r t["1"]` transactions have
 one duplicate, `r t["2"]` have two duplicates and so on.
 
-An extreme case of this is
-transaction #846 which contains 158 duplicates.
+An extreme case of this is transaction #846 which contains 158 duplicates. This
+may just be an data entry error. Alternatively, this could be an actual student
+who has a very unique approach to taking courses. E.g. he or she signs up for
+several courses during periods and attends only those that intrest him/her.
 
 ```{r}
 ind <- which(lapply(lines.of.items, length) > 150)
 tr <- lines.of.items[[ind]]
-cat("Line number", ind)
+cat("Transaction / Line number", ind)
 print(tr)
 cat("Number of duplicates", length(tr) - length(unique(tr)))
 ```
 
+### Number of students enrolled vs. years taught
+```{r}
+total.years <- sapply(years.held, function(years) {
+  max(years) - min(years) + 1
+})
+
+item.freqs <- itemFrequency(courses.tr, type="absolute")
+res <- total.years[names(item.freqs)]
+xs <- res[complete.cases(res)] # Note: NAs dropped
+
+ys <- item.freqs[names(xs)]
+
+names(xs) <- NULL
+names(ys) <- NULL
+plot(xs, ys, ylab="Number of students enrolled",
+     xlab="Total number of years held",
+     main="Scatterplot of courses")
+```
 Algorithm related findings
 --------------------------
 
