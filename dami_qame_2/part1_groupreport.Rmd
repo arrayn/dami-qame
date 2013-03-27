@@ -4,6 +4,22 @@ Data Mining Problem 2 - QAME Group Report
 
 Research questions
 ------------------
+We sought answers to the following questions.
+* How does this data set compare to the previous one. Does it have the same
+kind of problems (e.g. duplicates) as the last set? What can we infer from the
+additional information?
+
+* Effectiveness of depth-first vs. breadth-first approaches to mining frequent
+itemsets, or in a nutshell: which one is faster, Apriori or Eclat?
+
+* How much worse (or better) our implementations of the algorithms perform
+compared to the "arules" R library's implementations?
+
+* How many of the mined frequent itemsets turn out to be closed, how many
+were maximal?
+
+* How do the results of different interestingness measures compare?
+
 
 Exploratory analysis
 --------------------
