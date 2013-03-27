@@ -237,7 +237,7 @@ With support threshold=0.08 we get 6 itemsets that are not closed frequent. Thes
 
 Also, Items 131 (introduction_to_the_use_of_computers), 194 (data_structures_project) and 83 (introduction_to_programming) appear in all of those 6 itemsets. But a rule {131,194,83} => {80} has a confidence of 0.9973118. This means that the itemset {131,194,83} have slightly higher support than the combined itemset {131,194,83,80}. Also, by knowing that {131,194,83} is not a closed itemset, we could immediately say that all of it's supersets must have lower support than it.
 
-* Open question: WHY ARE THE LIFTS THE SAME?
+Another interesting question is why are the lifts the same?
 
 ```{r}
 bm <- myget.allbm(courses.tr, 0.08, minconfidence)
@@ -270,3 +270,9 @@ topim$lift  <- head(sort(bm$rules, by="lift"), n=8)
 inspect(top.allConfidence)
 inspect(mynamify(head(sort(bm$rules, by="lift"), n=8), lab))
 ```
+
+### Other observations
+For most of the experiments with Apriori we used a support threshold of 0.08
+because that yielded at least some non-closed itemsets which could be analyzed
+further.  However setting the threshold this low, especially with this data
+set, caused us some problems with performance.
