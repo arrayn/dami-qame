@@ -2,6 +2,9 @@
 Data Mining Problem 2 - QAME Group Report
 =================================================
 
+Research questions
+------------------
+
 Exploratory analysis
 --------------------
 ```{r, echo=F}
@@ -106,8 +109,7 @@ minconfidence <- 0.8 # default in library
 ```
 
 
-Comparison of depth-first vs breadth-first
--------------------------
+### Comparison of depth-first vs breadth-first
 Depth first counts supports from data to more itemsets but seems to runs faster anyway. We think that support-counting from TID-lists is just so much faster than from "horizontal" data. 
 
 We were also thinking that maybe depth-first search would benefit from ordering the items in increasing order of frequency. This is because the more right we are on the search tree the less supersets we have to check. And maybe the ordering would make the tree more right-weighted. 
@@ -154,10 +156,9 @@ barplot(tim, beside=TRUE, log="y", ylab="runtime (seconds)", main="Runnning time
 
 
 
-Number of non-closed itemsets and data density
---------------------------
+### Number of non-closed itemsets and data density
 
-### Density difference between old and new data set visualization
+#### Density difference between old and new data set visualization
 Old datasets density, 0.130863, is much bigger than the new dataset's density, 0.02010921. The visualizations below are samples from the beginning of data-matrix sorted in a such way that the most frequent courses are at the left and the students who took the most courses are at the top. 
 
 ```{r, , echo=FALSE, fig.cap="old data matrix sample"}
@@ -168,7 +169,7 @@ image(courses.tr.old[order(size(courses.tr.old), decreasing=T),order(itemFrequen
 image(courses.tr[order(size(courses.tr), decreasing=T),order(itemFrequency(courses.tr), decreasing=T)][1:(nitems(courses.tr)/2)])
 ```
 
-### Frequent, closed and maximal itemsets and 1-rules
+#### Frequent, closed and maximal itemsets and 1-rules
 In the new dataset we observe that almost all of the frequent itemsets are also closed itemsets. This is indicated by the fact that the "frequent"-line and "closed"-line are almost overlapping in the plot below. Threshold has to be set to 0.08 to get at least some non-closed frequent itemsets. Even setting the threshold to 0.04 does not yield many non-closed itemsets, as we can see from the plot below (note that in the plot the rules include only rules that have consequents of size 1). 
 
 The old dataset on comparison had much more non-closed itemsets as we can see from the plots. We thought that this could be related to the fact that old datasets density, 0.130863, is much bigger than the new dataset's density, 0.02010921. 
@@ -188,11 +189,10 @@ par(mfrow=c(1,1))
 ```
 
 
-Interestingness measures comparison
------------------------------------
+### Interestingness measures comparison
 
 
-### Frequent courses (support >= 0.08)
+#### Frequent courses (support >= 0.08)
 These will be interesting to compare later how much of the most interesting rules are based on itemfrequency (or lack of it). 
 ```{r, echo=FALSE}
 temp <- courses.tr
@@ -202,7 +202,7 @@ itemFrequencyPlot(temp, topN=nitems(temp) ,cex.names=0.75)
 ```
 
 
-### Non-closed frequent itemsets and rule-confidence=1 relation
+#### Non-closed frequent itemsets and rule-confidence=1 relation
 With support threshold=0.08 we get 6 itemsets that are not closed frequent. These itemsets are exactly the rule antecedents (left hand sides, LHS) of the only 1-consequent-rules that have confidence of 1 as we can see from output below. This means unioning these LHS with the rule consequent (right hand sides, RHS), item 80 (data_structures) in this case, we get itemsets whose supports are exactly the same as LHS alone. Therefore these LHS+RHS union itemsets are closed itemsets that close over their respective LHS-part (which are not closed themselves).
 
 Also, Items 131 (introduction_to_the_use_of_computers), 194 (data_structures_project) and 83 (introduction_to_programming) appear in all of those 6 itemsets. But a rule {131,194,83} => {80} has a confidence of 0.9973118. This means that the itemset {131,194,83} have slightly higher support than the combined itemset {131,194,83,80}. Also, by knowing that {131,194,83} is not a closed itemset, we could immediately say that all of it's supersets must have lower support than it.
@@ -217,7 +217,7 @@ inspect(head(mynamify(sort(bm$rules, by="confidence"), lab), n=1))
 ```
 
 
-### Top ranked by allconfidence vs lift
+#### Top ranked by allconfidence vs lift
 Definition: "allConfidence (see, Omiencinski, 2003) is defined on itemsets as the minimum confidence of all possible rule generated from the itemset." [arules vignette]. In other words, these items tend to appear together. Lift is P(R|L)/P(R). These two seem to give quite similar intuition, at least in this run.
 
 ```{r,echo=FALSE}
