@@ -219,6 +219,10 @@ par(mfrow=c(1,1), mar=c(4,4,2,0.1))
 barplot(tim, beside=TRUE, log="y", ylab="runtime (seconds)", main="Runnning times")
 ```
 
+Running times of different algorithm implementations are shown above. For each
+of the four cases, the first bar corresponds to support threshold of 0.23,
+second to 0.12, third to 0.15, and the last one corresponds to 0.08.
+
 
 
 ### Number of non-closed itemsets and data density
