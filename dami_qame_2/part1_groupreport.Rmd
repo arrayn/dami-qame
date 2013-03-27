@@ -220,8 +220,9 @@ barplot(tim, beside=TRUE, log="y", ylab="runtime (seconds)", main="Runnning time
 ```
 
 Running times of different algorithm implementations are shown above. For each
-of the four cases, the first bar corresponds to support threshold of 0.23,
-second to 0.12, third to 0.15, and the last one corresponds to 0.08.
+of the four cases, the first two bars corresponds to support thresholds of 0.23
+and 0.15 on last week's data, while the last two bars corresponds to
+thresholds 0.12 and 0.08 on this week's data.
 
 
 
