@@ -25,6 +25,23 @@ source("eric/occurrence_matrix.R")
 
 Data Mining Problem 2 - QAME Group Report
 =================================================
+This problem 2 report submission consists of five different parts: this group report that is more results focused and the four individual reports (already turned in) that are more algorithm focused. Reader is welcome to read the individual reports for further details that are not repeated here.
+
+We begin with group-learning related issues and then proceed to substance.
+
+Group learning and self evaluation
+----------------------------------
+
+### Learning objectives for this problem
+In addition to concept understanding goals (maximal and closed itemsets, association rules, interestingness measures and depth-first vs breadth-first algorithms) presented further in the research questions, we wanted to utilize the feedback and experience from previous problem to make our report more accessible. For example we used different finishing process to be able to make figures appear nearer the text that addresses them. We also stated our research goals more clearly. 
+
+### Organizing studying, learning and working
+
+We meet after lectures and organize our work face to face. We found it more effective to work face to face and discuss about learning goals, results and findings. We tried to divide focus areas so that we would have different algorithms implemented and we could compare them. However, estimating the difficulty level of different choices proved to be quite difficult. We could try to improve this work division and goal setting process.
+
+We identified the rest of the chapter 6 from the course book as beneficial in order to reach our learning goals. After that group members studied and tried to implement their chosen algorithms mostly independently. After Monday’s lecture we started to produce the group report by each member developing mini-reports on particular subjects for others to see via git. Finally, we composed a coherent whole of these mini-reports. We found this approach satisfactory.
+
+Different members of the group found different things difficult. We were able to teach each other something. We were also able to share some useful functions via github and improve on the work of others. These things helped us enjoy working as a group.
 
 Research questions
 ------------------
@@ -50,6 +67,7 @@ Exploratory analysis
 
 ### Most frequent courses
 Below are outlined the most frequent courses (support greater than 0.08).
+
 ```{r, echo=FALSE}
 temp <- courses.tr
 itemLabels(temp) <- lab
@@ -59,12 +77,14 @@ itemFrequencyPlot(temp, topN=nitems(temp) ,cex.names=0.75)
 
 
 ### Skewness of support distribution
+
 ```{r, echo=F}
 item.freqs <- unname(sort(itemFrequency(courses.tr)))
 names(item.freqs) <- 1:length(item.freqs)
 barplot(item.freqs, xlab="Items sorted by support", ylab="support",
         main="Support distribution of items")
 ```
+
 Above is plotted the support of each item in increasing order of support.
 Notice that the x-axis is not the TID but rather the rank of the item in the
 ordering.  Out of all `r length(item.freqs)` items, `r sum(item.freqs < 0.01)`
@@ -80,11 +100,12 @@ Some item ids in `courses_num.txt` don't have an entry in the file
 `courses_details.txt`. This means that we don't have any name, year or other
 details about these courses. The following item ids have no course details:
 
-```{r}
+```{r, echo=F}
 item.ids <- itemLabels(courses.tr)
 indices <- which(sapply(item.ids, function(x) is.null(GetNameForItem(x))))
 item.ids[indices]
 ```
+
 So about `r length(item.ids[indices]) / length(item.ids)` of all items have no
 name associated with them.
 
@@ -93,7 +114,7 @@ While last week only a couple of transactions had duplicate items, this week
 more than half of the transactions have duplicate items.
 The following is a distribution of duplicates in transactions:
 
-```{r}
+```{r, echo=F}
 lines <- readLines("courses_num.txt")
 lines.of.items <- lapply(lines, split.to.words)
 t <- table(sapply(lines.of.items, function(x) length(x) - length(unique(x))))
@@ -106,9 +127,10 @@ one duplicate, `r t["2"]` have two duplicates and so on.
 An extreme case of this is transaction #846 which contains 158 duplicates. This
 may just be an data entry error. Alternatively, this could be an actual student
 who has a very unique approach to taking courses. E.g. he or she signs up for
-several courses during periods and attends only those that intrest him/her.
+several courses during periods and attends only those that interest him/her.
+Below is the full list of courses this student enrolled to.
 
-```{r}
+```{r, echo=F}
 ind <- which(lapply(lines.of.items, length) > 150)
 tr <- lines.of.items[[ind]]
 cat("Transaction / Line number", ind)
@@ -117,7 +139,8 @@ cat("Number of duplicates", length(tr) - length(unique(tr)))
 ```
 
 ### Number of students enrolled vs. years taught
-```{r}
+
+```{r, echo=F}
 total.years <- sapply(years.held, function(years) {
   max(years) - min(years) + 1
 })
