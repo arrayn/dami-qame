@@ -122,6 +122,22 @@ arto.closed.itemsets <- function(fisets){
 }
 
 
+arto.eclat <- function(data.tr, minsup=0.4, mink=1, maxk=100, debug=FALSE){
+  minsup_abs <- ceiling(minsup * length(data.tr))
+  tim  <- list()
+#   orig.labels  <- itemLabels(data.tr)
+#   itemLabels(data.tr) <- 1:nitems(data.tr)
+  ptm=proc.time(); data.tidlists <- as(data.tr, "tidLists") ;proc.time()-ptm
+  ptm=proc.time(); data.tidlists.aslist <- as(data.tidlists, "list") ;proc.time()-ptm
+  ptm=proc.time(); ret <- artoCppEclat(data.tidlists.aslist, minsup_abs) ;tim$cpp=proc.time()-ptm
+  ptm=proc.time(); temp2 <- encode(ret$fisets, itemLabels=itemLabels(data.tr), itemMatrix=TRUE) ;tim$encode=proc.time()-ptm
+  itemLabels(temp2) <- itemLabels(data.tr)
+  support= ret$support_abs/length(data.tr)
+  fisets <- new("itemsets", items=temp2, quality=data.frame(support))
+  list(fisets=fisets, supports_counted=ret$eclat_supports, tim=t(sapply(tim, identity)))
+}
+
+
 
 myget.allbm  <- function(courses.tr, minsup, minconfidence){
   paraml <- list(support=minsup, minlen=1, maxlen=999, ext=FALSE)
