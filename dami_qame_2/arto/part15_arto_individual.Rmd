@@ -62,6 +62,75 @@ Sys.setenv("PKG_CXXFLAGS"="-std=c++11")
 sourceCpp('arto_implementation.cpp')
 source('arto_implementation.R')
 
+courses.tr.old <- read.transactions('../../dami_qame_1/course-text.txt', rm.duplicates=TRUE)
+courses.tr <- read.transactions('../courses_num.txt', rm.duplicates=TRUE) 
+bm <- list()
+minsup=0.08
+paraml <- list(support=minsup, minlen=1, maxlen=999, ext=FALSE)
+contrl <- list(verbose=FALSE)
+ptm=proc.time(); bm$fisets <- eclat(courses.tr, parameter=paraml, control=contrl) ;proc.time()-ptm
+
+
+
+contrl <- list(verbose=FALSE)
+sups <- c(0.23, 0.15, 0.12, 0.08) # two for old data and two for new data
+n <- length(sups)
+tim  <- matrix(0, n, 4)
+colnames(tim) <- c("arules_eclat", "arules_apriori", "our_eclat", "our_apriori")
+counters  <- vector("list", n)
+for(i in 1:n){
+  minsup <- sups[i]
+  paraml <- list(support=minsup, minlen=1, maxlen=999, ext=FALSE)
+  if(i <= n/2){data.tr <- courses.tr.old} else{data.tr <- courses.tr}
+  ptm=proc.time(); temp <- eclat(data.tr, parameter=paraml, control=contrl) ;tim[i,1]=(proc.time()-ptm)[1]
+  ptm=proc.time(); temp <- apriori(data.tr, parameter=c(paraml, target="frequent"), control=contrl) ;tim[i,2]=(proc.time()-ptm)[1]
+  ptm=proc.time(); temp <- arto.eclat(data.tr, minsup=minsup) ;tim[i,3]=(proc.time()-ptm)[1]
+  counter.eclat.supports <- temp[[2]]
+  ptm=proc.time(); temp <- arto.apriori(data.tr, minsup=minsup, mink=1, maxk=999) ;tim[i,4]=(proc.time()-ptm)[1]
+  apriori.counts <- temp$counts
+  counts <- matrix(0, length(counter.eclat.supports), 4)
+  colnames(counts) <- c("eclat_support_counted", colnames(apriori.counts))
+  counts[, 1] <- counter.eclat.supports
+  counts[1:nrow(apriori.counts),2:4] <- apriori.counts
+  counts[counts==0] <- NA
+  counters[[i]] <- counts
+}
+
+par(mfcol=c(2,2), mar=c(4,2,2,0.5))
+for(i in 1:n){
+  titlestr <- if(i<=n/2){"Old Data-Set"} else{"New Data-Set"}
+  titlestr <- paste(titlestr," (support = ", sups[i], ")", sep="")
+  matplot(counters[[i]], pch=1:4, lwd=2, col=mycolors,type="b", log="y", xlab="k=size of itemset", ylab="count", main=titlestr)
+  grid(lty=2)
+  legend("bottomleft", pch=1:4, lwd=2, lty=1:4, col=mycolors, legend=colnames(counters[[i]]))
+}
+par(mfrow=c(1,1), mar=c(4,4,2,0.1))
+barplot(tim, beside=TRUE, log="y", ylab="runtime (seconds)", main="Runnning times")
+
+
+
+
+ptm=proc.time(); temp <- arto.eclat(courses.tr, minsup=minsup) ;proc.time()-ptm
+arto.fisets <- temp[[1]]
+counter.eclat.supports <- temp[[2]]
+counter.eclat.supports
+
+ptm=proc.time(); ret <- arto.apriori(courses.tr, minsup=minsup, mink=1, maxk=999) ;proc.time()-ptm
+fisets.arto <- ret$fisets
+counts.generated  <- ret$counts
+
+
+
+ptm=proc.time(); bm <- myget.allbm(courses.tr, minsup, 0.8) ;proc.time()-ptm
+setequal(arto.fisets, bm$fisets)
+arto.fisets
+bm$fisets
+inspect(setdiff(bm$fisets, arto.fisets))
+inspect(setdiff(arto.fisets, bm$fisets))
+
+as(sort(bm$fisets, by="support"), "data.frame")
+as(sort(arto.fisets, by="support"), "data.frame")
+
 # common parameters:
 minsup <- 0.08 # 0.08 yields also non-closed frequent itemsets
 mink   <- 1    # all
@@ -73,13 +142,11 @@ paraml <- list(support=minsup, ext=TRUE)
 contrl <- list(verbose=FALSE)
 
 # Reading the data in
-courses.tr <- read.transactions('../courses_num.txt', rm.duplicates=TRUE) 
+
 # courses.tr <- read.transactions('../../dami_qame_1/course-text.txt', rm.duplicates=TRUE)
 
 
-# todo: convert the relative minsup to minsup_abs ( use count of transactions)
-courses.tidlists <- as(courses.tr, "tidLists")
-courses.tidlists.aslist <- as(courses.tidlists, "list")
+
 
 
 dim(courses.tr)
