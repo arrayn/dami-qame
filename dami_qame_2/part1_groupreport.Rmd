@@ -1,3 +1,27 @@
+```{r, echo=FALSE, results='hide'}
+# sourcing:
+# setwd("~/atlinks/dami-qame/dami_qame_2")
+source('init1.R')
+sourceCpp('arto/arto_implementation.cpp')
+source('arto/arto_implementation.R')
+
+# reading the data in:
+
+courses.tr.old <- read.transactions('../dami_qame_1/course-text.txt', rm.duplicates=TRUE)
+courses.tr <- read.transactions('courses_num.txt', rm.duplicates=TRUE)
+courses.tidlists <- as(courses.tr, "tidLists")
+courses.tidlists.aslist <- as(courses.tidlists, "list")
+ReadInData()
+lab <- convert.item.ids.to.names(itemLabels(courses.tr), item.id.to.course.name)
+
+# parameters:
+minsup <- 0.08 # 0.08 yields also non-closed frequent itemsets
+minconfidence <- 0.8 # default in library
+```
+
+```{r, echo=F}
+source("eric/occurrence_matrix.R")
+```
 
 Data Mining Problem 2 - QAME Group Report
 =================================================
@@ -23,12 +47,19 @@ were maximal?
 
 Exploratory analysis
 --------------------
-```{r, echo=F}
-source("eric/occurrence_matrix.R")
+
+### Most frequent courses
+Below are outlined the most frequent courses (support greater than 0.08).
+```{r, echo=FALSE}
+temp <- courses.tr
+itemLabels(temp) <- lab
+temp <- temp[, itemFrequency(temp) >= 0.08]
+itemFrequencyPlot(temp, topN=nitems(temp) ,cex.names=0.75)
 ```
 
+
 ### Skewness of support distribution
-```{r}
+```{r, echo=F}
 item.freqs <- unname(sort(itemFrequency(courses.tr)))
 names(item.freqs) <- 1:length(item.freqs)
 barplot(item.freqs, xlab="Items sorted by support", ylab="support",
@@ -39,6 +70,10 @@ Notice that the x-axis is not the TID but rather the rank of the item in the
 ordering.  Out of all `r length(item.freqs)` items, `r sum(item.freqs < 0.01)`
 have a support lower than 1%, `r sum(item.freqs > 0.10)` items have a support
 higher than 10%. Highest support is `r tail(item.freqs, n=1)`.
+
+Whether this skewness is a problem or not is hard to say without experience.
+Visually this seems very worrying, but on the other hand the example given in
+the book (p. 386) is much worse.
 
 ### Missing course details
 Some item ids in `courses_num.txt` don't have an entry in the file
@@ -113,27 +148,6 @@ it is just a precondition for it to be possible.
 
 Algorithm related findings
 --------------------------
-
-```{r, echo=FALSE, results='hide'}
-# sourcing:
-# setwd("~/atlinks/dami-qame/dami_qame_2")
-source('init1.R')
-sourceCpp('arto/arto_implementation.cpp')
-source('arto/arto_implementation.R')
-
-# reading the data in:
-
-courses.tr.old <- read.transactions('../dami_qame_1/course-text.txt', rm.duplicates=TRUE)
-courses.tr <- read.transactions('courses_num.txt', rm.duplicates=TRUE)
-courses.tidlists <- as(courses.tr, "tidLists")
-courses.tidlists.aslist <- as(courses.tidlists, "list")
-ReadInData()
-lab <- convert.item.ids.to.names(itemLabels(courses.tr), item.id.to.course.name)
-
-# parameters:
-minsup <- 0.08 # 0.08 yields also non-closed frequent itemsets
-minconfidence <- 0.8 # default in library
-```
 
 
 ### Comparison of depth-first vs breadth-first
@@ -217,17 +231,6 @@ par(mfrow=c(1,1))
 
 
 ### Interestingness measures comparison
-
-
-#### Frequent courses (support >= 0.08)
-These will be interesting to compare later how much of the most interesting rules are based on itemfrequency (or lack of it). 
-```{r, echo=FALSE}
-temp <- courses.tr
-itemLabels(temp) <- lab
-temp <- temp[, itemFrequency(temp) >= 0.08]
-itemFrequencyPlot(temp, topN=nitems(temp) ,cex.names=0.75)
-```
-
 
 #### Non-closed frequent itemsets and rule-confidence=1 relation
 With support threshold=0.08 we get 6 itemsets that are not closed frequent. These itemsets are exactly the rule antecedents (left hand sides, LHS) of the only 1-consequent-rules that have confidence of 1 as we can see from output below. This means unioning these LHS with the rule consequent (right hand sides, RHS), item 80 (data_structures) in this case, we get itemsets whose supports are exactly the same as LHS alone. Therefore these LHS+RHS union itemsets are closed itemsets that close over their respective LHS-part (which are not closed themselves).
