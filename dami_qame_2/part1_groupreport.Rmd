@@ -100,6 +100,17 @@ plot(xs, ys, ylab="Number of students enrolled",
      main="Scatterplot of courses")
 ```
 
+From the additional data file we could find the specific years a course has
+been held and thus infer the total number of years it has been held. Note here
+that we're assuming that all relevant years are reported in the additional data.
+This is most likely a naive belief, especially given the quality of the data
+so far, nevertheless it's a useful approximation.
+
+From the plot above, we can see that the total years a course has been held
+definitely impacts the number of students who have enrolled to it. But this
+doesn't automatically imply that the number of enrollments will be high, rather
+it is just a precondition for it to be possible.
+
 Algorithm related findings
 --------------------------
 
