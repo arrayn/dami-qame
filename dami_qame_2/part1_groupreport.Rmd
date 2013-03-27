@@ -46,6 +46,7 @@ Different members of the group found different things difficult. We were able to
 Research questions
 ------------------
 We sought answers to the following questions.
+
 * How does this data set compare to the previous one. Does it have the same
 kind of problems (e.g. duplicates) as the last set? What can we infer from the
 additional information?
@@ -174,7 +175,7 @@ Algorithm related findings
 
 
 ### Comparison of depth-first vs breadth-first
-Depth first counts supports from data to more itemsets but seems to runs faster anyway. We think that support-counting from TID-lists is just so much faster than from "horizontal" data. 
+From the plot below we can see that depth first counts supports from data to more itemsets but seems to runs faster anyway. We think that support-counting from TID-lists is just so much faster than from "horizontal" data. 
 
 We were also thinking that maybe depth-first search would benefit from ordering the items in increasing order of frequency. This is because the more right we are on the search tree the less supersets we have to check. And maybe the ordering would make the tree more right-weighted. 
 
