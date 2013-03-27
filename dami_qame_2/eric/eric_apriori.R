@@ -44,13 +44,16 @@ rule.generation <- function(freq.itemsets.and.counts, min.confidence=0.7) {
     return(rules.and.counts)
 }
 
-print.rule.set <- function(rules.and.counts, convert.name.func=identity) {
+# Global setting for print.rule.set functin
+convert.name.func <- GetNamesForItems
+
+print.rule.set <- function(rules.and.counts, convert.name=convert.name.func) {
     n <- length(rules.and.counts)
     lhs <- sapply(rules.and.counts, function(r) {
-        paste("{", paste(convert.name.func(r$lhs), collapse=", "), "}")
+        paste("{", paste(convert.name(r$lhs), collapse=", "), "}")
     })
     rhs <- sapply(rules.and.counts, function(r) {
-         paste("{", paste(convert.name.func(r$rhs), collapse=", "), "}")
+         paste("{", paste(convert.name(r$rhs), collapse=", "), "}")
     })
     confs <- sapply(rules.and.counts, function(r) r$confidence)
     df <- data.frame(lhs, rhs, confs)

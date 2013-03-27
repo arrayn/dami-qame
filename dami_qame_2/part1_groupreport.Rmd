@@ -2,24 +2,241 @@
 Data Mining Problem 2 - QAME Group Report
 =================================================
 
+Exploratory analysis
+--------------------
+```{r, echo=F}
+source("eric/occurrence_matrix.R")
+```
+
+### Skewness of support distribution
 ```{r}
-courses.tr <- read.transactions('courses_num.txt', rm.duplicates=TRUE)
-courses.mat <- as(courses.tr, "matrix")
-courses.tidlists <- as(courses.tr, "tidLists")
-courses.tidlists.aslist <- as(courses.tidlists, "list")
-sourceCpp('arto/arto_implementation.cpp')
-source('arto/arto_implementation.R')
+item.freqs <- unname(sort(itemFrequency(courses.tr)))
+names(item.freqs) <- 1:length(item.freqs)
+barplot(item.freqs, xlab="Items sorted by support", ylab="support",
+        main="Support distribution of items")
+```
+Above is plotted the support of each item in increasing order of support.
+Notice that the x-axis is not the TID but rather the rank of the item in the
+ordering.  Out of all `r length(item.freqs)` items, `r sum(item.freqs < 0.01)`
+have a support lower than 1%, `r sum(item.freqs > 0.10)` items have a support
+higher than 10%. Highest support is `r tail(item.freqs, n=1)`.
+
+### Missing course details
+Some item ids in `courses_num.txt` don't have an entry in the file
+`courses_details.txt`. This means that we don't have any name, year or other
+details about these courses. The following item ids have no course details:
+
+```{r}
+item.ids <- itemLabels(courses.tr)
+indices <- which(sapply(item.ids, function(x) is.null(GetNameForItem(x))))
+item.ids[indices]
+```
+So about `r length(item.ids[indices]) / length(item.ids)` of all items have no
+name associated with them.
+
+### Duplicate items
+While last week only a couple of transactions had duplicate items, this week
+more than half of the transactions have duplicate items.
+The following is a distribution of duplicates in transactions:
+
+```{r}
+lines <- readLines("courses_num.txt")
+lines.of.items <- lapply(lines, split.to.words)
+t <- table(sapply(lines.of.items, function(x) length(x) - length(unique(x))))
+t
+```
+
+So `r t["0"]` transactions have no (0) duplicates, `r t["1"]` transactions have
+one duplicate, `r t["2"]` have two duplicates and so on.
+
+An extreme case of this is transaction #846 which contains 158 duplicates. This
+may just be an data entry error. Alternatively, this could be an actual student
+who has a very unique approach to taking courses. E.g. he or she signs up for
+several courses during periods and attends only those that intrest him/her.
+
+```{r}
+ind <- which(lapply(lines.of.items, length) > 150)
+tr <- lines.of.items[[ind]]
+cat("Transaction / Line number", ind)
+print(tr)
+cat("Number of duplicates", length(tr) - length(unique(tr)))
+```
+
+### Number of students enrolled vs. years taught
+```{r}
+total.years <- sapply(years.held, function(years) {
+  max(years) - min(years) + 1
+})
+
+item.freqs <- itemFrequency(courses.tr, type="absolute")
+res <- total.years[names(item.freqs)]
+xs <- res[complete.cases(res)] # Note: NAs dropped
+
+ys <- item.freqs[names(xs)]
+
+names(xs) <- NULL
+names(ys) <- NULL
+plot(xs, ys, ylab="Number of students enrolled",
+     xlab="Total number of years held",
+     main="Scatterplot of courses")
 ```
 
 Algorithm related findings
 --------------------------
 
-Substance data findings
+```{r, echo=FALSE, results='hide'}
+# sourcing:
+# setwd("~/atlinks/dami-qame/dami_qame_2")
+source('init1.R')
+sourceCpp('arto/arto_implementation.cpp')
+source('arto/arto_implementation.R')
+
+# reading the data in:
+
+courses.tr.old <- read.transactions('../dami_qame_1/course-text.txt', rm.duplicates=TRUE)
+courses.tr <- read.transactions('courses_num.txt', rm.duplicates=TRUE)
+courses.tidlists <- as(courses.tr, "tidLists")
+courses.tidlists.aslist <- as(courses.tidlists, "list")
+ReadInData()
+lab <- convert.item.ids.to.names(itemLabels(courses.tr), item.id.to.course.name)
+
+# parameters:
+minsup <- 0.08 # 0.08 yields also non-closed frequent itemsets
+minconfidence <- 0.8 # default in library
+```
+
+
+Comparison of depth-first vs breadth-first
+-------------------------
+Depth first counts supports from data to more itemsets but seems to runs faster anyway. We think that support-counting from TID-lists is just so much faster than from "horizontal" data. 
+
+We were also thinking that maybe depth-first search would benefit from ordering the items in increasing order of frequency. This is because the more right we are on the search tree the less supersets we have to check. And maybe the ordering would make the tree more right-weighted. 
+
+```{r, echo=FALSE, fig.height=10}
+contrl <- list(verbose=FALSE)
+sups <- c(0.23, 0.15, 0.12, 0.08) # two for old data and two for new data
+n <- length(sups)
+tim  <- matrix(0, n, 4)
+colnames(tim) <- c("arules_eclat", "arules_apriori", "our_eclat", "our_apriori")
+counters  <- vector("list", n)
+for(i in 1:n){
+  minsup <- sups[i]
+  paraml <- list(support=minsup, minlen=1, maxlen=999, ext=FALSE)
+  if(i <= n/2){data.tr <- courses.tr.old} else{data.tr <- courses.tr}
+  ptm=proc.time(); temp <- eclat(data.tr, parameter=paraml, control=contrl) ;tim[i,1]=(proc.time()-ptm)[1]
+  ptm=proc.time(); temp <- apriori(data.tr, parameter=c(paraml, target="frequent"), control=contrl) ;tim[i,2]=(proc.time()-ptm)[1]
+  ptm=proc.time(); temp <- arto.eclat(data.tr, minsup=minsup) ;tim[i,3]=(proc.time()-ptm)[1]
+  counter.eclat.supports <- temp[[2]]
+  ptm=proc.time(); temp <- arto.apriori(data.tr, minsup=minsup, mink=1, maxk=999) ;tim[i,4]=(proc.time()-ptm)[1]
+  apriori.counts <- temp$counts
+  counts <- matrix(0, length(counter.eclat.supports), 4)
+  colnames(counts) <- c("eclat_support_counted", colnames(apriori.counts))
+  counts[, 1] <- counter.eclat.supports
+  counts[1:nrow(apriori.counts),2:4] <- apriori.counts
+  counts[counts==0] <- NA
+  counters[[i]] <- counts
+}
+
+par(mfcol=c(2,2), mar=c(4,2,2,0.5))
+for(i in 1:n){
+  titlestr <- if(i<=n/2){"Old Data-Set"} else{"New Data-Set"}
+  titlestr <- paste(titlestr," (support = ", sups[i], ")", sep="")
+  matplot(counters[[i]], pch=1:4, lwd=2, col=mycolors,type="b", log="y", xlab="k=size of itemset", ylab="count", main=titlestr)
+  grid(lty=2)
+  legend("bottomleft", pch=1:4, lwd=2, lty=1:4, col=mycolors, legend=colnames(counters[[i]]))
+}
+par(mfrow=c(1,1), mar=c(4,4,2,0.1))
+```
+
+```{r}
+barplot(tim, beside=TRUE, log="y", ylab="runtime (seconds)", main="Runnning times")
+```
+
+
+
+Number of non-closed itemsets and data density
 --------------------------
 
-Reproducible Research
-----------------------
-```{r, results='asis'}
-# report build command: # source('init1.R'); source('init2.R'); build.report(c(1));
-cat(c('```r', readLines('init1.R'), '```'), sep="\n")
+### Density difference between old and new data set visualization
+Old datasets density, 0.130863, is much bigger than the new dataset's density, 0.02010921. The visualizations below are samples from the beginning of data-matrix sorted in a such way that the most frequent courses are at the left and the students who took the most courses are at the top. 
+
+```{r, , echo=FALSE, fig.cap="old data matrix sample"}
+image(courses.tr.old[order(size(courses.tr.old), decreasing=T),order(itemFrequency(courses.tr.old), decreasing=T)][1:(nitems(courses.tr)/2)])
+```
+
+```{r, echo=FALSE, fig.cap="new data matrix sample"}
+image(courses.tr[order(size(courses.tr), decreasing=T),order(itemFrequency(courses.tr), decreasing=T)][1:(nitems(courses.tr)/2)])
+```
+
+### Frequent, closed and maximal itemsets and 1-rules
+In the new dataset we observe that almost all of the frequent itemsets are also closed itemsets. This is indicated by the fact that the "frequent"-line and "closed"-line are almost overlapping in the plot below. Threshold has to be set to 0.08 to get at least some non-closed frequent itemsets. Even setting the threshold to 0.04 does not yield many non-closed itemsets, as we can see from the plot below (note that in the plot the rules include only rules that have consequents of size 1). 
+
+The old dataset on comparison had much more non-closed itemsets as we can see from the plots. We thought that this could be related to the fact that old datasets density, 0.130863, is much bigger than the new dataset's density, 0.02010921. 
+
+```{r, fig.height=10, echo=FALSE}
+# , fig.cap="FCMR-plot: old data vs. new data"}
+par(mfrow=c(2,2))
+bm <- myget.allbm(courses.tr.old, 0.20, minconfidence)
+myplot.fcmr(bm, mycolors, " OLD-DATASET (support=0.20)")
+bm <- myget.allbm(courses.tr, 0.08, minconfidence)
+myplot.fcmr(bm, mycolors, " NEW-DATASET (support=0.08)")
+bm <- myget.allbm(courses.tr.old, 0.10, minconfidence)
+myplot.fcmr(bm, mycolors, "OLD-DATASET (support=0.10)")
+bm <- myget.allbm(courses.tr, 0.04, minconfidence)
+myplot.fcmr(bm, mycolors, "NEW-DATASET (support=0.04)")
+par(mfrow=c(1,1))
+```
+
+
+Interestingness measures comparison
+-----------------------------------
+
+
+### Frequent courses (support >= 0.08)
+These will be interesting to compare later how much of the most interesting rules are based on itemfrequency (or lack of it). 
+```{r, echo=FALSE}
+temp <- courses.tr
+itemLabels(temp) <- lab
+temp <- temp[, itemFrequency(temp) >= 0.08]
+itemFrequencyPlot(temp, topN=nitems(temp) ,cex.names=0.75)
+```
+
+
+### Non-closed frequent itemsets and rule-confidence=1 relation
+With support threshold=0.08 we get 6 itemsets that are not closed frequent. These itemsets are exactly the rule antecedents (left hand sides, LHS) of the only 1-consequent-rules that have confidence of 1 as we can see from output below. This means unioning these LHS with the rule consequent (right hand sides, RHS), item 80 (data_structures) in this case, we get itemsets whose supports are exactly the same as LHS alone. Therefore these LHS+RHS union itemsets are closed itemsets that close over their respective LHS-part (which are not closed themselves).
+
+Also, Items 131 (introduction_to_the_use_of_computers), 194 (data_structures_project) and 83 (introduction_to_programming) appear in all of those 6 itemsets. But a rule {131,194,83} => {80} has a confidence of 0.9973118. This means that the itemset {131,194,83} have slightly higher support than the combined itemset {131,194,83,80}. Also, by knowing that {131,194,83} is not a closed itemset, we could immediately say that all of it's supersets must have lower support than it.
+
+* Open question: WHY ARE THE LIFTS THE SAME?
+
+```{r}
+bm <- myget.allbm(courses.tr, 0.08, minconfidence)
+as(setdiff(bm$fisets, bm$closed), "data.frame")
+as(head(sort(bm$rules, by="confidence"), n=30), "data.frame")
+inspect(head(mynamify(sort(bm$rules, by="confidence"), lab), n=1))
+```
+
+
+### Top ranked by allconfidence vs lift
+Definition: "allConfidence (see, Omiencinski, 2003) is defined on itemsets as the minimum confidence of all possible rule generated from the itemset." [arules vignette]. In other words, these items tend to appear together. Lift is P(R|L)/P(R). These two seem to give quite similar intuition, at least in this run.
+
+```{r,echo=FALSE}
+fisets <- bm$fisets
+temp <- interestMeasure(fisets, c("allConfidence"), courses.tr)
+quality(fisets) <- cbind(quality(fisets), allConfidence=temp)
+temp <- items(fisets); itemLabels(temp) <- lab; items(fisets) <- temp
+q <- quality(fisets)
+ex <- q[, "allConfidence"] == 1
+ord <- order(q[!ex, "allConfidence"], decreasing=TRUE)
+top.allConfidence  <- head(fisets[!ex,][ord])
+# inspect(head(sort(fisets, by="allConfidence"), n=35))
+# as(topim$allConfidence, "data.frame")
+
+topim <- list()
+topim$lift  <- head(sort(bm$rules, by="lift"), n=8)
+```
+
+```{r}
+inspect(top.allConfidence)
+inspect(mynamify(head(sort(bm$rules, by="lift"), n=8), lab))
 ```

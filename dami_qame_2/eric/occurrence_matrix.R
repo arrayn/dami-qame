@@ -1,3 +1,7 @@
+arules.tr.to.occurrence.matrix <- function(courses.tr) {
+    as(courses.tr, "matrix")
+}
+
 read.occurrence.matrix <- function(filename) {
     occurrence.matrix(readLines(filename))
 }
