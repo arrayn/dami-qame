@@ -8,6 +8,19 @@ Eric's "staging for groupreport"-file
 Exploratory analysis
 --------------------
 
+### Skewness of support distribution
+```{r}
+item.freqs <- unname(sort(itemFrequency(courses.tr)))
+names(item.freqs) <- 1:length(item.freqs)
+barplot(item.freqs, xlab="Items sorted by support", ylab="support",
+        main="Support distribution of items")
+```
+Above is plotted the support of each item in increasing order of support.
+Notice that the x-axis is not the TID but rather the rank of the item in the
+ordering.  Out of all `r length(item.freqs)` items, `r sum(item.freqs < 0.01)`
+have a support lower than 1%, `r sum(item.freqs > 0.10)` items have a support
+higher than 10%. Highest support is `r tail(item.freqs, n=1)`.
+
 ### Missing course details
 Some item ids in `courses_num.txt` don't have an entry in the file
 `courses_details.txt`. This means that we don't have any name, year or other
