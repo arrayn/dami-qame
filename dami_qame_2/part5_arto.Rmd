@@ -23,14 +23,25 @@ minsup <- 0.08 # 0.08 yields also non-closed frequent itemsets
 minconfidence <- 0.8 # default in library
 ```
 
-Algorithm related findings
+Number of non-closed itemsets and data density
 --------------------------
 
+### Density difference between old and new data set visualization
+Old datasets density, 0.130863, is much bigger than the new dataset's density, 0.02010921. The visualizations below are samples from the beginning of data-matrix sorted in a such way that the most frequent courses are at the left and the students who took the most courses are at the top. 
+
+```{r, , echo=FALSE, fig.cap="old data matrix sample"}
+image(courses.tr.old[order(size(courses.tr.old), decreasing=T),order(itemFrequency(courses.tr.old), decreasing=T)][1:(nitems(courses.tr)/2)])
+```
+
+```{r, echo=FALSE, fig.cap="new data matrix sample"}
+image(courses.tr[order(size(courses.tr), decreasing=T),order(itemFrequency(courses.tr), decreasing=T)][1:(nitems(courses.tr)/2)])
+```
+
 ### Frequent, closed and maximal itemsets and 1-rules
-In the new dataset we observe that almost all of the frequent itemsets are also closed itemsets. Threshold has to be set to 0.08 to get at least some non-closed frequent itemsets. Even setting the threshold to 0.04 does not yield many non-closed itemsets, as we can see from the plot below (note that in the plot the rules include only rules that have consequents of size 1). 
+In the new dataset we observe that almost all of the frequent itemsets are also closed itemsets. This is indicated by the fact that the "frequent"-line and "closed"-line are almost overlapping in the plot below. Threshold has to be set to 0.08 to get at least some non-closed frequent itemsets. Even setting the threshold to 0.04 does not yield many non-closed itemsets, as we can see from the plot below (note that in the plot the rules include only rules that have consequents of size 1). 
 
 The old dataset on comparison had much more non-closed itemsets as we can see from the plots. We thought that this could be related to the fact that old datasets density, 0.130863, is much bigger than the new dataset's density, 0.02010921. 
-```{r, fig.height=12, echo=FALSE}
+```{r, fig.height=12, echo=FALSE, fig.cap="FCMR-plot: old data vs. new data"}
 par(mfrow=c(2,2))
 bm <- myget.allbm(courses.tr.old, 0.20, minconfidence)
 myplot.fcmr(bm, mycolors, " OLD-DATASET (support=0.20)")
@@ -44,15 +55,17 @@ par(mfrow=c(1,1))
 ```
 
 
-Substance data findings
---------------------------
+Interestingness measures comparison
+-----------------------------------
 
-### Most frequent courses
+
+### Frequent courses (support >= 0.08)
 These will be interesting to compare later how much of the most interesting rules are based on itemfrequency (or lack of it). 
 ```{r, echo=FALSE}
 temp <- courses.tr
 itemLabels(temp) <- lab
-itemFrequencyPlot(temp, topN=20, cex.names=0.75)
+temp <- temp[, itemFrequency(temp) >= 0.08]
+itemFrequencyPlot(temp, topN=nitems(temp) ,cex.names=0.75)
 ```
 
 
@@ -60,20 +73,21 @@ itemFrequencyPlot(temp, topN=20, cex.names=0.75)
 With support threshold=0.08 we get 6 itemsets that are not closed frequent. These itemsets are exactly the rule antecedents (left hand sides, LHS) of the only 1-consequent-rules that have confidence of 1 as we can see from output below. This means unioning these LHS with the rule consequent (right hand sides, RHS), item 80 (data_structures) in this case, we get itemsets whose supports are exactly the same as LHS alone. Therefore these LHS+RHS union itemsets are closed itemsets that close over their respective LHS-part (which are not closed themselves).
 
 Also, Items 131 (introduction_to_the_use_of_computers), 194 (data_structures_project) and 83 (introduction_to_programming) appear in all of those 6 itemsets. But a rule {131,194,83} => {80} has a confidence of 0.9973118. This means that the itemset {131,194,83} have slightly higher support than the combined itemset {131,194,83,80}. Also, by knowing that {131,194,83} is not a closed itemset, we could immediately say that all of it's supersets must have lower support than it.
+
+* Open question: WHY ARE THE LIFTS THE SAME?
+
 ```{r}
 bm <- myget.allbm(courses.tr, 0.08, minconfidence)
-inspect(head(mynamify(sort(bm$rules, by="confidence"), lab), n=1))
 as(setdiff(bm$fisets, bm$closed), "data.frame")
 as(head(sort(bm$rules, by="confidence"), n=30), "data.frame")
+inspect(head(mynamify(sort(bm$rules, by="confidence"), lab), n=1))
 ```
 
 
-### Interestigness measures for itemsets comparison
-```{r}
+### Top ranked by allconfidence vs lift
+Definition: "allConfidence (see, Omiencinski, 2003) is defined on itemsets as the minimum confidence of all possible rule generated from the itemset." [arules vignette]. In other words, these items tend to appear together. Lift is P(R|L)/P(R). These two seem to give quite similar intuition, at least in this run.
 
-
-# "allConfidence" (see, Omiencinski, 2003) is defined on itemsets as the minimum confidence of all possible rule generated from the itemset. [arules vignette]
-
+```{r,echo=FALSE}
 fisets <- bm$fisets
 temp <- interestMeasure(fisets, c("allConfidence"), courses.tr)
 quality(fisets) <- cbind(quality(fisets), allConfidence=temp)
@@ -84,25 +98,20 @@ ord <- order(q[!ex, "allConfidence"], decreasing=TRUE)
 top.allConfidence  <- head(fisets[!ex,][ord])
 # inspect(head(sort(fisets, by="allConfidence"), n=35))
 # as(topim$allConfidence, "data.frame")
-inspect(top.allConfidence)
-
-# are these two somehow related?
 
 topim <- list()
 topim$lift  <- head(sort(bm$rules, by="lift"), n=8)
-as(mynamify(topim$lift, lab), "data.frame")
 ```
 
-
-### Big Matrix View of the whole dataset (scroll down)
-```{r, bigmatrix, fig.height=180}
-image(courses.tr[order(size(courses.tr), decreasing=T),order(itemFrequency(courses.tr), decreasing=T)])
+```{r}
+inspect(top.allConfidence)
+inspect(mynamify(head(sort(bm$rules, by="lift"), n=8), lab))
 ```
 
 
 Reproducible Research
 ----------------------
 ```{r, results='asis'}
-# report build command: # source('init1.R'); source('init2.R'); build.report(c(5));
+# report build command: # source('init1.R'); source('init2.R'); build.report(c(5), do.pdf=TRUE, toc=TRUE);
 cat(c('```r', readLines('init1.R'), '```'), sep="\n")
 ```
