@@ -1,0 +1,57 @@
+% !Rnw root = ../reports/dami_qame_2_sweaved.Rnw
+\subsection{Number of non-closed itemsets and data density}
+
+\subsubsection{Density difference between old and new data set visualization}
+\begin{multicols}{2}
+
+Density of the old dataset, 0.1308, is more than 6 times higher than the density of the new dataset, 0.0201. The visualizations in \autoref{fig:density_viz_old} and \autoref{fig:density_viz_new} are samples from the beginning of each data-matrix sorted in a such way that the most frequent courses are at the left and the students who took the most courses are at the top. 
+
+\begin{figure}[H]
+\centering
+<<density_viz_old, fig=TRUE>>=
+image(courses.tr.old[order(size(courses.tr.old), decreasing=T),order(itemFrequency(courses.tr.old), decreasing=T)][1:(nitems(courses.tr)/2)])
+@
+\caption{Old dataset density visualization}
+\label{fig:density_viz_old}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+<<density_viz_new, fig=TRUE>>=
+image(courses.tr[order(size(courses.tr), decreasing=T),order(itemFrequency(courses.tr), decreasing=T)][1:(nitems(courses.tr)/2)])
+@
+\caption{New dataset density visualization}
+\label{fig:density_viz_new}
+\end{figure}
+
+\end{multicols}
+
+\subsubsection{Frequent, closed and maximal itemsets and 1-rules}
+\begin{multicols}{2}
+
+In the new dataset we observe that almost all of the frequent itemsets are also closed itemsets. This is indicated by the fact that the "frequent"-line and "closed"-line are almost overlapping in \autoref{fig:fcmr_plot}. Support threshold has to be set to 0.08 to get at least some non-closed frequent itemsets. Even setting the threshold to 0.04 does not yield many non-closed itemsets. 
+
+The old dataset on comparison had much more non-closed itemsets as we can see from the plots. We think that this could be related to the different densities mentioned earlier.
+
+\end{multicols}
+
+\begin{figure}[H]
+\centering
+<<fcmr_plot, fig=TRUE, width=10, height=8>>=
+# sourceCpp("../arto/arto_implementation.cpp")
+source("../arto/arto_implementation.R")
+par(mfrow=c(2,2))
+bm <- myget.allbm(courses.tr.old, 0.20, minconfidence)
+myplot.fcmr(bm, mycolors, " OLD-DATASET (support=0.20)")
+bm <- myget.allbm(courses.tr, 0.08, minconfidence)
+myplot.fcmr(bm, mycolors, " NEW-DATASET (support=0.08)")
+bm <- myget.allbm(courses.tr.old, 0.10, minconfidence)
+myplot.fcmr(bm, mycolors, "OLD-DATASET (support=0.10)")
+bm <- myget.allbm(courses.tr, 0.04, minconfidence)
+myplot.fcmr(bm, mycolors, "NEW-DATASET (support=0.04)")
+par(mfrow=c(1,1))
+@
+\caption{Frequent, closed and maximal itemsets and 1-rules}
+\label{fig:fcmr_plot}{\scriptsize the rules include only rules that have consequents of size 1 \par }
+\end{figure}
+

@@ -1,0 +1,59 @@
+% !Rnw root = ../reports/dami_qame_2_sweaved.Rnw
+\subsection{Interestingness measures comparison}
+
+
+\subsubsection{Non-closed frequent itemsets and rule-confidence=1 relation}
+\begin{multicols}{2}
+
+With support threshold=0.08 we get 6 itemsets that are not closed frequent, see \autoref{tab:non_closed_fisets}. These itemsets are exactly the rule antecedents (left hand sides, LHS) of the only 1-consequent-rules that have confidence of 1 as we can see from \autoref{tab:top_confidence}. This means unioning these LHS with the rule consequent (right hand sides, RHS), item 80 (data structures) in this case, we get itemsets whose supports are exactly the same as LHS alone. Therefore these LHS+RHS union itemsets are closed itemsets that close over their respective LHS-part (which are not closed themselves).
+
+Also, Items 131 (introduction to the use of computers), 194 (data structures project) and 83 (introduction to programming) appear in all of those 6 itemsets. But a rule having only them on the LHS, \{131,194,83\} => \{80\}, has a confidence of only 0.9973. This means that the itemset \{131,194,83\} have slightly higher support than the combined itemset \{131,194,83,80\}. Also, by knowing that \{131,194,83\} is not a closed itemset, we could immediately say that all of it's supersets must have lower support than it.
+
+Another interesting question is why are the lifts the same. We left this as an open question. 
+
+<<non:closed_fisets>>=
+source("../arto/arto_implementation.R")
+bm <- myget.allbm(courses.tr, 0.08, minconfidence)
+xtable(as(setdiff(bm$fisets, bm$closed), "data.frame"), "Non closed frequent itemsets", "tab:non_closed_fisets", digits=4)
+@
+
+\end{multicols}
+
+<<top_confidence>>=
+xtable(as(head(sort(bm$rules, by="confidence"), n=15), "data.frame"),  "Top confidence rules", "tab:top_confidence", digits=4)
+@
+
+Here is the the \{131,193,194,77,83,86\} => \{80\} rule with course names: 
+<<rule_name_sample, results=verbatim>>=
+inspect(head(mynamify(sort(bm$rules, by="confidence"), lab), n=1))
+@
+
+
+\subsubsection{Top ranked by allconfidence vs lift}
+\begin{multicols}{2}
+Definition: "allConfidence (see, Omiencinski, 2003) is defined on itemsets as the minimum confidence of all possible rule generated from the itemset." [arules vignette]. In other words, these items tend to appear together. Lift is $P(RHS|LHS)/P(RHS)$. These two measures seem to give quite similar intuition as we can see from outputs below. The involved courses seem to form some clique-like collection. They all tend to appear together.
+
+\end{multicols}
+
+These are the top frequent itemsets based on allconfidence:
+<<byallconfidence, results=verbatim>>=
+fisets <- bm$fisets
+temp <- interestMeasure(fisets, c("allConfidence"), courses.tr)
+quality(fisets) <- cbind(quality(fisets), allConfidence=temp)
+temp <- items(fisets); itemLabels(temp) <- lab; items(fisets) <- temp
+q <- quality(fisets)
+ex <- q[, "allConfidence"] == 1
+ord <- order(q[!ex, "allConfidence"], decreasing=TRUE)
+top.allConfidence  <- head(fisets[!ex,][ord])
+# inspect(head(sort(fisets, by="allConfidence"), n=35))
+# as(topim$allConfidence, "data.frame")
+
+topim <- list()
+topim$lift  <- head(sort(bm$rules, by="lift"), n=8)
+inspect(top.allConfidence)
+@
+
+These are the top rules based on lift (interest factor):
+<<bylift, results=verbatim>>=
+inspect(mynamify(head(sort(bm$rules, by="lift"), n=8), lab))
+@

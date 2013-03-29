@@ -1,0 +1,35 @@
+% !Rnw root = ../reports/dami_qame_2_sweaved.Rnw
+
+\subsection{Duplicate items}
+\begin{multicols}{2}
+
+While last week only a couple of transactions had duplicate items, this week
+more than half of the transactions have duplicate items.
+The following is a distribution of duplicates in transactions:
+
+<<duplicate_items, results=verbatim>>=
+source("../eric/occurrence_matrix.R")
+lines <- readLines("../courses_num.txt")
+lines.of.items <- lapply(lines, split.to.words)
+t <- table(sapply(lines.of.items, function(x) length(x) - length(unique(x))))
+t
+@
+
+So \Sexpr{t["0"]} transactions have no (0) duplicates, \Sexpr{t["1"]} transactions have
+one duplicate, \Sexpr{t["2"]} have two duplicates and so on.
+
+An extreme case of this is transaction #846 which contains 158 duplicates. This
+may just be an data entry error. Alternatively, this could be an actual student
+who has a very unique approach to taking courses. E.g. he or she signs up for
+several courses during periods and attends only those that interest him/her.
+Below is the full list of courses this student enrolled to.
+
+<<duplicate_king, results=verbatim>>=
+ind <- which(lapply(lines.of.items, length) > 150)
+tr <- lines.of.items[[ind]]
+cat("Transaction / Line number", ind)
+print(tr)
+cat("Number of duplicates", length(tr) - length(unique(tr)))
+@
+
+\end{multicols}

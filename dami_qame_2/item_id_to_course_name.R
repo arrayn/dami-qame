@@ -2,7 +2,9 @@ item.id.to.course.name <- list()
 years.held <- list()
 
 ReadInData <- function() {
-    for (line in readLines("courses_details.txt")) {
+  temp.path <- if(file.exists("courses_details.txt")){
+    "courses_details.txt"}else{"../courses_details.txt"}
+    for (line in readLines(temp.path)) {
         parts <- strsplit(line, split="\t")[[1]]
         course.id <- parts[1]
         course.name <- parts[2]

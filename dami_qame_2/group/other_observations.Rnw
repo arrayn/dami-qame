@@ -1,0 +1,8 @@
+% !Rnw root = ../reports/dami_qame_2_sweaved.Rnw
+
+\subsection{Other observations}
+\begin{multicols}{2}
+
+For most of the experiments with Apriori and Eclat we used a support threshold of 0.08 because that yielded at least some non-closed itemsets which could be analyzed further.  However setting the threshold this low, especially with this dataset, caused us some challenges with performance. We wrote more about that in our individual reports.
+
+\end{multicols}

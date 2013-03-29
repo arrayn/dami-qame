@@ -8,3 +8,14 @@
 dami_qame_*.html
 dami_qame_*.Rmd
 dami_qame_*.md
+dami_qame_*.pdf
+
+# Generated report files (Note! Remember to add any new .Rnw file in reports dir!)
+**/reports/figure/
+**/reports/*.tex
+**/reports/*.pdf
+**/reports/*.log
+**/reports/*.lof
+**/reports/*.lot
+**/reports/*.toc
+

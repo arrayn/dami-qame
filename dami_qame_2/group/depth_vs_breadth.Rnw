@@ -1,0 +1,73 @@
+% !Rnw root = ../reports/dami_qame_2_sweaved.Rnw
+\subsection{Comparison of depth-first vs breadth-first}
+\begin{multicols}{2}
+
+<<depth_vs_breadth_computation>>=
+sourceCpp("../arto/arto_implementation.cpp")
+source("../arto/arto_implementation.R")
+
+contrl <- list(verbose=FALSE)
+sups <- c(0.23, 0.15, 0.12, 0.08) # two for old data and two for new data
+n <- length(sups)
+tim  <- matrix(0, n, 4)
+colnames(tim) <- c("arules_eclat", "arules_apriori", "our_eclat", "our_apriori")
+rownames(tim) <- c("old023", "old015", "new012", "new008")
+counters  <- vector("list", n)
+for(i in 1:n){
+  minsup <- sups[i]
+  paraml <- list(support=minsup, minlen=1, maxlen=999, ext=FALSE)
+  if(i <= n/2){data.tr <- courses.tr.old} else{data.tr <- courses.tr}
+  ptm=proc.time(); temp <- eclat(data.tr, parameter=paraml, control=contrl) ;tim[i,1]=(proc.time()-ptm)[1]
+  ptm=proc.time(); temp <- apriori(data.tr, parameter=c(paraml, target="frequent"), control=contrl) ;tim[i,2]=(proc.time()-ptm)[1]
+  ptm=proc.time(); temp <- arto.eclat(data.tr, minsup=minsup) ;tim[i,3]=(proc.time()-ptm)[1]
+  counter.eclat.supports <- temp[[2]]
+  ptm=proc.time(); temp <- arto.apriori(data.tr, minsup=minsup, mink=1, maxk=999) ;tim[i,4]=(proc.time()-ptm)[1]
+  apriori.counts <- temp$counts
+  counts <- matrix(0, length(counter.eclat.supports), 4)
+  colnames(counts) <- c("eclat_support_counted", colnames(apriori.counts))
+  counts[, 1] <- counter.eclat.supports
+  counts[1:nrow(apriori.counts),2:4] <- apriori.counts
+  counts[counts==0] <- NA
+  counters[[i]] <- counts
+}
+@
+
+We ran tests on frequent itemsets mining using depth-first (Apriori) and breadth-first (Eclat) algorithms. From \autoref{fig:depth_vs_breadth} we can see that depth first counts supports from data for more itemsets than breadth-first. However, from \autoref{fig:runtimes} and \autoref{tab:runtimes} we can see that depth-first runs faster than breadth-first. 
+
+We suspect that support-counting from TID-lists is so much faster than from "horizontal" data that it casues this phenomenon of depth-first being faster. We also suspect that there are downsides to depth-first, e.g. the required data has to fit into memory. And this why one could want to use breadth-first even it seems to be slower on these tests. 
+
+We were also thinking that maybe depth-first search would benefit from ordering the items in increasing order of frequency. This is because the more right we are on the search tree the less supersets we have to check. And maybe the ordering would make the tree more right-weighted. The library implementation might do this step or something else, because it seems to perform worst comparatively when all runtimes are fast. So it has some big upfront cost.
+
+\begin{figure}[H]
+\centering
+<<runtimes, fig=TRUE>>=
+barplot(tim, beside=TRUE, log="y", ylab="runtime (seconds)", main="Runnning times", cex.names=0.85)
+@
+\caption{Running times}{\scriptsize For each
+of the four cases, the first two bars corresponds to support thresholds of 0.23
+and 0.15 on last week's data, while the last two bars corresponds to
+thresholds 0.12 and 0.08 on this week's data. \par }
+\label{fig:runtimes}
+\end{figure}
+
+<<depth_vs_breadth_table>>=
+print(xtable(tim, "Running times", "tab:runtimes", digits=4), scalebox=0.7)
+@
+
+
+\end{multicols}
+\begin{figure}[H]
+\centering
+<<depth_vs_breadth, fig=TRUE, width=10, height=8>>=
+par(mfcol=c(2,2), mar=c(4,2,2,0.5))
+for(i in 1:n){
+  titlestr <- if(i<=n/2){"Old Data-Set"} else{"New Data-Set"}
+  titlestr <- paste(titlestr," (support = ", sups[i], ")", sep="")
+  matplot(counters[[i]], pch=1:4, lwd=2, col=mycolors,type="b", log="y", xlab="k=size of itemset", ylab="count", main=titlestr)
+  grid(lty=2)
+  legend("bottomleft", pch=1:4, lwd=2, lty=1:4, col=mycolors, legend=colnames(counters[[i]]))
+}
+@
+\caption{Depthfirst and breadthfirst on old and new datasets}
+\label{fig:depth_vs_breadth}
+\end{figure}

@@ -1,0 +1,18 @@
+% !Rnw root = ../reports/dami_qame_2_sweaved.Rnw
+
+\subsection{Missing course details}
+\begin{multicols}{2}
+
+Some item ids in \texttt{courses\_num.txt} don't have an entry in the file
+\texttt{courses\_details.txt}. This means that we don't have any name, year or other
+details about these courses. The following item ids have no course details:
+
+<<missing_course_details, results=verbatim>>=
+item.ids <- itemLabels(courses.tr)
+indices <- which(sapply(item.ids, function(x) is.null(GetNameForItem(x))))
+item.ids[indices]
+@
+
+So about \Sexpr{round(length(item.ids[indices]) / length(item.ids),4)} of all items have no name associated with them.
+
+\end{multicols}

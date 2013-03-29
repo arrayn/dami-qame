@@ -1,0 +1,46 @@
+% !Rnw root = ../reports/dami_qame_2_sweaved.Rnw
+
+\subsection{Skewness of support distribution and most frequent courses}
+\begin{multicols}{2}
+
+<<support_skewness_pre>>=
+item.freqs <- unname(sort(itemFrequency(courses.tr)))
+names(item.freqs) <- 1:length(item.freqs)
+@
+
+In \autoref{fig:support_skewness} is plotted the support of each item in increasing order of support.
+Notice that the x-axis is not the TID but rather the rank of the item in the
+ordering.  Out of all \Sexpr{length(item.freqs)} items, \Sexpr{sum(item.freqs < 0.01)}
+have a support lower than 1\%, \Sexpr{sum(item.freqs > 0.10)} items have a support
+higher than 10\%. Highest support is \Sexpr{round(tail(item.freqs, n=1),4)}.
+
+Whether this skewness is a problem or not is hard to say without experience.
+Visually this seems very worrying, but on the other hand the example given in
+the book (p. 386) is much worse.
+
+A more focused view of the courses that have at least a support of 0.08, \Sexpr{sum(item.freqs >= 0.08)} in total, is in \autoref{fig:most_frequent_courses}.
+
+\begin{figure}[H]
+\centering
+<<support_skewness, fig=TRUE>>=
+barplot(item.freqs, xlab="Items sorted by support", ylab="support",
+        main="Support distribution of items")
+@
+\caption{Support distribution of items}
+\label{fig:support_skewness}
+\end{figure}
+
+\end{multicols}
+
+\begin{figure}[H]
+\centering
+<<most_frequent_courses, fig=TRUE, width=10, height=6>>=
+temp <- courses.tr
+itemLabels(temp) <- lab
+temp <- temp[, itemFrequency(temp) >= 0.08]
+par(mar=c(5,8,2,0.1))
+itemFrequencyPlot(temp, topN=nitems(temp) ,cex.names=0.9)
+@
+\caption{Most frequent courses}
+\label{fig:most_frequent_courses}
+\end{figure}

@@ -163,6 +163,6 @@ inspect(mynamify(head(sort(bm$rules, by="lift"), n=8), lab))
 Reproducible Research
 ----------------------
 ```{r, results='asis'}
-# report build command: # source('init1.R'); source('init2.R'); build.report(c(5,6,7,8), do.pdf=TRUE, toc=TRUE);
+# report build command: # setwd("~/atlinks/dami-qame/dami_qame_2"); source('init1.R'); source('init2.R'); build.report(c(1), do.pdf=FALSE, toc=TRUE);
 cat(c('```r', readLines('init1.R'), '```'), sep="\n")
 ```

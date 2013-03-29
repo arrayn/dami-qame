@@ -1,0 +1,26 @@
+% !Rnw root = ../report/test.Rnw
+
+\section{Analysis}
+This is the analysis.
+
+<<xtable1>>=
+xtable(matrix(rnorm(25),5,5), "xtablecap", "tab:xtable1", digits=4)
+@
+
+<<cpptest, results=verbatim>>=
+# sourceCpp("../src/arto_implementation.cpp")
+# artoCppAprioriGen(list(c(1,2,3),c(1,2,4)))
+# basename(getwd())
+@
+
+
+This text should be after the \autoref{tab:xtable1} and before the \autoref{fig:mytest2}.
+
+\begin{figure}[H]
+\centering
+<<myplottest2, fig=TRUE, height=1.5 >>=
+hist(rnorm(100))
+@
+\caption{myplotcap_child}
+\label{fig:mytest2}
+\end{figure}
