@@ -1,4 +1,4 @@
-% !Rnw root = ../reports/dami_qame_2_sweaved.Rnw
+% !Rnw root = ../reports/dami_qame_3.Rnw
 
 <<initdata, results=hide>>=
 # sourcing:
@@ -7,7 +7,7 @@
 library('arules')
 library("Rcpp")
 Sys.setenv("PKG_CXXFLAGS"="-std=c++11")
-source('../item_id_to_course_name.R')
+# source('../../dami_qame_2/item_id_to_course_name.R')
 
 # reading the data in:
 
@@ -15,8 +15,8 @@ courses.tr.old <- read.transactions('../../dami_qame_1/course-text.txt', rm.dupl
 courses.tr <- read.transactions('../../dami_qame_2/courses_num.txt', rm.duplicates=TRUE)
 courses.tidlists <- as(courses.tr, "tidLists")
 courses.tidlists.aslist <- as(courses.tidlists, "list")
-ReadInData()
-lab <- convert.item.ids.to.names(itemLabels(courses.tr), item.id.to.course.name)
+# ReadInData()
+# lab <- convert.item.ids.to.names(itemLabels(courses.tr), item.id.to.course.name)
 
 # parameters:
 minsup <- 0.08 # 0.08 yields also non-closed frequent itemsets

@@ -1,0 +1,44 @@
+% !Rnw root = ../reports/dami_qame_3.Rnw
+
+\begin{multicols}{2}
+\initial{T}\textbf{his is the abstract. The first thing blah blah blah. See url link: \url{https://github.com/arrayn/dami-qame/}. And followed ny table of contents, list of figures and list of tables.}
+\end{multicols}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\section{A few useful templates}
+\subsection{Bullet points}
+\begin{multicols}{2}
+\begin{itemize}
+\item Item 1
+\item Item 2
+\end{itemize}
+\end{multicols}
+
+\subsection{Tables}
+\begin{multicols}{2}
+I am autoreferencing to the \autoref{tab:runtimes}.
+<<depth_vs_breadth_table>>=
+print(xtable(diag(4), "Running times", "tab:runtimes", digits=4), scalebox=0.7)
+@
+\end{multicols}
+
+\subsection{Figures (plots)}
+\begin{multicols}{2}
+I am autoreferencing to the \autoref{fig:runtimes}.
+
+\begin{figure}[H]
+\centering
+<<runtimes, fig=TRUE>>=
+barplot(diag(4)+1, beside=TRUE, log="y", ylab="runtime (seconds)", main="Running times", cex.names=0.85)
+@
+\caption{Running times}{\scriptsize For each
+of the four cases, the first two bars corresponds to support thresholds of 0.23
+and 0.15 on last week's data, while the last two bars corresponds to
+thresholds 0.12 and 0.08 on this week's data. \par }
+\label{fig:runtimes}
+\end{figure}
+
+\end{multicols}
