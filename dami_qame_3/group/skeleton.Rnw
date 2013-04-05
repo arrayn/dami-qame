@@ -1,4 +1,4 @@
-% !Rnw root = ../reports/dami_qame_3.Rnw
+% !Rnw root = ../reports/report_rename_me.Rnw
 
 \begin{multicols}{2}
 \initial{T}\textbf{his is the abstract. The first thing blah blah blah. See url link: \url{https://github.com/arrayn/dami-qame/}. And followed ny table of contents, list of figures and list of tables.}

@@ -100,8 +100,8 @@ University of Helsinki % Your institution
 \DefineVerbatimEnvironment{Sinput}{Verbatim}{fontsize=\scriptsize, fontshape=n}
 \DefineVerbatimEnvironment{Soutput}{Verbatim}{fontsize=\scriptsize, fontshape=n}
 \setkeys{Gin}{width=1.00\linewidth}
-<<myinit, echo=FALSE>>=
-source("../mysweave.R")
+<<mysweave_init, echo=FALSE>>=
+source("mysweave.R")
 @
 %
 %
@@ -120,5 +120,6 @@ source("../mysweave.R")
 % \SweaveInput{../group/intro.Rnw}
 \SweaveInput{../group/init.Rnw}
 \SweaveInput{../group/skeleton.Rnw}
+\SweaveInput{../group/example1_report.Rnw}
 
 \end{document}

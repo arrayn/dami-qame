@@ -1,0 +1,29 @@
+% !Rnw root = ../reports/dami_qame_3.Rnw
+
+<<example1_comput>>=
+source("../group/example1_comput.R")
+@
+
+\subsection{Example 1 report subsection}
+
+\begin{multicols}{2}
+Here is some more elaborate analysis of this stuff in example1. We are also referring to the plot via autoref, like this: As we can see in \autoref{fig:example1}
+\end{multicols}
+
+\begin{figure}[H]
+\begin{multicols}{2}
+
+<<example1_fig1, fig=TRUE, echo=FALSE, width=4, height=4>>=
+example1$plotme1()
+@
+
+<<example1_fig2, fig=TRUE, echo=FALSE, width=4, height=4>>=
+example1$plotme2()
+@
+
+\end{multicols}
+\caption{example1 figure}{\scriptsize This is additional explanation of the plot. \par}
+\label{fig:example1}
+\end{figure}
+
+Some final remarks.

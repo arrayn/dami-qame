@@ -1,0 +1,28 @@
+% !Rnw root = ../reports/dami_qame_3_slides.Rnw
+
+<<example1_comput>>=
+source("../group/example1_comput.R")
+@
+
+\begin{frame}
+\frametitle{Example 1 slide}
+
+\begin{itemize}
+\item check this out:
+\end{itemize}
+
+\begin{figure}[h]
+\begin{multicols}{2}
+
+<<example1_fig1, fig=TRUE, echo=FALSE, width=4, height=4>>=
+example1$plotme1()
+@
+
+<<example1_fig2, fig=TRUE, echo=FALSE, width=4, height=4>>=
+example1$plotme2()
+@
+
+\end{multicols}
+\end{figure}
+
+\end{frame}
