@@ -90,8 +90,7 @@
 {
 University of Helsinki \\ % Your institution for the title page
 \medskip
-% \textit{john@smith.com} % Your email address
-\textit{Arto Nissinen, Eric Andrews, Mirva Toivonen, Quan Nguyen}
+\textit{Arto Nissinen, Eric Andrews, Mirva Toivonen, Quan Nguyen} % Your email address
 }
 \date{\today} % Date, can be changed to a custom date
 
@@ -131,8 +130,7 @@ source("mysweave.R")
 %	PRESENTATION SLIDES
 %----------------------------------------------------------------------------------------
 
-\SweaveInput{../group/skeleton_slides}
 \section{Example section}
-\SweaveInput{../group/example1_slides}
+\SweaveInput{../child_docs/example1_slides}
 
 \end{document} 

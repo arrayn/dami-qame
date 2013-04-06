@@ -1,4 +1,37 @@
-% !Rnw root = ../reports/report_rename_me.Rnw
+% !Rnw root = ../reports/report.Rnw
+
+<<example1_comput>>=
+source("../child_docs/example1_comput.R")
+@
+
+\subsection{Example 1 report subsection}
+
+\begin{multicols}{2}
+Here is some more elaborate analysis of this stuff in example1. We are also referring to the plot via autoref, like this: As we can see in \autoref{fig:example1}
+\end{multicols}
+
+\begin{figure}[H]
+\centering
+\begin{multicols}{2}
+
+<<example1_fig1, fig=TRUE, echo=FALSE, width=4, height=4>>=
+example1$plotme1()
+@
+
+<<example1_fig2, fig=TRUE, echo=FALSE, width=4, height=4>>=
+example1$plotme2()
+@
+
+\end{multicols}
+\caption{example1 figure}{\scriptsize This is additional explanation of the plot. \par}
+\label{fig:example1}
+\end{figure}
+
+Some final remarks.
+
+%
+% SKELETON STUFF
+%
 
 \begin{multicols}{2}
 \initial{T}\textbf{his is the abstract. The first thing blah blah blah. See url link: \url{https://github.com/arrayn/dami-qame/}. And followed ny table of contents, list of figures and list of tables.}
@@ -42,3 +75,4 @@ thresholds 0.12 and 0.08 on this week's data. \par }
 \end{figure}
 
 \end{multicols}
+

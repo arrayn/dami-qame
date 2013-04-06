@@ -64,9 +64,9 @@
 
 \newcommand{\HorRule}{\color{DarkGoldenrod} \rule{\linewidth}{1pt}} % Defines the gold horizontal rule around the title
 
-\pretitle{\vspace{-30pt} \begin{flushleft} \HorRule \fontsize{45}{45} \usefont{OT1}{phv}{b}{n} \color{DarkRed} \selectfont} % Horizontal rule before the title
+\pretitle{\vspace{-30pt} \begin{flushleft} \HorRule \fontsize{50}{50} \usefont{OT1}{phv}{b}{n} \color{DarkRed} \selectfont} % Horizontal rule before the title
 
-\title{Data Mining Problem 3 QAME Group Report} % Your article title
+\title{Rename this article title} % Your article title
 
 \posttitle{\par\end{flushleft}\vskip 0.5em} % Whitespace under the title
 
@@ -84,10 +84,12 @@ University of Helsinki % Your institution
 %----------------------------------------------------------------------------------------
 
 %
+%%%
+%%%%%
+%%%%%%% MY ADDITIONS BEFORE \begin{document}
+%%%%%
+%%% 
 %
-% MY ADDITIONS BEFORE \begin{document}
-%
-% 
 \usepackage[top=1.5cm, bottom=2.0cm, left=1.5cm, right=1.5cm]{geometry}
 \usepackage{float}
 \usepackage[hypcap]{caption}
@@ -104,9 +106,11 @@ University of Helsinki % Your institution
 source("mysweave.R")
 @
 %
-%
-% MY ADDITIONS END
-%
+%%%
+%%%%%
+%%%%%%% MY ADDITIONS END
+%%%%%
+%%%
 %
 
 \maketitle % Print the title
@@ -117,9 +121,6 @@ source("mysweave.R")
 %	ARTICLE CONTENTS
 %----------------------------------------------------------------------------------------
 
-% \SweaveInput{../group/intro.Rnw}
-\SweaveInput{../group/init.Rnw}
-\SweaveInput{../group/skeleton.Rnw}
-\SweaveInput{../group/example1_report.Rnw}
+\SweaveInput{../child_docs/example1_report.Rnw}
 
 \end{document}

@@ -1,12 +1,10 @@
-# example_comput.R
-
 set.seed(123)
 example1 <- vector("list")
 example1$x  <- rnorm(100)
 example1$y  <- rnorm(100, example1$x)
 
 example1$plotme1  <- function(){
-  plot(example1$x, example1$y, col=mycolors)
+  plot(example1$x, example1$y, col=mysweave$colors)
   abline(v=0, h=0, lty=2)
 }
 
