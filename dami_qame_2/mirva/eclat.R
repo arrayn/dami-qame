@@ -1,7 +1,7 @@
 # Mirva Toivonen
 # eclat implementation
 
-setwd("~/R_tiedostot")
+setwd("~/dami-qame")
 library('arules')
 
 # read in textfile
