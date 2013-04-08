@@ -20,11 +20,11 @@ List artoCppAprioriGen(const List Fk_1_list){
       const IntegerVector them = Fk_1_list[th];
       if(std::equal(us.begin(), us.begin()+k_2, them.begin()) 
          && them[k_2]>us[k_2]){
-        auto candi = as<std::vector<int> >(us);
+        std::vector<int> candi = as<std::vector<int> >(us);
         candi.push_back(them[k_2]);
         count_generated++;
         // 2. pruning-step: split to (k-1)-subsets...
-        auto sub_counter = 0;
+        int sub_counter = 0;
         for(int i=0 ; i<k ; i++){
           std::vector<int> row;
           for(int j=0 ; j<k ; j++){
@@ -135,7 +135,8 @@ List artoCppEclat(const List tidlists, const int minsup_abs){
   // step 2: Traverse the tree depth-first in lexigographical order
   std::vector<std::vector<int> > fisets; //returned
   std::vector<int> support_abs; // returned
-  std::vector<int> curs={0}; // cursor of indexes
+  std::vector<int> curs; // cursor of indexes
+  curs.push_back(0);
   std::vector<std::vector<int> > inters; // intersections stack
   
   while(!curs.empty()){

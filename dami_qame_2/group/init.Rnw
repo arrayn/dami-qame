@@ -6,7 +6,7 @@
 # setwd("~/atlinks/dami-qame/dami_qame_2/reports")
 library('arules')
 library("Rcpp")
-Sys.setenv("PKG_CXXFLAGS"="-std=c++11")
+# Sys.setenv("PKG_CXXFLAGS"="-std=c++11")
 source('../item_id_to_course_name.R')
 
 # reading the data in:

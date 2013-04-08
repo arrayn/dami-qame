@@ -95,6 +95,7 @@ University of Helsinki % Your institution
 \usepackage[hypcap]{caption}
 \usepackage[hidelinks]{hyperref}
 \usepackage{multicol}
+\setlength{\columnsep}{20pt}
 
 \begin{document}
 

@@ -106,6 +106,7 @@ University of Helsinki \\ % Your institution for the title page
 \usepackage[hypcap]{caption}
 % \usepackage[hidelinks]{hyperref}
 \usepackage{multicol}
+\setlength{\columnsep}{20pt}
 
 \begin{document}
 
