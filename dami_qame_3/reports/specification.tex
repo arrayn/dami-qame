@@ -1,0 +1,77 @@
+\documentclass{beamer}
+\usepackage{algorithm2e}
+
+\begin{document}
+\begin{frame}
+  \frametitle{Pattern specification}
+  We are looking for sequential patterns of the form:
+  $$
+    <e_1, e_2, ..., e_k>
+  $$
+  where $k \in \mathbb{N}, k \geq 2$, and each event $e_i$ belongs to the item
+  set (courses) i.e. $e_i \in C$.
+
+  \quad
+
+  E.g.
+  $
+  <programming\_project, introduction\_to\_machine\_learning, \linebreak data\_mining>
+  $
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Constraints of pattern}
+  \begin{itemize}
+    \item{\emph{maxspan}: restrict max. allowed time difference between $e_1$
+    and $e_k$}
+    \item{\emph{maxgap}: restrict max. allowed time difference between $e_i$
+    and $e_{i+1}$}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Data specification}
+  \begin{itemize}
+    \item{We have a set of data sequences (course enrollments) $T$.}
+    \item{Each data sequence $t \in T$ consists of a variable-sized sequence of
+    sets (semesters)  $t_1, t_2, ..., t_n \: (n > 0)$.}
+    \item{Conceptually, assign time units to the sets in increasing order,
+    as is denoted in the subscripts of the sets.}
+    \item{Each set $t_i$ consists of 1 or more items (courses).}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{When does a pattern occur in a data sequence?}
+  Assume we have a data sequence $t = t_1, t_2, ..., t_n$ and a sequential
+  pattern of the form $s = <e_1, e_2, ..., e_k>$.
+
+  \quad
+
+  We say that pattern $s$ occurs in data sequence $t$ if
+  \begin{itemize}
+    \item{$k \leq n$}
+    \item{$\exists \; \text{an ordering} \: 1 \leq n_1 < n_2 < ... <
+    n_k \leq n$ s.t.
+    \begin{itemize}
+      \item{$e_i \in t_{n_i}$ for all $i \in \{1,2,...,k\}$.}
+      \item{$n_k - n_1 \leq maxspan$.}
+      \item{$n_{i+1} - n_i \leq maxgap$ for all $i \in \{1, ..., k-1\}$.}
+    \end{itemize}
+    }
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Support counting}
+  \begin{itemize}
+    \item{Say we have a sequence $s$ and a data sequence $t$.}
+    \item{If $s$ occurs in $t$ then $\sigma(s) \leftarrow \sigma(s) + 1$, else
+    do nothing.}
+    \item{So essentially supports are counted only once per data sequence, even
+    if several orderings of the same data sequence would support $s$.}
+  \end{itemize}
+\end{frame}
+
+\end{document}
