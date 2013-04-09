@@ -1,0 +1,63 @@
+\documentclass{beamer}
+\usepackage{algorithm2e}
+
+\begin{document}
+	\begin{frame}
+	\begin{algorithm}[H]
+ 			\SetAlgoLined
+ 			\KwData{course registrations $T$}
+ 			\KwResult{Sequential patterns $F$}
+ 			$k:=1$\;
+ 			$F_k:=\{i | i \in I \land \frac{\sigma(i)}{N} \geq minsup\}$\;
+ 			\Repeat{$F_k=\emptyset$}{
+  				$k:=k+1$\;
+  				$C_k:=apriori\_gen(F_{k-1})$\;
+  				\ForEach{student registration $t \in T$}{
+  					\ForEach{candidate $c \in C_k$}{
+  						\If{contains(t, c, 0, 1)}{$\sigma(c):=\sigma(c)+1$}
+  					}
+  				}
+  				$F_k:=\{c | \frac{\sigma(c)}{N} \geq minsup\}$
+ 			}
+ 			\Return $\cup F_k$
+ 			\caption{Apriori-like algorithm}
+		\end{algorithm}
+\end{frame}
+
+\begin{frame}
+	Each element is allowed to have 1 event, so the second case in the book is applied when merging 2 sequences.\\
+	\begin{algorithm}[H]
+ 		\SetAlgoLined
+ 		\SetKwProg{Fn}{Function}{ is}{end}
+		\Fn{$Apriori\_gen(F_k)$}{
+ 			\KwData{$F_k$: $k$-length sequences}
+ 			\KwResult{$k+1$-length candidates $C_{k+1}$}
+ 			$C_{k+1}:=\emptyset$\;
+ 			\ForEach{$(a,b) \in P(|F_k|,2)$}{
+  				\If{$a[2:end]=b[1:end-1]$}{$C_{k+1}:=C_{k+1} \cup concat(a, b[end])$}
+ 			}
+ 			\Return $C_{k+1}$
+ 		}
+ 		\caption{Apriori-gen algorithm}
+	\end{algorithm}
+\end{frame}
+
+\begin{frame}
+	\fontsize{12pt}{7.2}\selectfont
+	\begin{algorithm}[H]
+ 		\SetAlgoLined
+ 		\SetKwProg{Fn}{Function}{ is}{end}
+		\Fn{contains(t, c, j, depth)}{
+ 		\KwData{$t$: registration sequence, $c$: sequential pattern candidate, $i$: index of \textit{element} in $t$ that previous event $e=c[depth-1]$ in $c$ belongs to, $depth$: current depth of the recursion}
+		\KwResult{true if $c$ is in $t$, false otherwise}  		
+  		\ForEach{$j \in [i+mingap : i+maxgap]$}{
+  			\If{$c[depth] \in t[j]$}{
+  				\eIf{$depth=|c|$}{\Return true}{\If{contains(t, c, j, depth+1)=true}{\Return true}}
+  			}
+  		}
+ 		\If{$depth=1$}{\Return false}
+ 		}
+ 		\caption{Checking if candidate $c$ is in registration $t$ with constraints}
+	\end{algorithm}
+\end{frame}
+\end{document}
