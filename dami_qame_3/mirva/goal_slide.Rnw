@@ -13,13 +13,9 @@
       \item The customer:We have this data, find me something interesting! 
         \begin{itemize}
           \item find some preliminary results
-          \item with the results customer knows better what it wants to know
-          \item customer gives some domain insight to the result
+          \item know better what you want to know
+          \item ask for some domain insight to the result
           \item modify research questions
         \end{itemize}
     \end{itemize}
 \end{frame}
-
-
-
- 

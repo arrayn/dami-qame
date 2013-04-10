@@ -149,11 +149,9 @@ source("mysweave.R")
  \section{High level problem description}
  \SweaveInput{../mirva/goal_slide.Rnw}
 
-<<<<<<< HEAD
-=======
 \section{Data definition}
  \SweaveInput{../arto/format_conversion_slides.Rnw}
->>>>>>> Added the goal_slide.Rnw
+
 
 \section{Specifications}
 \SweaveInput{../arto/influences_on_specifications.Rnw}
