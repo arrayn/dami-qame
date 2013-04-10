@@ -1,0 +1,21 @@
+% !Rnw root = ../reports/dami_qame_3_slides_1.Rnw
+
+\subsection{Influences on specifications}
+\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
+\frametitle{Influences on specifications}
+
+% \begin{itemize}
+% \item Customer's wants \newline{} $\Downarrow$
+% \item Specifications
+% \item $\Uparrow$\newline{}What can be done (efficiently)
+% \end{itemize}
+
+\begin{eqnarray*}
+ & \mbox{Customer's wants}\\
+ & \Downarrow\\
+ & \mbox{Specifications}\\
+ & \Uparrow\\
+ & \mbox{What can be done (efficiently)}
+\end{eqnarray*}
+
+\end{frame}

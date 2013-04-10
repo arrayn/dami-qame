@@ -146,10 +146,10 @@ source("mysweave.R")
 
 \SweaveInput{../arto/init.Rnw}
 
-\section{Data definition}
-\SweaveInput{../arto/format_conversion_slides.Rnw}
 
 \section{Specifications}
+\SweaveInput{../arto/influences_on_specifications.Rnw}
+\SweaveInput{../arto/format_conversion_slides.Rnw}
 \SweaveInput{../eric/specification_slides.Rnw}
 
 \section{Pseudo Algorithms}
