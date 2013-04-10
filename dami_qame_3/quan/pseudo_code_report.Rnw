@@ -1,0 +1,69 @@
+% !Rnw root = ../reports/dami_qame_3_report.Rnw
+
+\begin{algorithm}[H]
+\caption{Apriori-like algorithm}\label{Apriori-like}
+\begin{algorithmic}[1]
+\Procedure{Apriori-like}{$T$}
+  \State $k:=1$
+  \State $F_k:=\{i | i \in I \land \frac{\sigma(i)}{N} \geq minsup\}$
+  
+  \Repeat
+    \State $k:=k+1$
+    \State $C_k:=apriori\_gen(F_{k-1})$
+  	  \For{student registration $t \in T$}
+  				\For{candidate $c \in C_k$}
+  						\If{contains(t, c, 0, 1)}
+                \State $\sigma(c):=\sigma(c)+1$
+              \EndIf
+  				\EndFor
+  			\EndFor
+  			\State $F_k:=\{c | \frac{\sigma(c)}{N} \geq minsup\}$
+  \Until {$F_k=\emptyset$}
+ 	\State \Return $\cup F_k$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+
+Each element is allowed to have 1 event, so the second case in the book is applied when merging 2 sequences.
+\begin{algorithm}[H]
+\caption{Apriori-gen algorithm}\label{Apriori-gen}
+\begin{algorithmic}[1]
+  \Function{Apriori-gen}{$F_k$}
+    \State $C_{k+1}:=\emptyset$
+      \For{$(a,b) \in P(|F_k|,2)$}
+  			\If{$a[2:end]=b[1:end-1]$}
+          \State $C_{k+1}:=C_{k+1} \cup concat(a, b[end])$
+        \EndIf
+  	  \EndFor
+ 	  \State \Return $C_{k+1}$
+  \EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+
+
+\begin{algorithm}[H]
+\caption{Checking if $t$ consists $c$ with constraints}\label{contains}
+\begin{algorithmic}[1]
+  \Function{contains}{$t, c, i, depth$}
+    \For{$j \in [i+mingap : i+maxgap]$}
+    	\If{$c[depth] \in t[j]$}
+        \If{$depth=|c|$}
+          \State \Return true
+        \Else
+          \If{contains$(t, c, j, depth+1)=true$}
+            \State \Return true
+          \EndIf
+        \EndIf
+      \EndIf
+  	 \EndFor
+ 	\State \Return false 
+  \EndFunction
+  \State $i$: \textit{element} index in $t$ such that previous event in $c$ belonging to
+\end{algorithmic}
+\end{algorithm}
+
+
+\end{document}

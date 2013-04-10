@@ -22,5 +22,4 @@ dami_qame_*.pdf
 **/reports/*.synctex.gz
 **/reports/*.tex
 **/reports/*.toc
-
-
+**/reports/*.vrb

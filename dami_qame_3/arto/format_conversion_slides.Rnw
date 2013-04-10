@@ -1,0 +1,33 @@
+% !Rnw root = ../reports/dami_qame_3_slides_1.Rnw
+
+<<format_conversion_comput, results=hide>>=
+source("../arto/format_conversion_comput.R")
+@
+
+\subsection{Data Format Conversion}
+\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
+\frametitle{Data Format Conversion}
+
+\begin{multicols}{2}
+
+Original data looked like this:
+
+<<format_conversion_out_orig, results=verbatim>>=
+format_conversion.list$out_orig()
+@
+
+And we made it look like this: 
+
+<<format_conversion_out_refo, results=verbatim>>=
+format_conversion.list$out_reformatted()
+@
+
+in order to read it into arulesSequences R package looking like this:
+
+<<format_conversion_out_reformatted_inspected, results=verbatim>>=
+format_conversion.list$out_reformatted_inspected()
+@
+
+\end{multicols}
+
+\end{frame}
