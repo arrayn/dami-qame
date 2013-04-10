@@ -29,27 +29,27 @@
 %\usetheme{Bergen}
 %\usetheme{Berkeley}
 %\usetheme{Berlin}
-%\usetheme{Boadilla}
-%\usetheme{CambridgeUS}
+% \usetheme{Boadilla}
+% \usetheme{CambridgeUS}
 %\usetheme{Copenhagen}
 %\usetheme{Darmstadt}
 %\usetheme{Dresden}
 %\usetheme{Frankfurt}
 %\usetheme{Goettingen}
-%\usetheme{Hannover}
+% \usetheme{Hannover}
 %\usetheme{Ilmenau}
 %\usetheme{JuanLesPins}
 %\usetheme{Luebeck}
-\usetheme{Madrid}
+\usetheme{Madrid} % original
 %\usetheme{Malmoe}
 %\usetheme{Marburg}
-%\usetheme{Montpellier}
+% \usetheme{Montpellier}
 %\usetheme{PaloAlto}
 %\usetheme{Pittsburgh}
 %\usetheme{Rochester}
-%\usetheme{Singapore}
-%\usetheme{Szeged}
-%\usetheme{Warsaw}
+% \usetheme{Singapore}
+% \usetheme{Szeged}
+% \usetheme{Warsaw}
 
 % As well as themes, the Beamer class has a number of color themes
 % for any slide theme. Uncomment each of these in turn to see how it
@@ -57,16 +57,16 @@
 
 %\usecolortheme{albatross}
 %\usecolortheme{beaver}
-%\usecolortheme{beetle}
+% \usecolortheme{beetle}
 %\usecolortheme{crane}
-%\usecolortheme{dolphin}
+% \usecolortheme{dolphin}
 %\usecolortheme{dove}
 %\usecolortheme{fly}
 %\usecolortheme{lily}
-%\usecolortheme{orchid}
+% \usecolortheme{orchid}
 %\usecolortheme{rose}
-%\usecolortheme{seagull}
-%\usecolortheme{seahorse}
+\usecolortheme{seagull}
+% \usecolortheme{seahorse}
 %\usecolortheme{whale}
 %\usecolortheme{wolverine}
 
