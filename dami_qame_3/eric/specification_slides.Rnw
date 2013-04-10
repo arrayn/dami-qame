@@ -1,0 +1,87 @@
+% !Rnw root = ../reports/dami_qame_3_slides_1.Rnw
+
+\begin{frame}
+  \frametitle{Pattern specification}
+  We are looking for sequential patterns of the form:
+  $$
+    <e_1, e_2, ..., e_k>
+  $$
+  where $k \geq 1$, and each event $e_i$ belongs to the set of items (courses)
+  i.e. $e_i \in I$.
+
+  \quad
+
+  E.g.
+  $
+  <programming\_project, introduction\_to\_machine\_learning, \linebreak data\_mining>
+  $
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Constraints of pattern}
+  \begin{itemize}
+    \item{\emph{maxspan}: restrict max. allowed time difference between $e_1$
+    and $e_k$}
+    \item{\emph{maxgap}: restrict max. allowed time difference between $e_i$
+    and $e_{i+1}$}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Data specification}
+  \begin{itemize}
+    \item{We have a set of data sequences (course enrollments) $T$.}
+    \item{Each data sequence $t \in T$ consists of a variable-sized sequence of
+    sets (semesters)  $t_1, t_2, ..., t_n \: (n \geq 1)$.}
+    \item{Conceptually, assign time units to the sets in increasing order,
+    as is denoted in the subscripts of the sets.}
+    \item{Each set $\emptyset \neq t_i \subset I$ consists of 1 or more items
+    (courses).}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{When does a pattern occur in a data sequence?}
+  Assume we have a data sequence $t = t_1, t_2, ..., t_n$ and a sequential
+  pattern of the form $s = <e_1, e_2, ..., e_k>$.
+
+  \quad
+
+  We say that pattern $s$ occurs in data sequence $t$ if
+  \begin{itemize}
+    \item{$k \leq n$}
+    \item{$\exists \; \text{an ordering} \: 1 \leq n_1 < n_2 < ... <
+    n_k \leq n$ s.t.
+    \begin{itemize}
+      \item{$e_i \in t_{n_i}$ for all $i \in \{1,2,...,k\}$.}
+      \item{$n_k - n_1 \leq maxspan$.}
+      \item{$n_{i+1} - n_i \leq maxgap$ for all $i \in \{1, ..., k-1\}$.}
+    \end{itemize}
+    }
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Support counting}
+  \begin{itemize}
+    \item{Say we have a candidate sequence $s$ and a data sequence $t$.}
+    \item{If $s$ occurs in $t$ then $\sigma(s) \leftarrow \sigma(s) + 1$, else
+    do nothing.}
+    \item{So essentially support is incremented (by 1) max once per data
+    sequence, even if several orderings of the same data sequence would support
+    $s$.}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algorithm}
+  \begin{itemize}
+    \item{Levelwise search strategy: Apriori-like algorithm (p.434).}
+    \item{maxgap $\implies$ Apriori principle may be violated. Use modified
+    Apriori principle instead (contigous subsequences).}
+    \item{Modifications must be done to two parts of the algorithm. (1)
+    sequence occurrence check (before incrementing support), and (2) candidate
+    sequence generation.}
+  \end{itemize}
+\end{frame}

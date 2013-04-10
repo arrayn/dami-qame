@@ -109,6 +109,7 @@ University of Helsinki \\ % Your institution for the title page
 \setlength{\columnsep}{20pt}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+% \usepackage{algorithm2e}
 
 \begin{document}
 
@@ -145,8 +146,11 @@ source("mysweave.R")
 
 \SweaveInput{../arto/init.Rnw}
 
-\section{Example section}
+\section{Data definition}
 \SweaveInput{../arto/format_conversion_slides.Rnw}
+
+\section{Specifications}
+\SweaveInput{../eric/specification_slides.Rnw}
 
 \section{Pseudo Algorithms}
 \SweaveInput{../quan/pseudo_code_slides}
