@@ -22,9 +22,15 @@
   \frametitle{Constraints of pattern}
   \begin{itemize}
     \item{\emph{maxspan}: restrict max. allowed time difference between $e_1$
-    and $e_k$}
+    and $e_k$.}
     \item{\emph{maxgap}: restrict max. allowed time difference between $e_i$
-    and $e_{i+1}$}
+    and $e_{i+1}$.}
+    \item{\emph{mingap}: restrict min. allowed time difference between $e_i$
+    and $e_{i+1}$.}
+    \item[]{}
+    \item{Start off with $maxspan = \infty$, $maxgap = \infty$ and $mingap = 0$
+    (i.e. no constraints), and as development progresses turn on constraints
+    with different value choices.}
   \end{itemize}
 \end{frame}
 
@@ -57,6 +63,7 @@
       \item{$e_i \in t_{n_i}$ for all $i \in \{1,2,...,k\}$.}
       \item{$n_k - n_1 \leq maxspan$.}
       \item{$n_{i+1} - n_i \leq maxgap$ for all $i \in \{1, ..., k-1\}$.}
+      \item{$n_{i+1} - n_i \geq mingap$ for all $i \in \{1, ..., k-1\}$.}
     \end{itemize}
     }
   \end{itemize}
