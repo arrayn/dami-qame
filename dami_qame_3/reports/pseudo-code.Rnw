@@ -3,6 +3,7 @@
 \usepackage{algpseudocode}
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 \begin{frame}
 \begin{algorithm}[H]
