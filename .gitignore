@@ -10,12 +10,17 @@ dami_qame_*.Rmd
 dami_qame_*.md
 dami_qame_*.pdf
 
-# Generated report files (Note! Remember to add any new .Rnw file in reports dir!)
+# Generated report files
 **/reports/figure/
-**/reports/*.tex
-**/reports/*.pdf
-**/reports/*.log
+**/reports/saves/
 **/reports/*.lof
+**/reports/*.log
 **/reports/*.lot
+**/reports/*.nav
+**/reports/*.pdf
+**/reports/*.snm
+**/reports/*.synctex.gz
+**/reports/*.tex
 **/reports/*.toc
+
 
