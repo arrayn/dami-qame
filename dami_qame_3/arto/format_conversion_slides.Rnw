@@ -4,9 +4,12 @@
 source("../arto/format_conversion_comput.R")
 @
 
-\subsection{Data Format Conversion}
 \begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-\frametitle{Data Format Conversion}
+\frametitle{What can be done: Library implementations}
+
+\begin{itemize}
+\item Library implementations can be used to verify results.
+\end{itemize}
 
 \begin{multicols}{2}
 

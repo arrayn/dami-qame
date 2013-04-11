@@ -1,7 +1,7 @@
 % !Rnw root = ../reports/dami_qame_3_slides_1.Rnw
 
 \begin{frame}
-    \frametitle{High level problem description}
+    \frametitle{Customer's wants: High level problem description}
     \framesubtitle{Course registration data}
 
     \begin{itemize}

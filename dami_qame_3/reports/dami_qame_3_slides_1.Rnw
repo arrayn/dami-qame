@@ -144,18 +144,16 @@ source("mysweave.R")
 \end{frame}
 
 
- \SweaveInput{../arto/init.Rnw}
+\SweaveInput{../arto/init.Rnw}
  
- \section{High level problem description}
- \SweaveInput{../mirva/goal_slide.Rnw}
-
-\section{Data definition}
- \SweaveInput{../arto/format_conversion_slides.Rnw}
-
+\section{Influences on specifications}
+\SweaveInput{../arto/influences_on_specifications.Rnw}
+\subsection{Customer's wants: High level problem description}
+\SweaveInput{../mirva/goal_slide.Rnw}
+\subsection{What can be done: Library implementations}
+\SweaveInput{../arto/format_conversion_slides.Rnw}
 
 \section{Specifications}
-\SweaveInput{../arto/influences_on_specifications.Rnw}
-\SweaveInput{../arto/format_conversion_slides.Rnw}
 \SweaveInput{../eric/specification_slides.Rnw}
 
 \section{Pseudo Algorithms}

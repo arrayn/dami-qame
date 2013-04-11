@@ -1,6 +1,5 @@
 % !Rnw root = ../reports/dami_qame_3_slides_1.Rnw
 
-\subsection{Influences on specifications}
 \begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
 \frametitle{Influences on specifications}
 
