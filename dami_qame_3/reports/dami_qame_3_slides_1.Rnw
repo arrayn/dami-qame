@@ -159,4 +159,6 @@ source("mysweave.R")
 \section{Pseudo Algorithms}
 \SweaveInput{../quan/pseudo_code_slides}
 
+\SweaveInput{../arto/thank_you_slides}
+
 \end{document} 
