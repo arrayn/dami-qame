@@ -24,7 +24,7 @@ def read_data_sequences(filename):
         data_sequences.append(data_sequence)
     return data_sequences
 
-def apriori(data_sequences, minsup):
+def apriori(data_sequences, minsup, maxspan=3):
     """Apriori-like algorithm for mining sequential patterns."""
     frequent_seqs = []
     n = len(data_sequences)
@@ -75,12 +75,12 @@ def apriori_gen(prev_subsequences):
     return candidates
 
 def calculate_support(candidate, data_sequences):
-    """Given a candidate's support count given a list of data sequences."""
+    """Given a candidate's support given a list of data sequences."""
     support_count = 0
     for data_sequence in data_sequences:
         if occurs(candidate, data_sequence):
             support_count += 1
-    return support_count
+    return support_count / len(data_sequences)
 
 def occurs(candidate, data_sequence):
     """Check whether given candidate sequence occurs in given data sequence."""
