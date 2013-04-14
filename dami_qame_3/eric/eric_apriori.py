@@ -36,7 +36,7 @@ def apriori(data_sequences, minsup, maxspan=3):
         candidates = apriori_gen(frequent_seqs[-2])
 
         for candidate in candidates:
-            support = calculate_support(candidate, data_sequences)
+            support = calculate_support(candidate, data_sequences, maxspan)
             if support >= minsup:
                 pattern = SequentialPattern(candidate, support)
                 frequent_seqs[-1].append(pattern)
@@ -74,27 +74,45 @@ def apriori_gen(prev_subsequences):
     print("Generated {} candidates.".format(len(candidates)))
     return candidates
 
-def calculate_support(candidate, data_sequences):
-    """Given a candidate's support given a list of data sequences."""
+def calculate_support(candidate, data_sequences, maxspan):
+    """Calculate a candidate's support given a list of data sequences."""
     support_count = 0
     for data_sequence in data_sequences:
-        if occurs(candidate, data_sequence):
+        if occurs(candidate, data_sequence, maxspan):
             support_count += 1
     return support_count / len(data_sequences)
 
-def occurs(candidate, data_sequence):
+def occurs(candidate, data_sequence, maxspan):
     """Check whether given candidate sequence occurs in given data sequence."""
-    i = 0
-    for item in candidate:
+    start_points = []
+    first_item = candidate[0]
+
+    for i in range(len(data_sequence)):
+        if first_item in data_sequence[i]:
+            start_points.append(i)
+
+    for i in start_points:
+        match_points = find_subsequence(candidate, data_sequence, i)
+        if match_points:
+            if (match_points[-1] - match_points[0]) <= maxspan:
+                return True
+        else:
+            return False
+
+def find_subsequence(subsequence, sequence, start_point):
+    i = start_point
+    match_points = []
+    for item in subsequence:
         while True:
-            if i == len(data_sequence):
-                return False
-            elif item in data_sequence[i]:
+            if i == len(sequence):
+                return None
+            elif item in sequence[i]:
+                match_points.append(i)
                 i += 1
                 break
             else:
                 i += 1
-    return True
+    return match_points
 
 
 if __name__ == '__main__':
