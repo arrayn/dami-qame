@@ -1,6 +1,6 @@
 arto_implementation.list <- vector("list")
 
-parameter <- list(support = 0.20, maxsize=1, maxlen=10, mingap=1, maxgap=999, maxwin=999)
+parameter <- list(support = 0.20, maxsize=1, maxlen=999, mingap=1, maxgap=999, maxwin=999)
 arto_implementation.list$parameter <- parameter
 arto_implementation.list$s_cspade <- cspade(courses.str, parameter = arto_implementation.list$parameter)
 source("../arto/arto_implementation.R")

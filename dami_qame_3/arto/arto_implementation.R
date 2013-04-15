@@ -1,3 +1,28 @@
+# Fk_1 <- Fk.list[[1]]
+arto.sequence.apriori.gen <- function(Fk_1, debug=FALSE){
+  
+  # flatten the idx-list because we are only interested in 1-item elements
+  temp <- LIST(Fk_1, decode=FALSE)
+  # temp <- LIST(arto_implementation.list$s_cspade, decode=FALSE)
+  idx.list  <- vector("list", length(temp))
+  for(i in 1:length(temp)){idx.list[[i]] <- unlist(temp[[i]])}
+  
+#   if(debug) {
+#     print(system.time( temp <- artoCppAprioriGen(idx.list) ))
+#   }else{ temp <- artoCppAprioriGen(idx.list)}
+  
+  # inspect(as(temp, "sequences"))
+  # str(arto_implementation.list$s_cspade)
+  
+  out.list <- temp$candidates;
+  count.generated <- temp$generated;
+  ret <- encode(out.list, itemLabels=itemLabels(Fk_1), itemMatrix=TRUE)
+  ret <- new("itemsets", items=ret)
+  # returning:
+  list(Ck=ret, counts=c(count.generated, length(ret)))
+}
+
+
 # data.str <- courses.str
 arto.sequence.apriori <- function(data.str, parameter){
   Fk.list <- list()
@@ -9,28 +34,20 @@ arto.sequence.apriori <- function(data.str, parameter){
   if(length(temp)==0) stop("no frequent 1-itemsets")
   Fk.list[[k]] <- temp
   counts.list[[k]] <- c(NA,NA,length(Fk.list[[k]]))
-#   cont <- TRUE # line 3: repeat
+  cont <- TRUE # line 3: repeat
 #   while(cont){ 
 #     k <- k+1   # line 4
-#     if(debug) cat("k = ",k,"\n")
-#     ret <- arto.apriori.gen(Fk.list[[k-1]], debug) # line 5: generate candidate itemsets
+#     ret <- arto.sequence.apriori.gen(Fk.list[[k-1]], debug) # line 5: generate candidate itemsets
 #     Ck <-ret$Ck
 #     counts <- ret$counts
-#     if(length(Ck)==0) {
-#       cont <- FALSE
-#     }else{
-#       if(debug){
-#         cat("Ck=",k," image of candidates after pruning:\n")
-#         print(image(items(Ck), main="Ck candidates"))
-#       }
-#     }
-#     #lines 6-11: calculate supports for candidates
-#     supports <- support(Ck, data.str)
-#     quality(Ck) <- data.frame(support=supports)    
-#     Fk.list[k] <- Ck[supports>=minsup,] # line 12
-#     counts.list[[k]] <- c(counts, length(Fk.list[[k]]))
+#     if(length(Ck)==0) cont <- FALSE
+# #     #lines 6-11: calculate supports for candidates
+# #     supports <- support(Ck, data.str)
+# #     quality(Ck) <- data.frame(support=supports)    
+# #     Fk.list[k] <- Ck[supports>=minsup,] # line 12
+# #     counts.list[[k]] <- c(counts, length(Fk.list[[k]]))
 #     # line 13: until
-#     if (k >= ncol(data.str) || k>=maxk || length(Fk.list[[k]])==0 ) cont <- FALSE   
+#     if (k >= ncol(data.str) || k>=parameter$maxlen || length(Fk.list[[k]])==0 ) cont <- FALSE   
 #   }
   # line 14, return the union of Fks
   ret <- Fk.list[[1]]
