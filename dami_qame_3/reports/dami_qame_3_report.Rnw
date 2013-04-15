@@ -124,7 +124,13 @@ source("mysweave.R")
 %	ARTICLE CONTENTS
 %----------------------------------------------------------------------------------------
 
-\SweaveInput{../arto/init.Rnw}
+\SweaveInput{../arto/init}
+
+% for our own implementation hacking
+\section{Own implementation hackings}
+\SweaveInput{../arto/arto_implementation_report}
+
+
 \SweaveInput{../arto/format_conversion_report.Rnw}
 \SweaveInput{../quan/pseudo_code_report}
 

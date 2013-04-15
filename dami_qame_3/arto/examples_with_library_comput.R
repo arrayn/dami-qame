@@ -1,7 +1,6 @@
 
 str(courses.str)
 summary(courses.str)
-as(x, "data.frame")
 s1 <- cspade(courses.str, parameter = list(support = 0.08), control = list(verbose = TRUE))
 s2 <- cspade(courses.str, parameter = list(support = 0.08, maxsize=1), control = list(verbose = TRUE))
 s3 <- cspade(courses.str, parameter = list(support = 0.08, maxsize=1, mingap=1, maxgap=1), control = list(verbose = TRUE))
