@@ -85,34 +85,47 @@ def calculate_support(candidate, data_sequences, maxspan, maxgap, mingap):
 
 def occurs(candidate, data_sequence, maxspan, maxgap, mingap):
     """Check whether given candidate sequence occurs in given data sequence."""
-    return find_subsequence(candidate, data_sequence)
-
-def find_subsequence(candidate, data_sequence):
-    candidate_index = 0
-    data_seq_index = 0
-    result_stack = []
-    while candidate_index != len(candidate):
-
-        item = candidate[candidate_index]
-
-        if data_seq_index == len(data_sequence):
-            if len(result_stack) == 0:
-                return False
-            candidate_index -= 1
-            data_seq_index = result_stack[-1] + 1
-            result_stack = result_stack[:-1]
-        elif item in data_sequence[data_seq_index]:
-            result_stack.append(data_seq_index)
-            candidate_index += 1
-            data_seq_index += 1
-        elif len(result_stack) > 0 and (result_stack[0] - data_seq_index) == 3:
-            candidate_index -= 1
-            data_seq_index = result_stack[-1] + 1
-            result_stack = result_stack[:-1]
+    matchings = []
+    last_min = 0
+    for item in candidate:
+        matching = []
+        for j in range(last_min, len(data_sequence)):
+            if item in data_sequence[j]:
+                matching.append(j)
+        if matching:
+            matchings.append(matching)
+            last_min = matching[0] + 1
         else:
-            data_seq_index += 1
+            return False
 
-    return True
+    stack = []
+    level = 0
+    index = 0
+    while len(stack) != len(candidate):
+        if level == 0:
+            if index == len(matchings[0]):
+                return False
+            stack.append(index)
+            level += 1
+            index = 0
+        elif index == len(matchings[level]):
+            level -= 1
+            index = stack.pop() + 1
+        elif matchings[level][index] > matchings[level-1][stack[-1]]:
+            diff = matchings[level][index] - matchings[level-1][stack[-1]]
+            if diff > maxgap: # Max gap
+                level -= 1
+                index = stack.pop() + 1
+            elif diff < mingap: # Min gap
+                index += 1
+            else:
+                stack.append(index)
+                level += 1
+                index = 0
+        else:
+            index += 1
+    return stack
+
 
 
 def satisfies_maxspan(match_points, maxspan):
@@ -131,11 +144,6 @@ def satisfies_maxgap_and_mingap(match_points, maxgap, mingap):
 
 
 
-if __name__ == '__main__':
-    data_sequences = read_data_sequences("../data/courses_sequences_num.txt")
-
-
-
 # ----------------------------------------------------------------------
 # Helper method below
 # ----------------------------------------------------------------------
@@ -149,3 +157,13 @@ def remove_duplicates(seq):
     seen = set()
     seen_add = seen.add
     return [ x for x in seq if x not in seen and not seen_add(x)]
+
+
+if __name__ == '__main__':
+    data_sequences = read_data_sequences("../data/courses_sequences_num.txt")
+    rs = apriori(data_sequences, 0.25)
+    print(rs)
+    print(len(rs))
+
+
+
