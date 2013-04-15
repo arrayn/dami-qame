@@ -1,6 +1,7 @@
 import re
 from collections import defaultdict
 from itertools import product
+from math import floor
 
 
 class SequentialPattern(object):
@@ -24,21 +25,22 @@ def read_data_sequences(filename):
         data_sequences.append(data_sequence)
     return data_sequences
 
-def apriori(data_sequences, minsup, maxspan=3):
+def apriori(data_sequences, minsup, maxspan=999, maxgap=999, mingap=1):
     """Apriori-like algorithm for mining sequential patterns."""
     frequent_seqs = []
     n = len(data_sequences)
+    min_support_count = floor(minsup * n)
 
-    frequent_seqs.append(find_frequent_1_subsequences(data_sequences, minsup))
+    frequent_seqs.append(find_frequent_1_subsequences(data_sequences, min_support_count))
 
     while frequent_seqs[-1]:
         frequent_seqs.append([])
         candidates = apriori_gen(frequent_seqs[-2])
 
         for candidate in candidates:
-            support = calculate_support(candidate, data_sequences, maxspan)
-            if support >= minsup:
-                pattern = SequentialPattern(candidate, support)
+            support_count = calculate_support(candidate, data_sequences, maxspan, maxgap, mingap)
+            if support_count >= min_support_count:
+                pattern = SequentialPattern(candidate, support_count / n)
                 frequent_seqs[-1].append(pattern)
 
     return sorted(flatten(frequent_seqs),
@@ -46,7 +48,7 @@ def apriori(data_sequences, minsup, maxspan=3):
 
 
 
-def find_frequent_1_subsequences(data_sequences, minsup):
+def find_frequent_1_subsequences(data_sequences, min_support_count):
     """Find all frequent 1-subsequences."""
     support_counts = defaultdict(int)
     n = len(data_sequences)
@@ -59,9 +61,8 @@ def find_frequent_1_subsequences(data_sequences, minsup):
     # Filter subsequences above minsup
     frequent_seqs = []
     for k,v in support_counts.items():
-        support = v / n
-        if support >= minsup:
-            frequent_seqs.append(SequentialPattern([k], support))
+        if v >= min_support_count:
+            frequent_seqs.append(SequentialPattern([k], v / n))
     return frequent_seqs
 
 def apriori_gen(prev_subsequences):
@@ -74,15 +75,15 @@ def apriori_gen(prev_subsequences):
     print("Generated {} candidates.".format(len(candidates)))
     return candidates
 
-def calculate_support(candidate, data_sequences, maxspan):
+def calculate_support(candidate, data_sequences, maxspan, maxgap, mingap):
     """Calculate a candidate's support given a list of data sequences."""
     support_count = 0
     for data_sequence in data_sequences:
-        if occurs(candidate, data_sequence, maxspan):
+        if occurs(candidate, data_sequence, maxspan, maxgap, mingap):
             support_count += 1
-    return support_count / len(data_sequences)
+    return support_count
 
-def occurs(candidate, data_sequence, maxspan):
+def occurs(candidate, data_sequence, maxspan, maxgap, mingap):
     """Check whether given candidate sequence occurs in given data sequence."""
     start_points = []
     first_item = candidate[0]
@@ -94,7 +95,7 @@ def occurs(candidate, data_sequence, maxspan):
     for i in start_points:
         match_points = find_subsequence(candidate, data_sequence, i)
         if match_points:
-            if (match_points[-1] - match_points[0]) <= maxspan:
+            if satisfies_maxspan(match_points, maxspan):
                 return True
         else:
             return False
@@ -113,6 +114,22 @@ def find_subsequence(subsequence, sequence, start_point):
             else:
                 i += 1
     return match_points
+
+
+def satisfies_maxspan(match_points, maxspan):
+    """Check that given matching of pattern on data sequence satisfies the max
+    gap constraint."""
+    return (match_points[-1] - match_points[0]) <= maxspan
+
+def satisfies_maxgap_and_mingap(match_points, maxgap, mingap):
+    """Check that given matching of pattern on data sequence satisfies the max
+    and min gap constraint."""
+    for i in range(len(match_points)-1):
+        diff = match_points[i+1] - match_points[i]
+        if diff > maxgap or diff < mingap:
+            return False
+    return True
+
 
 
 if __name__ == '__main__':
