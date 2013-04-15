@@ -85,35 +85,34 @@ def calculate_support(candidate, data_sequences, maxspan, maxgap, mingap):
 
 def occurs(candidate, data_sequence, maxspan, maxgap, mingap):
     """Check whether given candidate sequence occurs in given data sequence."""
-    start_points = []
-    first_item = candidate[0]
+    return find_subsequence(candidate, data_sequence)
 
-    for i in range(len(data_sequence)):
-        if first_item in data_sequence[i]:
-            start_points.append(i)
+def find_subsequence(candidate, data_sequence):
+    candidate_index = 0
+    data_seq_index = 0
+    result_stack = []
+    while candidate_index != len(candidate):
 
-    for i in start_points:
-        match_points = find_subsequence(candidate, data_sequence, i)
-        if match_points:
-            if satisfies_maxspan(match_points, maxspan):
-                return True
+        item = candidate[candidate_index]
+
+        if data_seq_index == len(data_sequence):
+            if len(result_stack) == 0:
+                return False
+            candidate_index -= 1
+            data_seq_index = result_stack[-1] + 1
+            result_stack = result_stack[:-1]
+        elif item in data_sequence[data_seq_index]:
+            result_stack.append(data_seq_index)
+            candidate_index += 1
+            data_seq_index += 1
+        elif len(result_stack) > 0 and (result_stack[0] - data_seq_index) == 3:
+            candidate_index -= 1
+            data_seq_index = result_stack[-1] + 1
+            result_stack = result_stack[:-1]
         else:
-            return False
+            data_seq_index += 1
 
-def find_subsequence(subsequence, sequence, start_point):
-    i = start_point
-    match_points = []
-    for item in subsequence:
-        while True:
-            if i == len(sequence):
-                return None
-            elif item in sequence[i]:
-                match_points.append(i)
-                i += 1
-                break
-            else:
-                i += 1
-    return match_points
+    return True
 
 
 def satisfies_maxspan(match_points, maxspan):
