@@ -1,0 +1,69 @@
+\begin{multicols}{2}
+    \subsection{Pattern structure}
+    We are looking for sequential patterns of the form:
+    $$
+    <e_1, e_2, ..., e_k>
+    $$
+    where $k \geq 1$, and each event $e_i$ belongs to the set of items (courses)
+    i.e. $e_i \in I$.
+
+    Examples of these patterns are presented below:
+    \begingroup
+    \fontsize{10pt}{12pt}\selectfont
+    \begin{verbatim}
+<programming_project,
+ introduction_to_machine_learning,
+ data_mining>
+
+<introduction_to_programming, python_programming>
+
+<database_systems>
+    \end{verbatim}
+    \endgroup
+
+    \subsection{Data specification}
+    \begin{itemize}
+        \item{We have a set of data sequences (course enrollments) $T$.}
+        \item{Each data sequence $t \in T$ consists of a variable-sized
+            sequence of sets (semesters)  $t_1, t_2, ..., t_n \: (n \geq 1)$.}
+        \item{Each set $t_i \subset I$ consists of 1 or more items (courses).}
+        \item{Conceptually, assign time units to the sets / semesters in
+            increasing order, as is denoted in the subscripts of the sets.}
+    \end{itemize}
+
+    \subsection{Constraints}
+    \begin{itemize}
+        \item{\emph{maxspan}: restrict max. allowed time difference between
+        occurrences of $e_1$ and $e_k$.}
+        \item{\emph{maxgap}: restrict max. allowed time difference between
+        occurrences of $e_i$ and $e_{i+1}$.}
+        \item{\emph{mingap}: restrict min. allowed time difference between
+        occurrences of $e_i$ and $e_{i+1}$.}
+    \end{itemize}
+
+    \subsection{When does a pattern occur in a  data sequence?}
+    Assume we have a data sequence $t = t_1, t_2, ..., t_n$ and a sequential
+    pattern of the form \linebreak $s = <e_1, e_2, ..., e_k>$.
+
+    We say that pattern $s$ occurs in data sequence $t$ if
+    \begin{itemize}
+        \item{$k \leq n$}
+        \item{There exists a strictly increasing subsequence of $t$ indexed by
+            $1 \leq n_1 < n_2 < ... < n_k \leq n$ s.t.
+                \begin{itemize}
+            \item{$e_i \in t_{n_i}$ for all $i \in \{1,2,...,k\}$.}
+            \item{$n_k - n_1 \leq maxspan$.}
+            \item{$n_{i+1} - n_i \leq maxgap$ for all $i \in \{1, ..., k-1\}$.}
+            \item{$n_{i+1} - n_i \geq mingap$ for all $i \in \{1, ..., k-1\}$.}
+            \end{itemize}
+        }
+    \end{itemize}
+
+    \subsection{Support counting}
+    If a candidate sequence $s$ occurs in a data sequence $t$, then
+    $\sigma(s) \leftarrow \sigma(s) + 1$, else do nothing.
+
+    So essentially support is incremented (by 1) max once per data sequence,
+    even if the pattern occurs in the same data sequence in several different
+    ways.
+\end{multicols}

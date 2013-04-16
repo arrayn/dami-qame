@@ -126,6 +126,9 @@ source("mysweave.R")
 
 \SweaveInput{../arto/init}
 
+\section{Pattern specification}
+\SweaveInput{../eric/specification.Rnw}
+
 % for our own implementation hacking
 \section{Own implementation hackings}
 \SweaveInput{../arto/arto_implementation_report}
