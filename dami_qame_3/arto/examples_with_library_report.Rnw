@@ -8,7 +8,7 @@ source("../arto/examples_with_library_comput.R")
 \begin{multicols}{2}
 \end{multicols}
 
-Top lift rules:
+Top rules by lift:
 
 <<examples_with_library_out1, results=verbatim>>=
 oldopts <- options("width")
@@ -17,8 +17,11 @@ arto1$outme1()
 options(width=oldopts$width)
 @
 
-% My results:
-% 
-% <<examples_with_library_out2, results=verbatim>>=
-% examples_with_library.list$outme2()
-% @
+Top rules by confidence:
+
+<<examples_with_library_out2, results=verbatim>>=
+oldopts <- options("width")
+options(width=120)
+arto1$outme2()
+options(width=oldopts$width)
+@
