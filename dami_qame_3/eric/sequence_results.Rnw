@@ -1,0 +1,75 @@
+% !Rnw root = ../reports/dami_qame_3_report.Rnw
+\subsection{Results with course names}
+Below is listed the top sequential pattern, for each length, for different
+choices of parameters.
+
+A few points of interest.
+\begin{itemize}
+\item{
+The support for
+\texttt{< introduction\_to\_programming, introduction\_to\_databases >} is
+different in cases minsup=0.02 and minsup=0.02, maxgap=1. How come? Well the
+occurrence is defined differently in these cases, as the latter option
+introduces additional constraints, thus less data sequences support the
+pattern. This of course affects the support counting.
+}
+\item{Top patterns seem to reflect the path recommended in the official
+curriculum.}
+\item{In minsup=0.02, maxgap=1 case there is an interesting pattern indicating
+that some portion of the students immediately retake introduction to databases
+after enrolling onto it once.}
+\end{itemize}
+
+\subsubsection{minsup=0.02}
+\begingroup
+\fontsize{10pt}{12pt}\selectfont
+\begin{verbatim}
+< introduction_to_programming, introduction_to_databases > (0.207)
+
+< programming_in_java, data_structures,
+  data_structures_project > (0.0982)
+
+< programming_in_java, data_structures, data_structures_project,
+  software_engineering_lab > (0.0623)
+
+< programming_in_java, programming_project, concurrent_programming,
+  software_engineering, software_engineering_lab > (0.0389)
+
+< programming_in_java, programming_project, concurrent_programming,
+  software_engineering, software_engineering_lab, scientific_writing > (0.0217)
+\end{verbatim}
+\endgroup
+
+\subsubsection{minsup=0.02, maxgap=1}
+
+\begingroup
+\fontsize{10pt}{12pt}\selectfont
+\begin{verbatim}
+< introduction_to_programming, introduction_to_databases > (0.169)
+
+< introduction_to_programming, introduction_to_databases,
+  introduction_to_databases > (0.0323)
+\end{verbatim}
+\endgroup
+
+\subsubsection{minsup=0.02, mingap=3}
+
+\begingroup
+\fontsize{10pt}{12pt}\selectfont
+\begin{verbatim}
+< introduction_to_databases, software_engineering > (0.1)
+
+< programming_in_java, concurrent_programming, scientific_writing > (0.0335)
+\end{verbatim}
+\endgroup
+
+\subsubsection{minsup=0.02, mingap=2, maxgap=4}
+
+\begingroup
+\fontsize{10pt}{12pt}\selectfont
+\begin{verbatim}
+< data_structures, software_engineering > (0.11)
+
+< data_structures, software_engineering, scientific_writing > (0.0405)
+\end{verbatim}
+\endgroup
