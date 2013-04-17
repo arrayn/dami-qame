@@ -13,14 +13,21 @@ seqrules1$tdf  <- tdf
 seqrules1$outme1 <- function(){
   oldopts <- options("width")
   options(width=120)
-  print(as(head(sort(r1, by="lift"), n=15), "data.frame"))
+  print(as(head(sort(r1, by="support"), n=10), "data.frame"))
   options(width=oldopts$width)
 }
 
 seqrules1$outme2 <- function(){
   oldopts <- options("width")
   options(width=120)
-  print(as(head(sort(r1, by="confidence"), n=15), "data.frame"))
+  print(as(head(sort(r1, by="confidence"), n=9), "data.frame"))
+  options(width=oldopts$width)
+}
+
+seqrules1$outme3 <- function(){
+  oldopts <- options("width")
+  options(width=120)
+  print(as(head(sort(r1, by="lift"), n=9), "data.frame"))
   options(width=oldopts$width)
 }
 
@@ -33,14 +40,17 @@ seqrules1$inner.plotme1 <- function(tdf, xidx, yidx, ...){
 
 seqrules1$plotme1 <- function(){
   seqrules1$inner.plotme1(seqrules1$tdf, 2, 3, ylim=c(0,1), main="Rules: confidence vs. support")
+  temp <- head(tdf[order(tdf$support, decreasing=T),], n=6)
+  text(temp[,2], temp[,3], as.character(temp[,1]), cex=0.5, pos=2)
 }
 
 seqrules1$plotme2 <- function(){
-  seqrules1$inner.plotme1(seqrules1$tdf, 2, 4, main="Rules: lift vs. support")
+  seqrules1$inner.plotme1(seqrules1$tdf, 3, 4, main="Rules: lift vs. confidence")
 }
 
 seqrules1$plotme3 <- function(){
-  seqrules1$inner.plotme1(seqrules1$tdf, 3, 4, main="Rules: lift vs. confidence")
+  seqrules1$inner.plotme1(seqrules1$tdf, 2, 4, main="Rules: lift vs. support")
 }
+
 
 # R CMD Sweave dami_qame_3_slides_1.Rnw && pdflatex dami_qame_3_slides_1.tex

@@ -4,28 +4,100 @@
 source("../arto/seqrules1_comput.R")
 @
 
-\subsection{Sequence rules}
+
+\begin{frame}[fragile]
+\frametitle{Top rules by support}
+<<seqrules1_out1, results=verbatim>>=
+seqrules1$outme1()
+@
+\begin{Soutput}
+
+52  software_engineering
+77  computer_organization_i
+80  data_structures
+83  introduction_to_programming
+84  programming_in_java
+86  introduction_to_databases
+131 introduction_to_the_use_of_computers
+193 programming_project
+194 data_structures_project
+\end{Soutput}
+\end{frame}
+
 
 \begin{frame}
-
-% \begin{multicols}{2}
-
 \begin{itemize}
-\item It's clear that there is some pattern between diffrent rules. But what?
+\item Rule left hand side (LHS) dicates on which "line" rule is:
 \end{itemize}
-
 <<seqrules1_plot1, width=6, height=4, fig=TRUE>>=
 seqrules1$plotme1()
 @
 \end{frame}
 
+
+\begin{frame}[fragile]
+\frametitle{Top rules by confidence}
+<<seqrules1_out2, results=verbatim>>=
+seqrules1$outme2()
+@
+\begin{Soutput}
+
+49  tutoring
+52  software_engineering
+77  computer_organization_i
+83  introduction_to_programming
+84  programming_in_java
+86  introduction_to_databases
+91  concurrent_programming
+93  database_management	
+131 introduction_to_the_use_of_computers
+193 programming_project
+194 data_structures_project
+196 software_engineering_lab
+402 operating_systems
+\end{Soutput}
+\end{frame}
+
+
 \begin{frame}
+\begin{itemize}
+\item Rule right hand side (RHS) dicates on which "line" rule is:
+\end{itemize}
 <<seqrules1_plot2, width=6, height=4, fig=TRUE>>=
 seqrules1$plotme2()
 @
 \end{frame}
 
+
+\begin{frame}[fragile]
+\frametitle{Top rules by lift}
+\begin{itemize}
+\item Note the \texttt{<{206}> => <{215}>} rule (only top RHSs).
+\end{itemize}
+<<seqrules1_out3, results=verbatim>>=
+seqrules1$outme3()
+@
+\begin{Soutput}
+
+77  computer_organization_i
+80  data_structures
+83  introduction_to_programming 
+193 programming_project
+197 methods_for_software_engineering
+198 introduction_to_computer_science
+201  humancomputer_interaction
+202 introduction_to_data_communication
+206 models_of_computation
+215 introduction_to_computer_security
+362 personal_study_plan_and_participating_in_teacher_tutoring
+\end{Soutput}
+\end{frame}
+
+
 \begin{frame}
+\begin{itemize}
+\item High lift rules tend to have low supports
+\end{itemize}
 <<seqrules1_plot3, width=6, height=4, fig=TRUE>>=
 seqrules1$plotme3()
 @
@@ -33,18 +105,4 @@ seqrules1$plotme3()
 
 % \end{multicols}
 \end{frame}
-% 
-% 
-% 
-% Top rules by lift:
-% 
-% <<seqrules1_out1, results=verbatim>>=
-% seqrules1$outme1()
-% @
-% 
-% Top rules by confidence:
-% 
-% <<seqrules1_out2, results=verbatim>>=
-% seqrules1$outme2()
-% @
-% 
+
