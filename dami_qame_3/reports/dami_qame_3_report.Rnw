@@ -126,6 +126,7 @@ source("mysweave.R")
 %----------------------------------------------------------------------------------------
 
 \SweaveInput{../arto/init}
+\SweaveInput{../group/intro}
 
 \section{Pattern specification}
 \SweaveInput{../eric/specification.Rnw}
