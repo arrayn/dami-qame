@@ -1,0 +1,24 @@
+% !Rnw root = ../reports/dami_qame_3_report.Rnw
+
+<<exploration_comput, results=hide>>=
+source("../arto/exploration_comput.R")
+@
+
+\subsection{Data Exploration}
+\begin{multicols}{2}
+
+\subsubsection{How many courses in one student's semester}
+
+\autoref{fig:courses_in_semester} shows how many courses there are in each student's semester. The distribution is not surprising. It is worth noting that there are not ridiculously many 1-course semesters.
+
+\begin{figure}[H]
+\centering
+<<exploration_plot1, width=6, height=4, fig=TRUE>>=
+exploration$plotme1()
+@
+\caption{How many courses in one student's semester}
+\label{fig:courses_in_semester}
+\end{figure}
+
+
+\end{multicols}

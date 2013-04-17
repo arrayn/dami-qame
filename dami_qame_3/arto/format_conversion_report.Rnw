@@ -4,7 +4,7 @@
 source("../arto/format_conversion_comput.R")
 @
 
-\subsection{Data Format Conversion}
+\subsection{Data format conversion}
 \begin{multicols}{2}
 
 Original data looked like this:
