@@ -13,7 +13,9 @@
 
 \subsection{Learning objectives for this problem}
 \begin{multicols}{2}
-Our learning objective was to deepen our concept understanding by keeping individual learning journals and by exploring the new course registration data. We continued to utilize the feedback and this time slides were generated.   
+
+Our learning objective was to deepen our concept understanding by keeping individual learning journals and by exploring the new course registration data. We continued to utilize the feedback and this time slides were generated.  
+
 
 \end{multicols}
 \subsection{Organizing studying, learning and working}
@@ -23,7 +25,6 @@ We continued with well working methods that were established and found satisfact
 
 We started with reading the book and familiarizing ourselves with the key concepts: frequent pattern problem specification, sequential patterns and generalized Apriori. We continued with working on problem specifications slides and structuring the problem following the three abstraction levels presented in lecture. 
 
-
 \end{multicols}
 \section{Research questions}
 \begin{multicols}{2}
@@ -31,7 +32,7 @@ We started with reading the book and familiarizing ourselves with the key concep
 We sought answers to the following questions.
 
 \begin{itemize}
-\item If a person takes course X what kind of sequences of courses has he/she taken before?
+\item If a person takes course X what kind of sequences of courses has he/she taken before?  	
 
 \item After taking the course Data Mining, what kind of sequences of courses have students often taken? 
 
