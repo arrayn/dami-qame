@@ -6,13 +6,21 @@ source("../arto/seqrules1_comput.R")
 
 \subsection{Sequence rules}
 
-\begin{multicols}{2}
+\subsubsection{Top rules by support}
 
-By looking at figures \autoref{fig:rules_con_vs_sup}, \autoref{fig:rules_lift_vs_sup} and \autoref{fig:rules_lift_vs_con}, it's clear that there is some pattern between diffrent rules. But what?
+<<seqrules1_out1, results=verbatim>>=
+seqrules1$outme1()
+@
+
+
+
+
+By looking at \autoref{fig:rules_con_vs_sup} we see that Rule left hand side (LHS) dictates on which "line" rule is. Pay attention to \texttt{LHS=<\{83\}>}.
+
 
 \begin{figure}[H]
 \centering
-<<seqrules1_plot1, fig=TRUE>>=
+<<seqrules1_plot1, width=6, height=4, fig=TRUE>>=
 seqrules1$plotme1()
 @
 \caption{Rules: confidence vs. support}
@@ -20,38 +28,55 @@ seqrules1$plotme1()
 \end{figure}
 
 
+\subsubsection{Top rules by confidence}
+<<seqrules1_out2, results=verbatim>>=
+seqrules1$outme2()
+@
+
+
+In \autoref{fig:rules_lift_vs_sup} rule right hand side (RHS) dictates on which "line" rule is.
+
 \begin{figure}[H]
 \centering
-<<seqrules1_plot2, fig=TRUE>>=
+<<seqrules1_plot2, width=6, height=4, fig=TRUE>>=
 seqrules1$plotme2()
 @
 \caption{Rules: lift vs. support}
 \label{fig:rules_lift_vs_sup}
 \end{figure}
 
+\begin{multicols}{2}
+From \autoref{fig:course_in_rhs} we see that \texttt{196 software\_engineering\_lab} is often on rule's RHS.
+
 
 \begin{figure}[H]
 \centering
-<<seqrules1_plot3, fig=TRUE>>=
+<<seqrules1_plot5, width=6, height=4, fig=TRUE>>=
+seqrules1$plotme5()
+@
+\caption{Rules: Course occurrences as RHS in a seqrules}
+\label{fig:course_in_rhs}
+\end{figure}
+\end{multicols}
+
+
+\subsubsection{Top rules by lift}
+<<seqrules1_out3, results=verbatim>>=
+seqrules1$outme3()
+@
+
+Note that there is a \texttt{<{206}> => <{215}>} rule on top-9 rules by lift. And those two courses are the only RHSs on the top-9 rules by lift.
+
+
+From \autoref{fig:rules_lift_vs_con} we see that high lift rules tend to have low supports. So maybe these rules coulf be classified as spurious. This problem could be mitigated by setting the support threshold higher.
+
+
+\begin{figure}[H]
+\centering
+<<seqrules1_plot3, width=6, height=4, fig=TRUE>>=
 seqrules1$plotme3()
 @
 \caption{Rules: lift vs. confidence}
 \label{fig:rules_lift_vs_con}
 \end{figure}
 
-
-\end{multicols}
-
-
-
-Top rules by lift:
-
-<<seqrules1_out1, results=verbatim>>=
-seqrules1$outme1()
-@
-
-Top rules by confidence:
-
-<<seqrules1_out2, results=verbatim>>=
-seqrules1$outme2()
-@
