@@ -129,18 +129,17 @@ source("mysweave.R")
 \SweaveInput{../group/intro}
 
 \section{Pattern specification}
+% \SweaveInput{../quan/pseudo_code_report}
 \SweaveInput{../eric/specification.Rnw}
 
 \section{Implementations}
-% for our own implementation hacking
-% \section{Own implementation hackings}
-% \SweaveInput{../arto/arto_implementation_report}
-
 \SweaveInput{../eric/implementation.Rnw}
 
-\SweaveInput{../arto/examples_with_library_report}
+\section{Data mining}
 \SweaveInput{../arto/format_conversion_report.Rnw}
-\SweaveInput{../quan/pseudo_code_report}
+\SweaveInput{../arto/seqrules1_report}
+
+
 
 
 \end{document}

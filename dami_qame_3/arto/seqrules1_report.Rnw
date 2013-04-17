@@ -1,0 +1,57 @@
+% !Rnw root = ../reports/dami_qame_3_report.Rnw
+
+<<seqrules1_comput, results=hide>>=
+source("../arto/seqrules1_comput.R")
+@
+
+\subsection{Sequence rules}
+
+\begin{multicols}{2}
+
+By looking at figures \autoref{fig:rules_con_vs_sup}, \autoref{fig:rules_lift_vs_sup} and \autoref{fig:rules_lift_vs_con}, it's clear that there is some pattern between diffrent rules. But what?
+
+\begin{figure}[H]
+\centering
+<<seqrules1_plot1, fig=TRUE>>=
+seqrules1$plotme1()
+@
+\caption{Rules: confidence vs. support}
+\label{fig:rules_con_vs_sup}
+\end{figure}
+
+
+\begin{figure}[H]
+\centering
+<<seqrules1_plot2, fig=TRUE>>=
+seqrules1$plotme2()
+@
+\caption{Rules: lift vs. support}
+\label{fig:rules_lift_vs_sup}
+\end{figure}
+
+
+\begin{figure}[H]
+\centering
+<<seqrules1_plot3, fig=TRUE>>=
+seqrules1$plotme3()
+@
+\caption{Rules: lift vs. confidence}
+\label{fig:rules_lift_vs_con}
+\end{figure}
+
+
+\end{multicols}
+
+
+
+Top rules by lift:
+
+<<seqrules1_out1, results=verbatim>>=
+seqrules1$outme1()
+@
+
+Top rules by confidence:
+
+<<seqrules1_out2, results=verbatim>>=
+seqrules1$outme2()
+@
