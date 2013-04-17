@@ -113,7 +113,7 @@ University of Helsinki \\ % Your institution for the title page
 
 \begin{document}
 
-\SweaveOpts{concordance=TRUE, echo=FALSE, results=tex, prefix.string=figure/fig, width=5, height=4}
+\SweaveOpts{concordance=TRUE, echo=FALSE, results=tex, prefix.string=figure/fig, width=5, height=5}
 \DefineVerbatimEnvironment{Sinput}{Verbatim}{fontsize=\scriptsize, fontshape=n}
 \DefineVerbatimEnvironment{Soutput}{Verbatim}{fontsize=\scriptsize, fontshape=n}
 \setkeys{Gin}{width=1.00\linewidth}
@@ -145,8 +145,8 @@ source("mysweave.R")
 
 
 \SweaveInput{../arto/init.Rnw}
- 
-
+\section{Sequence rules}
+\SweaveInput{../arto/seqrules1_slides}
 
 \SweaveInput{../arto/thank_you_slides}
 

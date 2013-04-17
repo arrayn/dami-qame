@@ -1,0 +1,50 @@
+% !Rnw root = ../reports/dami_qame_3_slides_2.Rnw
+
+<<seqrules1_comput, results=hide>>=
+source("../arto/seqrules1_comput.R")
+@
+
+\subsection{Sequence rules}
+
+\begin{frame}
+
+% \begin{multicols}{2}
+
+\begin{itemize}
+\item It's clear that there is some pattern between diffrent rules. But what?
+\end{itemize}
+
+<<seqrules1_plot1, width=6, height=4, fig=TRUE>>=
+seqrules1$plotme1()
+@
+\end{frame}
+
+\begin{frame}
+<<seqrules1_plot2, width=6, height=4, fig=TRUE>>=
+seqrules1$plotme2()
+@
+\end{frame}
+
+\begin{frame}
+<<seqrules1_plot3, width=6, height=4, fig=TRUE>>=
+seqrules1$plotme3()
+@
+
+
+% \end{multicols}
+\end{frame}
+% 
+% 
+% 
+% Top rules by lift:
+% 
+% <<seqrules1_out1, results=verbatim>>=
+% seqrules1$outme1()
+% @
+% 
+% Top rules by confidence:
+% 
+% <<seqrules1_out2, results=verbatim>>=
+% seqrules1$outme2()
+% @
+% 
