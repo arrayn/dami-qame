@@ -10,24 +10,12 @@ source("../arto/seqrules1_comput.R")
 <<seqrules1_out1, results=verbatim>>=
 seqrules1$outme1()
 @
-\begin{Soutput}
-
-52  software_engineering
-77  computer_organization_i
-80  data_structures
-83  introduction_to_programming
-84  programming_in_java
-86  introduction_to_databases
-131 introduction_to_the_use_of_computers
-193 programming_project
-194 data_structures_project
-\end{Soutput}
 \end{frame}
 
 
 \begin{frame}
 \begin{itemize}
-\item Rule left hand side (LHS) dicates on which "line" rule is:
+\item Rule left hand side (LHS) dictates on which "line" rule is:
 \end{itemize}
 <<seqrules1_plot1, width=6, height=4, fig=TRUE>>=
 seqrules1$plotme1()
@@ -40,31 +28,25 @@ seqrules1$plotme1()
 <<seqrules1_out2, results=verbatim>>=
 seqrules1$outme2()
 @
-\begin{Soutput}
-
-49  tutoring
-52  software_engineering
-77  computer_organization_i
-83  introduction_to_programming
-84  programming_in_java
-86  introduction_to_databases
-91  concurrent_programming
-93  database_management	
-131 introduction_to_the_use_of_computers
-193 programming_project
-194 data_structures_project
-196 software_engineering_lab
-402 operating_systems
-\end{Soutput}
 \end{frame}
 
 
 \begin{frame}
 \begin{itemize}
-\item Rule right hand side (RHS) dicates on which "line" rule is:
+\item Rule right hand side (RHS) dictates on which "line" rule is:
 \end{itemize}
 <<seqrules1_plot2, width=6, height=4, fig=TRUE>>=
 seqrules1$plotme2()
+@
+\end{frame}
+
+
+\begin{frame}
+\begin{itemize}
+\item \texttt{196 software\_engineering\_lab} is often on rule's RHS.
+\end{itemize}
+<<seqrules1_plot5, width=6, height=4, fig=TRUE>>=
+seqrules1$plotme5()
 @
 \end{frame}
 
@@ -77,20 +59,6 @@ seqrules1$plotme2()
 <<seqrules1_out3, results=verbatim>>=
 seqrules1$outme3()
 @
-\begin{Soutput}
-
-77  computer_organization_i
-80  data_structures
-83  introduction_to_programming 
-193 programming_project
-197 methods_for_software_engineering
-198 introduction_to_computer_science
-201  humancomputer_interaction
-202 introduction_to_data_communication
-206 models_of_computation
-215 introduction_to_computer_security
-362 personal_study_plan_and_participating_in_teacher_tutoring
-\end{Soutput}
 \end{frame}
 
 
@@ -104,21 +72,14 @@ seqrules1$plotme3()
 \end{frame}
 
 
-\begin{frame}
-\begin{itemize}
-\item How to get names to these?
-\end{itemize}
-<<seqrules1_plot4, width=6, height=4, fig=TRUE>>=
-seqrules1$plotme4()
-@
-\end{frame}
+% \begin{frame}
+% \begin{itemize}
+% \item How to get names to these?
+% \end{itemize}
+% <<seqrules1_plot4, width=6, height=4, fig=TRUE>>=
+% seqrules1$plotme4()
+% @
+% \end{frame}
 
 
-\begin{frame}
-\begin{itemize}
-\item How to get names to these?
-\end{itemize}
-<<seqrules1_plot5, width=6, height=4, fig=TRUE>>=
-seqrules1$plotme5()
-@
-\end{frame}
+

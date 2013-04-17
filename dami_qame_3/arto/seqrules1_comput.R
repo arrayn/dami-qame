@@ -8,12 +8,24 @@ seqrules1$r1 <- r1
 tdf  <- as(r1, "data.frame")
 seqrules1$tdf  <- tdf
 
+#
 # outting function-closures
+#
 
 seqrules1$outme1 <- function(){
   oldopts <- options("width")
   options(width=120)
   print(as(head(sort(r1, by="support"), n=10), "data.frame"))
+  cat("
+52  software_engineering
+77  computer_organization_i
+80  data_structures
+83  introduction_to_programming
+84  programming_in_java
+86  introduction_to_databases
+131 introduction_to_the_use_of_computers
+193 programming_project
+194 data_structures_project")
   options(width=oldopts$width)
 }
 
@@ -21,6 +33,20 @@ seqrules1$outme2 <- function(){
   oldopts <- options("width")
   options(width=120)
   print(as(head(sort(r1, by="confidence"), n=9), "data.frame"))
+  cat("
+49  tutoring
+52  software_engineering
+77  computer_organization_i
+83  introduction_to_programming
+84  programming_in_java
+86  introduction_to_databases
+91  concurrent_programming
+93  database_management  
+131 introduction_to_the_use_of_computers
+193 programming_project
+194 data_structures_project
+196 software_engineering_lab
+402 operating_systems")
   options(width=oldopts$width)
 }
 
@@ -28,14 +54,39 @@ seqrules1$outme3 <- function(){
   oldopts <- options("width")
   options(width=120)
   print(as(head(sort(r1, by="lift"), n=9), "data.frame"))
+  cat("
+77  computer_organization_i
+80  data_structures
+83  introduction_to_programming 
+193 programming_project
+197 methods_for_software_engineering
+198 introduction_to_computer_science
+201  humancomputer_interaction
+202 introduction_to_data_communication
+206 models_of_computation
+215 introduction_to_computer_security
+362 personal_study_plan_and_participating_in_teacher_tutoring")
   options(width=oldopts$width)
 }
 
+#
 # plotting function-closures
+#
+
+fudgeit <- function(){
+  xm <- get('xm', envir = parent.frame(1))
+  ym <- get('ym', envir = parent.frame(1))
+  z  <- get('dens', envir = parent.frame(1))
+  colramp <- get('colramp', parent.frame(1))
+  library(fields)
+  image.plot(xm,ym,z, col = colramp(256), legend.only = T, add =F)
+}
 
 seqrules1$inner.plotme1 <- function(tdf, xidx, yidx, ...){
+  # par(mar = c(5,4,4,5) + .1)
+  par(mar = c(4,4,2,5) + .1)
   library(lattice)
-  smoothScatter(tdf[,c(xidx, yidx)],nrpoints=nrow(tdf)/10, ...)
+  smoothScatter(tdf[,c(xidx, yidx)], nrpoints=nrow(tdf)/10, postPlotHook = fudgeit, ...)
 }
 
 seqrules1$plotme1 <- function(){
@@ -46,6 +97,9 @@ seqrules1$plotme1 <- function(){
 
 seqrules1$plotme2 <- function(){
   seqrules1$inner.plotme1(seqrules1$tdf, 3, 4, main="Rules: lift vs. confidence")
+  rhses <- unlist(LIST(rhs(seqrules1$r1), decode=T))
+  points(tdf[which(rhses == "196"), c(3,4)], col="red", pch=19, cex=0.25)
+  legend("topleft", c("RHS=<{196}>"), col="red", lwd=2, lty=3)
 }
 
 seqrules1$plotme3 <- function(){
@@ -58,7 +112,7 @@ seqrules1$plotme4 <- function(){
 }
 
 seqrules1$plotme5 <- function(){
-  barplot(head(sort(table(unlist(LIST(rhs(seqrules1$r1), decode=T))), decreasing=T), n=15), cex.names=0.70)
+  barplot(head(sort(table(unlist(LIST(rhs(seqrules1$r1), decode=T))), decreasing=T), n=15), cex.names=0.70, xlab="course ID", ylab="count of occurences as RHS")
   title("Course occurrences as RHS in a seqrules")
 }
 
