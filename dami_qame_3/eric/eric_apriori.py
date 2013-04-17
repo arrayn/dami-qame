@@ -192,7 +192,8 @@ def flatten(l):
     return [item for sublist in l for item in sublist]
 
 if __name__ == '__main__':
-    data_sequences = read_data_sequences("../data/courses_sequences_num.txt")
+    id_sequences = read_data_sequences("../data/courses_sequences_num.txt")
+    name_sequences = read_data_sequences("../data/courses_sequences_text.txt")
 
 
 

@@ -4,8 +4,8 @@
     $$
     <e_1, e_2, ..., e_k>
     $$
-    where $k \geq 1$, and each event $e_i$ belongs to the set of items (courses)
-    i.e. $e_i \in I$.
+    where $k \geq 1$, and each event $e_i$ is an item (course), formally
+    $e_i \in I$ where $I$ is the set of all items.
 
     Examples of these patterns are presented below:
     \begingroup
@@ -49,6 +49,7 @@
     \begin{itemize}
         \item{$k \leq n$}
         \item{There exists a strictly increasing subsequence of $t$ indexed by
+            \linebreak
             $1 \leq n_1 < n_2 < ... < n_k \leq n$ s.t.
                 \begin{itemize}
             \item{$e_i \in t_{n_i}$ for all $i \in \{1,2,...,k\}$.}

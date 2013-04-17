@@ -98,6 +98,7 @@ University of Helsinki % Your institution
 \setlength{\columnsep}{20pt}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{verbatim}
 
 \begin{document}
 
@@ -129,9 +130,12 @@ source("mysweave.R")
 \section{Pattern specification}
 \SweaveInput{../eric/specification.Rnw}
 
+\section{Implementations}
 % for our own implementation hacking
 % \section{Own implementation hackings}
 % \SweaveInput{../arto/arto_implementation_report}
+
+\SweaveInput{../eric/implementation.Rnw}
 
 \SweaveInput{../arto/examples_with_library_report}
 \SweaveInput{../arto/format_conversion_report.Rnw}
