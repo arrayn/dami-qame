@@ -101,8 +101,24 @@ seqrules1$outme3()
 <<seqrules1_plot3, width=6, height=4, fig=TRUE>>=
 seqrules1$plotme3()
 @
-
-
-% \end{multicols}
 \end{frame}
 
+
+\begin{frame}
+\begin{itemize}
+\item How to get names to these?
+\end{itemize}
+<<seqrules1_plot4, width=6, height=4, fig=TRUE>>=
+seqrules1$plotme4()
+@
+\end{frame}
+
+
+\begin{frame}
+\begin{itemize}
+\item How to get names to these?
+\end{itemize}
+<<seqrules1_plot5, width=6, height=4, fig=TRUE>>=
+seqrules1$plotme5()
+@
+\end{frame}

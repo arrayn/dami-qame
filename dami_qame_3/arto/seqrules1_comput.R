@@ -52,5 +52,14 @@ seqrules1$plotme3 <- function(){
   seqrules1$inner.plotme1(seqrules1$tdf, 2, 4, main="Rules: lift vs. support")
 }
 
+seqrules1$plotme4 <- function(){
+  barplot(head(sort(table(unlist(LIST(lhs(seqrules1$r1), decode=T))), decreasing=T), n=15), cex.names=0.70)
+  title("Course occurrences in LHS in a seqrules")
+}
+
+seqrules1$plotme5 <- function(){
+  barplot(head(sort(table(unlist(LIST(rhs(seqrules1$r1), decode=T))), decreasing=T), n=15), cex.names=0.70)
+  title("Course occurrences as RHS in a seqrules")
+}
 
 # R CMD Sweave dami_qame_3_slides_1.Rnw && pdflatex dami_qame_3_slides_1.tex
