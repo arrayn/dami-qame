@@ -145,6 +145,10 @@ source("mysweave.R")
 
 
 \SweaveInput{../arto/init.Rnw}
+
+\section{Data exploration}
+\SweaveInput{../arto/exploration_slides}
+
 \section{Sequence rules}
 \SweaveInput{../arto/seqrules1_slides}
 
