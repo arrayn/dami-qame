@@ -1,12 +1,12 @@
 % !Rnw root = ../reports/dami_qame_3_slides_2.Rnw
 
+<<exploration_comput, results=hide>>=
+source("../arto/exploration_comput.R")
+@
 
 \begin{frame}
-% \begin{itemize}
-% \item Rule left hand side (LHS) dicates on which "line" rule is:
-% \end{itemize}
 <<exploration_plot1, width=6, height=4, fig=TRUE>>=
-barplot(table(size(courses.str)), main="How many courses in one student's semester", xlab="course count", ylab="semester occurrences")
+exploration$plotme1()
 @
 \end{frame}
 

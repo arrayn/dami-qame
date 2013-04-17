@@ -8,23 +8,22 @@
 \listoffigures
 \listoftables
 
-\section{Group learning and self evaluation -- THIS NEEDS UPDATING!!!}
+\section{Group learning and self evaluation}
 
 
 \subsection{Learning objectives for this problem}
 \begin{multicols}{2}
 
-In addition to concept understanding goals (maximal and closed itemsets, association rules, interestingness measures and depth-first vs breadth-first algorithms) presented further in the research questions, we wanted to utilize the feedback and experience from previous problem to make our report more accessible. For example we used different finishing process to be able to make figures appear nearer the text that addresses them. We also stated our research goals more clearly. 
+Our learning objective was to deepen our concept understanding by keeping individual learning journals and by exploring the new course registration data. We continued to utilize the feedback and this time slides were generated.  
+
 
 \end{multicols}
 \subsection{Organizing studying, learning and working}
 \begin{multicols}{2}
 
-We meet after lectures and organize our work face to face. We found it more effective to work face to face and discuss about learning goals, results and findings. We tried to divide focus areas so that we would have different algorithms implemented and we could compare them. However, estimating the difficulty level of different choices proved to be quite difficult. We could try to improve this work division and goal setting process.
+We continued with well working methods that were established and found satisfactory in previous weeks: We continued with producing mini-reports on particular subjects for others to see via git and we met after lecture for organizing our group work and different focus areas. 
 
-We identified the rest of the chapter 6 from the course book as beneficial in order to reach our learning goals. After that group members studied and tried to implement their chosen algorithms mostly independently. After Monday's lecture we started to produce the group report by each member developing mini-reports on particular subjects for others to see via git. Finally, we composed a coherent whole of these mini-reports. We found this approach satisfactory.
-
-Different members of the group found different things difficult. We were able to teach each other something. We were also able to share some useful functions via github and improve on the work of others. These things helped us enjoy working as a group.
+We started with reading the book and familiarizing ourselves with the key concepts: frequent pattern problem specification, sequential patterns and generalized Apriori. We continued with working on problem specifications slides and structuring the problem following the three abstraction levels presented in lecture. 
 
 \end{multicols}
 \section{Research questions}
@@ -33,20 +32,13 @@ Different members of the group found different things difficult. We were able to
 We sought answers to the following questions.
 
 \begin{itemize}
-\item How does this data set compare to the previous one. Does it have the same
-kind of problems (e.g. duplicates) as the last set? What can we infer from the
-additional information?
+\item If a person takes course X what kind of sequences of courses has he/she taken before?  	
 
-\item Effectiveness of depth-first vs. breadth-first approaches to mining frequent
-itemsets, or in a nutshell: which one is faster, Apriori or Eclat?
+\item After taking the course Data Mining, what kind of sequences of courses have students often taken? 
 
-\item How much worse (or better) our implementations of the algorithms perform
-compared to the "arules" R library's implementations?
+\item Does the sizes of two following semester correlate? 
+\item Histogram of how many courses one student takes in one semester
 
-\item How many of the mined frequent itemsets turn out to be closed, how many
-were maximal?
-
-\item How do the results of different interestingness measures compare?
 \end{itemize}
 
 \end{multicols}

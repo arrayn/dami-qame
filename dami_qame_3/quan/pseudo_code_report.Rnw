@@ -64,6 +64,3 @@ Each element is allowed to have 1 event, so the second case in the book is appli
   \State $i$: \textit{element} index in $t$ such that previous event in $c$ belonging to
 \end{algorithmic}
 \end{algorithm}
-
-
-\end{document}
