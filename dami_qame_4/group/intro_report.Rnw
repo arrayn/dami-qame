@@ -1,0 +1,44 @@
+% !Rnw root = ../reports/dami_qame_3_report.Rnw
+
+\begin{multicols}{2}
+\initial{T}\textbf{his problem 3 report submission consists of three parts: earlier specification round slides, this written report and second round of slides. Reproducible research is handled via github:  \url{https://github.com/arrayn/dami-qame/}. We begin with group-learning related issues and then proceed to substance.}
+\end{multicols}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\section{Group learning and self evaluation}
+
+
+\subsection{Learning objectives for this problem}
+\begin{multicols}{2}
+
+Our learning objective was to deepen our concept understanding by keeping individual learning journals and by exploring the new course registration data. We continued to utilize the feedback and this time slides were generated.  
+
+
+\end{multicols}
+\subsection{Organizing studying, learning and working}
+\begin{multicols}{2}
+
+We continued with well working methods that were established and found satisfactory in previous weeks: We continued with producing mini-reports on particular subjects for others to see via git and we met after lecture for organizing our group work and different focus areas. 
+
+We started with reading the book and familiarizing ourselves with the key concepts: frequent pattern problem specification, sequential patterns and generalized Apriori. We continued with working on problem specifications slides and structuring the problem following the three abstraction levels presented in lecture. 
+
+\end{multicols}
+\section{Research questions}
+\begin{multicols}{2}
+
+We sought answers to the following questions.
+
+\begin{itemize}
+\item If a person takes course X what kind of sequences of courses has he/she taken before?  	
+
+\item After taking the course Data Mining, what kind of sequences of courses have students often taken? 
+
+\item Does the sizes of two following semester correlate? 
+\item Histogram of how many courses one student takes in one semester
+
+\end{itemize}
+
+\end{multicols}

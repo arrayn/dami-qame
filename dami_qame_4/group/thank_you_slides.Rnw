@@ -1,0 +1,5 @@
+% !Rnw root = ../reports/dami_qame_3_slides_1.Rnw
+
+\begin{frame}
+\Huge{\centerline{Thank you!}}
+\end{frame}
