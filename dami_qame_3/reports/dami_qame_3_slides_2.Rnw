@@ -110,6 +110,7 @@ University of Helsinki \\ % Your institution for the title page
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 % \usepackage{algorithm2e}
+\usepackage{verbatim}
 
 \begin{document}
 
@@ -146,11 +147,15 @@ source("mysweave.R")
 
 \SweaveInput{../arto/init.Rnw}
 
+\section{Implementation}
+\SweaveInput{../eric/implementation_real_slides.Rnw}
+
 \section{Data exploration}
 \SweaveInput{../arto/exploration_slides}
 
 \section{Sequence rules}
 \SweaveInput{../arto/seqrules1_slides}
+
 
 \SweaveInput{../arto/thank_you_slides}
 
