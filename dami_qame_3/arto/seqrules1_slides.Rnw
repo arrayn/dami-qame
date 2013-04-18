@@ -6,6 +6,26 @@ source("../arto/seqrules1_comput.R")
 
 
 \begin{frame}[fragile]
+\frametitle{Sequence rules}
+Rules are obtained from frequent sequences by using the last element as RHS:
+\begin{itemize}
+\item "Left hand side" = LHS = L
+\item "Right hand side" = RHS = R
+\item sequence \texttt{<L,R>} becomes a rule \texttt{<L> => <R>}
+\item E.g. \texttt{<\{197\},\{80\},\{206\}>} becomes \texttt{<\{197\},\{80\}> => <\{206\}>}
+\end{itemize}
+\bigskip{}
+
+Measures for sequence rules:
+\begin{itemize}
+\item support = P(L,R), note that this is actually ordered: P(<L,R>)
+\item confidence = P(L,R) / P(L)
+\item lift = [P(L,R) / P(L)] / P(R), or equivalently P(L,R) / [P(L) * P(R)] 
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
 \frametitle{Top rules by support}
 <<seqrules1_out1, results=verbatim>>=
 seqrules1$outme1()

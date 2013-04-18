@@ -90,20 +90,20 @@ seqrules1$inner.plotme1 <- function(tdf, xidx, yidx, ...){
 }
 
 seqrules1$plotme1 <- function(){
-  seqrules1$inner.plotme1(seqrules1$tdf, 2, 3, ylim=c(0,1), main="Rules: confidence vs. support")
+  seqrules1$inner.plotme1(seqrules1$tdf, 2, 3, ylim=c(0,1), main="Rules: confidence = P(L,R) / P(L) vs. support = P(L,R)", ylab="confidence = P(L,R) / P(L)", xlab="support = P(L,R)")
   temp <- head(tdf[order(tdf$support, decreasing=T),], n=6)
   text(temp[,2], temp[,3], as.character(temp[,1]), cex=0.5, pos=2)
 }
 
 seqrules1$plotme2 <- function(){
-  seqrules1$inner.plotme1(seqrules1$tdf, 3, 4, main="Rules: lift vs. confidence")
+  seqrules1$inner.plotme1(seqrules1$tdf, 3, 4, main="Rules: lift = [P(L,R) / P(L)] / P(R) vs. confidence = P(L,R) / P(L)", ylab="lift = [P(L,R) / P(L)] / P(R)", xlab="confidence = P(L,R) / P(L)")
   rhses <- unlist(LIST(rhs(seqrules1$r1), decode=T))
   points(tdf[which(rhses == "196"), c(3,4)], col="red", pch=19, cex=0.25)
   legend("topleft", c("RHS=<{196}>"), col="red", lwd=2, lty=3)
 }
 
 seqrules1$plotme3 <- function(){
-  seqrules1$inner.plotme1(seqrules1$tdf, 2, 4, main="Rules: lift vs. support")
+  seqrules1$inner.plotme1(seqrules1$tdf, 2, 4, main="Rules: lift = P(L,R) / [P(L) * P(R)] vs. support = P(L,R)", ylab="lift = P(L,R) / [P(L) * P(R)]", xlab="support = P(L,R)")
 }
 
 seqrules1$plotme4 <- function(){
