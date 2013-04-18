@@ -139,9 +139,10 @@ source("mysweave.R")
 
 \section{Data mining}
 \SweaveInput{../arto/exploration_report}
+\SweaveInput{../eric/sequence_results.Rnw}
 \SweaveInput{../arto/seqrules1_report}
 
-\SweaveInput{../eric/sequence_results.Rnw}
+
 
 
 

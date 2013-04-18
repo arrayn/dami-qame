@@ -35,7 +35,8 @@ seqrules1$outme1()
 
 \begin{frame}
 \begin{itemize}
-\item Rule left hand side (LHS) dictates on which "line" rule is:
+% \item Rule left hand side (LHS) dictates on which "line" rule is:
+\item The slopes of the "lines" are $\frac{P(L,R) / P(L)}{P(L,R)} =  \frac{1}{P(L)}$.
 \end{itemize}
 <<seqrules1_plot1, width=6, height=4, fig=TRUE>>=
 seqrules1$plotme1()
@@ -53,7 +54,8 @@ seqrules1$outme2()
 
 \begin{frame}
 \begin{itemize}
-\item Rule right hand side (RHS) dictates on which "line" rule is:
+% \item Rule right hand side (RHS) dictates on which "line" rule is:
+\item The slopes of the "lines" are $\frac{[P(L,R) / P(L)] / P(R)}{P(L,R) / P(L)} =  \frac{1}{P(R)}$.
 \end{itemize}
 <<seqrules1_plot2, width=6, height=4, fig=TRUE>>=
 seqrules1$plotme2()
