@@ -125,7 +125,10 @@ source("mysweave.R")
 %	ARTICLE CONTENTS
 %----------------------------------------------------------------------------------------
 
-% \SweaveInput{../arto/init}
+\SweaveInput{../arto/init}
+
+\SweaveInput{../arto/negap1_report}
+
 \SweaveInput{../group/intro_report}
 
 

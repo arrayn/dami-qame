@@ -144,7 +144,9 @@ source("mysweave.R")
 \end{frame}
 
 
-% \SweaveInput{../arto/init.Rnw}
+\SweaveInput{../arto/init.Rnw}
+
+\SweaveInput{../arto/negap1_slides}
 
 \SweaveInput{../group/thank_you_slides}
 

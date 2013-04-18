@@ -1,0 +1,18 @@
+% !Rnw root = ../reports/dami_qame_4_slides.Rnw
+
+<<negap1_comput, results=hide>>=
+source("../arto/negap1_comput.R")
+@
+
+\begin{frame}[fragile]
+
+\begin{multicols}{2}
+We added some negations:
+
+<<negap1_out1, results=verbatim>>=
+negap1$outme1()
+@
+
+\end{multicols}
+
+\end{frame}

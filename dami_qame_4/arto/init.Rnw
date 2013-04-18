@@ -1,0 +1,5 @@
+% !Rnw root = ../reports/dami_qame_4_report.Rnw
+
+<<init_data, results=hide>>=
+source("../arto/init.R")
+@
