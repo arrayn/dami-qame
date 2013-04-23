@@ -1,0 +1,20 @@
+% !Rnw root = ../reports/dami_qame_4_slides.Rnw
+
+\begin{frame}[fragile]
+\frametitle{Negatively correlated patterns}
+% \begin{multicols}{2}
+
+\begin{itemize}
+\item Items are not likely to be bought together, for example customer that buys a DVD will not buy VCRs.
+\item \textit{Negatively correlated itemset}: Itemset $X$ consisting of items $x_1,\ldots{},x_k$ is negatively correlated if  $P(X) < \sum{}_{j=1}^{k}P(x_j)$ where $P$ is probability (i.e. support).
+\item Note that right hand side of the inequality $\sum{}_{j=1}^{k}P(x_j)$ , represents an estimate of the probability that all the items in $X$ are statistically independent.
+\item \textit{Negatively correlated association rule}: Rule X -> Y for which $P(X  Y) < P(X)P(Y)$,  where X, Y disjoint
+\item data IS the population <- our assumption
+\item partial conditon maybe better than full condition
+
+
+\end{itemize}
+
+% \end{multicols}
+
+\end{frame}

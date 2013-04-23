@@ -1,0 +1,17 @@
+% !Rnw root = ../reports/dami_qame_4_slides.Rnw
+
+\begin{frame}[fragile]
+\frametitle{Infrequent patterns}
+% \begin{multicols}{2}
+
+\begin{itemize}
+\item \textit{pattern}: itemset or association rule
+\item \textit{infrequent pattern}: An itemset or rule whose support is less than minsup threshold.
+\item Infrequent patterns are below the frequent itemset border, which means that there are a huge number of them. [ADD FIGURE ABOUT SEARCH SPACE] 
+\item How to find interesting ones? E.g. { Fire = Yes } is frequent but {Fire = Yes, Alarm = On} is infrequent may indicate that the fire alarms don't work.
+\item how to mine efficiently?
+\end{itemize}
+
+% \end{multicols}
+
+\end{frame}

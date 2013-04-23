@@ -1,0 +1,15 @@
+% !Rnw root = ../reports/dami_qame_4_slides.Rnw
+
+\begin{frame}[fragile]
+\frametitle{Negative patterns}
+% \begin{multicols}{2}
+
+\begin{itemize}
+\item \textit{Negative item}: \texttt{!coffee}, denotes the absence of item \texttt{coffee} from a given transaction.
+\item \textit{Negative itemset}: Includes negative items (and maybe positive items too).
+\item \textit{Negative association rule}: extracted from negative itemset. E.g. People that drink tea tend not to drink coffee: \texttt{\{tea\} --> \{!coffee\}} 
+\end{itemize}
+
+% \end{multicols}
+
+\end{frame}
