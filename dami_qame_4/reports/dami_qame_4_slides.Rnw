@@ -153,6 +153,7 @@ source("mysweave.R")
 
 \section{Negative patterns}
 \SweaveInput{../arto/negative_slides}
+\SweaveInput{../eric/negative_patterns_slides}
 
 
 \section{Negatively correlated patterns}

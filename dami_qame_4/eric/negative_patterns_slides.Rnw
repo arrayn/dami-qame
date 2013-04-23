@@ -1,0 +1,98 @@
+\begin{frame}{Negative patterns}
+  An itemset $X$ is negative if
+  \begin{enumerate}
+    \item{$X = A \cup \overline{B}$, where $A$ is a set of positive items and
+    $B$ a set of negative items.}
+    \item{$|\overline{B}| \geq 1$.}
+    \item{$s(X) \geq minsup$}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Example of a negative pattern}
+  \begin{table}
+    \begin{tabular}{|c|c|c|c|c|c|}
+      \hline
+      TID & Beer & Coffee & Tea & Cola \\
+      \hline
+      1   & 1    & 1      & 0   & 0    \\
+      2   & 0    & 1      & 1   & 1    \\
+      3   & 0    & 0      & 1   & 0    \\
+      4   & 1    & 1      & 0   & 0    \\
+      5   & 1    & 1      & 1   & 1    \\
+      \hline
+    \end{tabular}
+  \end{table}
+  \begin{itemize}
+    \item{Is $X = \{\text{Beer, Coffee, !Tea}\}$ a negative itemset?}
+    \item{Cleary conditions (1) and (2) hold.}
+    \item{What about (3)?}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Is $X = \{\text{Beer, Coffee, !Tea}\}$ frequent?}
+  \begin{table}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      TID & Beer & Coffee & Tea & Cola & !Beer & !Coffee & !Tea & !Cola \\
+      \hline
+      1   & 1    & 1      & 0   & 0 & 0 & 0 & 1 & 1 \\
+      2   & 0    & 1      & 1   & 1 & 1 & 0 & 0 & 0 \\
+      3   & 0    & 0      & 1   & 0 & 1 & 1 & 0 & 1 \\
+      4   & 1    & 1      & 0   & 0 & 0 & 0 & 1 & 1 \\
+      5   & 1    & 1      & 1   & 1 & 0 & 0 & 0 & 0 \\
+      \hline
+    \end{tabular}
+  \end{table}
+\end{frame}
+
+\begin{frame}{Is $X = \{\text{Beer, Coffee, !Tea}\}$ frequent?}
+  \begin{table}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      TID & Beer & Coffee & Tea & Cola & !Beer & !Coffee & !Tea & !Cola \\
+      \hline
+      1   & \textbf{1}    & \textbf{1}      & 0   & 0 & 0 & 0 & \textbf{1} & 1 \\
+      2   & 0    & 1      & 1   & 1 & 1 & 0 & 0 & 0 \\
+      3   & 0    & 0      & 1   & 0 & 1 & 1 & 0 & 1 \\
+      4   & \textbf{1}    & \textbf{1}      & 0   & 0 & 0 & 0 & \textbf{1} & 1 \\
+      5   & 1    & 1      & 1   & 1 & 0 & 0 & 0 & 0 \\
+      \hline
+    \end{tabular}
+  \end{table}
+  Is a (frequent) negative itemset when $minsup \geq 2/5$.
+\end{frame}
+
+\begin{frame}{Negative association rule}
+An association rule $X \rightarrow Y$ is negative if
+\begin{enumerate}
+  \item{Rule is extracted from a negative itemset, i.e. $X \cup Y$ is a
+  negative itemset.}
+  \item{$s(X \rightarrow Y) = s(X \cup Y) \geq minsup$.}
+  \item{$conf(X \rightarrow Y) \geq minconf$.}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Example of negative association rule.}
+  \begin{table}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      TID & Beer & Coffee & Tea & Cola & !Beer & !Coffee & !Tea & !Cola \\
+      \hline
+      1   & 1    & 1      & 0   & 0 & 0 & 0 & 1 & 1 \\
+      2   & 0    & 1      & 1   & 1 & 1 & 0 & 0 & 0 \\
+      3   & 0    & 0      & 1   & 0 & 1 & 1 & 0 & 1 \\
+      4   & 1    & 1      & 0   & 0 & 0 & 0 & 1 & 1 \\
+      5   & 1    & 1      & 1   & 1 & 0 & 0 & 0 & 0 \\
+      \hline
+    \end{tabular}
+  \end{table}
+  \begin{itemize}
+    \item{Is $\{\text{Beer, Coffee}\} \rightarrow \{\text{!Tea}\}$ a negative
+    association rule?}
+    \item{Again, (1) and (2) hold.}
+    \item{(3): when minconf is greater or equal to $2/3$ $$
+      conf(\{\text{Beer, Coffee}\} \rightarrow \{\text{!Tea}\}) = \frac{\sigma(\{\text{Beer, Coffee,
+      !Tea}\})}{\sigma(\{\text{Beer, Coffee}\})} = \frac{2}{3}
+      $$}
+  \end{itemize}
+\end{frame}
