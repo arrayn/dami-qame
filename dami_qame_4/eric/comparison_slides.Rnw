@@ -36,4 +36,16 @@
 \begin{frame}
   \frametitle{Many negatively correlated patterns have coresponding negative
   patterns}
+  \begin{itemize}
+    \item{$X$ and $Y$ have strong negative correlation $\implies$
+      $$
+        s(X \cup \overline{Y}) \times s(\overline{X} \cup Y) >>
+        s(X \cup Y) \times s(\overline{X} \cup \overline{Y})
+      $$
+    }
+    \item{Thus $X \cup \overline{Y}$ or $\overline{X} \cup Y$ has high support.}
+    \item[]{}
+    \item{Also the lower $s(X \cup Y)$ is, the more negatively correlated a
+    pattern is.}
+  \end{itemize}
 \end{frame}
