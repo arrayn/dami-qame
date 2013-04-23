@@ -1,16 +1,39 @@
 \begin{frame}
-\begin{table}
-{\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{|c|c|c|c|}
-  \hline
-            & $Y$                   & $\overline{Y}$                   & \\
-  \hline
-  $X$       & $s(X \cup Y)$       & $s(X \cup \overline{Y})$       & $s(X)$ \\
-  $\overline{X}$ & $s(\overline{X} \cup Y)$ & $s(\overline{X} \cup \overline{Y})$ & $s(\overline{X})$ \\
-  \hline
-  & $s(Y)$ & $s(\overline{Y})$ & $1$ \\
-  \hline
-\end{tabular}
-}
-\end{table}
+  \frametitle{Comparison of these pattern types}
+  \begin{itemize}
+    \item{These three pattern types are closely related patterns.}
+    \item{Note: only \emph{negative patterns} may contain negative items.}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Many infrequent patterns have coresponding negative patterns.}
+  \begin{itemize}
+    \item{Suppose $X \cup Y$ is infrequent, i.e. $s(X \cup Y) < minsup$.}
+    \item{Additionally, suppose $minsup \leq 0.25$.}
+    \item{This implies that $\geq 0.75$ is divided between $X \cup \overline{Y}$,
+      $\overline{X} \cup Y$ and $\overline{X} \cup \overline{Y}$}
+    \item{Divided as evenly as possible, $0.75 / 3 = 0.25$.}
+    \item{Thus at least one of these has to have a support higher than
+    $minsup$.}
+  \end{itemize}
+  \begin{table}
+  {\renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+      & $Y$                   & $\overline{Y}$                   & \\
+      \hline
+      $X$       & $s(X \cup Y)$       & $s(X \cup \overline{Y})$       & $s(X)$ \\
+      $\overline{X}$ & $s(\overline{X} \cup Y)$ & $s(\overline{X} \cup \overline{Y})$ & $s(\overline{X})$ \\
+      \hline
+      & $s(Y)$ & $s(\overline{Y})$ & $1$ \\
+      \hline
+      \end{tabular}
+  }
+  \end{table}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Many negatively correlated patterns have coresponding negative
+  patterns}
 \end{frame}
