@@ -21,30 +21,37 @@ source("../arto/negatively_correlated_comput.R")
 
 
 \begin{frame}[fragile]
-\begin{multicols}{2}
-Uncorrelated (independent):
+\begin{columns}[c]
+\column{.50\textwidth}
+\centering
+Uncorrelated (independent)
 <<negatively_correlated_comput_out1>>=
 negap2$outme2()
 @
-
-Negatively correlated:
+\column{.50\textwidth}
+\centering
+Negatively correlated
 <<negatively_correlated_comput_out2>>=
 negap2$outme3()
 @
-\end{multicols}
+\end{columns}
 \end{frame}
 
 
 \begin{frame}[fragile]
-\begin{multicols}{2}
-Uncorrelated (independent):
+\begin{columns}[c]
+\column{.50\textwidth}
+\centering
+Uncorrelated (independent)
 <<negatively_correlated_comput_out1>>=
 negap2$outme2()
 @
-
-Positively correlated:
+\column{.50\textwidth}
+\centering
+Positively correlated
 <<negatively_correlated_comput_out2>>=
 negap2$outme1()
 @
-\end{multicols}
+\end{columns}
 \end{frame}
+
