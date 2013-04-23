@@ -161,26 +161,7 @@ source("mysweave.R")
 
 \section{Comparisons}
 \SweaveInput{../arto/comparisons_slides}
-
-\begin{frame}
-\begin{table}
-{\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{|c|c|c|c|}
-  \hline
-            & $Y$                   & $\overline{Y}$                   & \\
-  \hline
-  $X$       & $s(X \cup Y)$       & $s(X \cup \overline{Y})$       & $s(X)$ \\
-  $\overline{X}$ & $s(\overline{X} \cup Y)$ & $s(\overline{X} \cup \overline{Y})$ & $s(\overline{X})$ \\
-  \hline
-  & $s(Y)$ & $s(\overline{Y})$ & $1$ \\
-  \hline
-\end{tabular}
-}
-\end{table}
-\end{frame}
-
-
-
+\SweaveInput{../eric/comparison_slides}
 
 \SweaveInput{../group/thank_you_slides}
 
