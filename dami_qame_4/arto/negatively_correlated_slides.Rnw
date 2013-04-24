@@ -30,7 +30,7 @@ source("../arto/negatively_correlated_comput.R")
   \end{itemize}
 }
 \bigskip
-\item \textbf{Mathematically:} Itemset $X$ consisting of items $x_1,\ldots{},x_k$ is negatively correlated if  $P(X) < \sum{}_{j=1}^{k}P(x_j)$
+\item \textbf{Mathematically:} Itemset $X$ consisting of items $x_1,\ldots{},x_k$ is negatively correlated if  $P(X) < \prod{}_{j=1}^{k}P(x_j)$
 \item What, Why?!? Let's start on the left hand side, $P(X)$, ...
 % \item Note that right hand side of the inequality $\sum{}_{j=1}^{k}P(x_j)$ , represents an estimate of the probability that all the items in $X$ are statistically independent.
 \end{itemize}
@@ -114,7 +114,7 @@ P(b,c) & = & \frac{\sigma(\{b,c\})}{N} = \frac{2}{6} = 0.33
 \begin{itemize}
 \item Ok. So we now understand the left hand side, $P(X)$, of the inequality:
 \bigskip
-\item Itemset $X$ consisting of items $x_1,\ldots{},x_k$ is negatively correlated if  $P(X) < \sum{}_{j=1}^{k}P(x_j)$
+\item Itemset $X$ consisting of items $x_1,\ldots{},x_k$ is negatively correlated if  $P(X) < \prod{}_{j=1}^{k}P(x_j)$
 \bigskip
 \item but what about the right hand side, how is that related to statistical independence... 
 \end{itemize}
