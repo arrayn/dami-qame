@@ -1,0 +1,31 @@
+% !Rnw root = ../reports/dami_qame_4_slides.Rnw
+
+\begin{frame}
+  \frametitle{Summary}
+  \begin{columns}
+  \begin{column}{.5\linewidth}
+  \begin{itemize}
+    \item $\{X, Y\}$ is an infrequent itemset, if $s(X, Y) < minsup$
+    \item $\{X, Y\}$ is a negatively correlated itemset, if $s(X, Y) < s(X)*s(Y)$
+    \item $\{X, \bar Y\}$ and $\{\bar X, Y\}$ are negative itemsets, if $s(X, \bar Y), s(\bar X, Y) \geq minsup$
+  \end{itemize}
+  \end{column}
+  \begin{column}{.5\linewidth}
+  \begin{table}
+  {\renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+      & $Y$                   & $\overline{Y}$                   & \\
+      \hline
+      $X$       & $s(X \cup Y)$       & $s(X \cup \overline{Y})$       & $s(X)$ \\
+      $\overline{X}$ & $s(\overline{X} \cup Y)$ & $s(\overline{X} \cup \overline{Y})$ & $s(\overline{X})$ \\
+      \hline
+      & $s(Y)$ & $s(\overline{Y})$ & $1$ \\
+      \hline
+      \end{tabular}
+  }
+  \end{table}
+  \includegraphics[scale=0.1]{figure/comparisons}\\
+  \end{column}
+  \end{columns}
+\end{frame}
