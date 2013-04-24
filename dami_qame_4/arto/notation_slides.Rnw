@@ -7,8 +7,30 @@
 \item $X=\{x_1,\ldots,x_k\}=$ \textit{itemset} 
 \item $\sigma(X)=$ \textit{support count} = "In how many transactions X occurs"
 \item $N=|T|=$ "number of transactions"
-\item $f(X)=\frac{\sigma(X)}{N}=$ \textit{relative frequency} 
-\item $s(X)=\frac{\sigma(X)}{N}=$ \textit{support} 
-\item $P(X)=\frac{\sigma(X)}{N}=$ \textit{probability} of $X$ happening 
+% \bigskip
+% \item $f(X)=\frac{\sigma(X)}{N}=$ \textit{relative frequency} 
+% \item $s(X)=\frac{\sigma(X)}{N}=$ \textit{support} 
+% \item $P(X)=\frac{\sigma(X)}{N}=$ \textit{probability} of $X$ happening 
 \end{itemize}
+\begin{eqnarray*}
+\frac{\sigma(X)}{N} & = & f(X)=\mbox{"\textit{relative frequency}"}\\
+ & = & s(X)=\mbox{"\textit{support}"}\\
+ & = & P(X)=\mbox{"\textit{probability} of $X$ happening"}
+\end{eqnarray*}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Notation: Rule confidence = Conditional probability}
+\begin{itemize}
+\item $L,R$ are itemsets
+\item $L\rightarrow R$ is an association rule
+\end{itemize}
+\begin{eqnarray*}
+\frac{\sigma(L\cup R)}{\sigma(L)} & = & c(L\rightarrow R)= \mbox{"\textit{confidence} of a rule \ensuremath{L\rightarrow R}"}\\
+ & = & \\
+\frac{P(L,R)}{P(L)} & = & P(R|L)= \mbox{"\textit{conditional probability} of \ensuremath{R} given \ensuremath{L}"} \\
+ & = & \mbox{"If we know that \ensuremath{L} happened, how likely is \ensuremath{R} to happen"}
+\end{eqnarray*}
 \end{frame}
