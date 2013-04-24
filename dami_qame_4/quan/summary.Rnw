@@ -25,7 +25,7 @@
       \end{tabular}
   }
   \end{table}
-  \includegraphics[scale=0.1]{figure/comparisons}\\
+  \includegraphics[scale=0.1]{../quan/comparisons}\\
   \end{column}
   \end{columns}
 \end{frame}
