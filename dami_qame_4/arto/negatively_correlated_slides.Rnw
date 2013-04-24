@@ -148,7 +148,8 @@ print(xtable(negap2$tab21, digits=0),hline.after=c(-1,0,n-1,n))
 P(b) & = & \frac{\sigma(b)}{N} = \frac{4}{6} = 0.67\\
 P(c) & = & \frac{\sigma(c)}{N} = \frac{3}{6} = 0.50\\
 P(b,c) & = & \frac{\sigma(\{b,c\})}{N} = \frac{2}{6} = 0.33\\
-P(b)P(c) & = &  \frac{4}{6} * \frac{3}{6} = \frac{12}{36} = \frac{1}{3} = 0.33
+P(b)P(c) & = &  \frac{4}{6} * \frac{3}{6} = \frac{12}{36} = \frac{1}{3} = 0.33\\
+\frac{P(b,c)}{P(b)P(c)} & = & \frac{2/6}{1/3} = \frac{0.33}{0.33} = 1.00
 \end{eqnarray*}
 \end{columns}
 \end{frame}
@@ -156,14 +157,54 @@ P(b)P(c) & = &  \frac{4}{6} * \frac{3}{6} = \frac{12}{36} = \frac{1}{3} = 0.33
 
 \begin{frame}
 \frametitle{Statistical independence - conditional probabilites}
+"If we know that b happened, how likely is c to happen"
+ = \textit{conditional probability} of $b$ given $c$ = 
+\[
+P(b|c)=\frac{P(b,c)}{P(c)}
+\]
 \begin{itemize}
 \item independence $b\bot c$ means that the occurrence of one does not affect the probability of the other, i.e. $P(b)=P(b|c)$ and $P(c)=P(c|b)$.
-\item $P(b|c)=$ \textit{conditional probability} of $b$ given $c$ 
-\item = "If we know that b happened, how likely is c to happen"
+\item formally:
+\begin{eqnarray*}
+P(b)P(c) & = & P(b,c) \mbox{ \qquad from axiom}\\
+\Longleftrightarrow P(b) & = & \frac{P(b,c)}{P(c)}\\
+\Longleftrightarrow P(b) & = & P(b|c)
+\end{eqnarray*}
 \end{itemize}
 \end{frame}
 
 
+\begin{frame}
+\frametitle{Example}
+\begin{columns}[c]
+\column{.40\textwidth}
+\centering
+b=bread, c=coffee
+<<negatively_correlated_comput_out1>>=
+n <- nrow(negap2$tab21)
+print(xtable(negap2$tab21, digits=0),hline.after=c(-1,0,n-1,n))
+@
+\column{.60\textwidth}
+\begin{eqnarray*}
+P(b) & = & \frac{\sigma(b)}{N} = \frac{4}{6} = 0.67\\
+P(b|c) & = & \frac{P(b,c)}{P(c)} = \frac{2/6}{3/6} = \frac{2}{3} = 0.67\\
+P(c) & = & \frac{\sigma(c)}{N} = \frac{3}{6} = 0.50\\
+P(c|b) & = & \frac{P(b,c)}{P(b)} = \frac{2/6}{4/6} = \frac{2}{4} = 0.50\\
+P(b,c) & = & \frac{\sigma(\{b,c\})}{N} = \frac{2}{6} = 0.33\\
+P(b)P(c) & = & \frac{4}{6} * \frac{3}{6} = \frac{12}{36} = \frac{1}{3} = 0.33\\
+\frac{P(b,c)}{P(b)P(c)} & = & \frac{2/6}{1/3} = \frac{0.33}{0.33} = 1.00
+\end{eqnarray*}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Creating negatively correlated itemsets}
+\begin{itemize}
+\item How do we have to change the data to make itemset $\{b,c\}$ negatively correlated?
+\item examples... 
+\end{itemize}
+\end{frame}
 
 
 \begin{frame}[fragile]
@@ -203,6 +244,7 @@ negap2$outme1()
 
 
 \begin{frame}
+\frametitle{negatively correlated association rule}
 \begin{itemize}
 \item \textit{Negatively correlated association rule}: Rule X -> Y for which $P(X,Y) < P(X)P(Y)$,  where X, Y disjoint
 \item partial conditon maybe better than full condition
