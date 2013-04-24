@@ -146,6 +146,8 @@ source("mysweave.R")
 
 % \SweaveInput{../arto/init.Rnw}
 
+\section{Notation}
+\SweaveInput{../arto/notation_slides}
 
 \section{Infrequent patterns}
 \SweaveInput{../arto/infrequent_slides}

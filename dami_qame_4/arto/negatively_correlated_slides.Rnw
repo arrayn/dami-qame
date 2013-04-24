@@ -4,6 +4,7 @@
 source("../arto/negatively_correlated_comput.R")
 @
 
+
 \begin{frame}[fragile]
 \frametitle{Negatively correlated patterns}
 % \begin{multicols}{2}
@@ -17,6 +18,22 @@ source("../arto/negatively_correlated_comput.R")
 \item partial conditon maybe better than full condition
 \end{itemize}
 % \end{multicols}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Negatively correlated itemset}
+\begin{itemize}
+\item \textit{Negatively correlated itemset} is an itemset that is (considerably) less frequent than what we would guess by assuming that all the items are statistically independent.
+\bigskip
+\item{ \textbf{Motivation:} Identification of \textit{competing items}, i.e. items that can be substituted for one another. E.g:
+  \begin{itemize}
+  \item tea vs. coffee
+  \item butter vs. margarine
+  \item desktop vs. laptop computers
+  \end{itemize}
+}
+\end{itemize}
 \end{frame}
 
 
@@ -43,13 +60,13 @@ negap2$outme3()
 \column{.50\textwidth}
 \centering
 Uncorrelated (independent)
-<<negatively_correlated_comput_out1>>=
+<<negatively_correlated_comput_out3>>=
 negap2$outme2()
 @
 \column{.50\textwidth}
 \centering
 Positively correlated
-<<negatively_correlated_comput_out2>>=
+<<negatively_correlated_comput_out4>>=
 negap2$outme1()
 @
 \end{columns}

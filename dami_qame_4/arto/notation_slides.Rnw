@@ -1,0 +1,14 @@
+% !Rnw root = ../reports/dami_qame_4_slides.Rnw
+
+\begin{frame}
+\frametitle{Notation: Relative frequency = Support = Probability}
+\begin{itemize}
+\item $x_i=$ \textit{item}
+\item $X=\{x_1,\ldots,x_k\}=$ \textit{itemset} 
+\item $\sigma(X)=$ \textit{support count} = "In how many transactions X occurs"
+\item $N=|T|=$ "number of transactions"
+\item $f(X)=\frac{\sigma(X)}{N}=$ \textit{relative frequency} 
+\item $s(X)=\frac{\sigma(X)}{N}=$ \textit{support} 
+\item $P(X)=\frac{\sigma(X)}{N}=$ \textit{probability} of $X$ happening 
+\end{itemize}
+\end{frame}
