@@ -1,30 +1,26 @@
 % !Rnw root = ../reports/dami_qame_4_slides.Rnw
 
+
 <<negatively_correlated_comput>>=
 source("../arto/negatively_correlated_comput.R")
 @
 
 
-\begin{frame}[fragile]
-\frametitle{Negatively correlated patterns}
-% \begin{multicols}{2}
-
+\begin{frame}
+\begin{block}{{\Huge\centerline{Negatively correlated patterns}}}
+\bigskip
 \begin{itemize}
-\item Items are not likely to be bought together, for example customer that buys a DVD will not buy VCRs.
-\item \textit{Negatively correlated itemset}: Itemset $X$ consisting of items $x_1,\ldots{},x_k$ is negatively correlated if  $P(X) < \sum{}_{j=1}^{k}P(x_j)$ where $P$ is probability (i.e. support).
-\item Note that right hand side of the inequality $\sum{}_{j=1}^{k}P(x_j)$ , represents an estimate of the probability that all the items in $X$ are statistically independent.
-\item \textit{Negatively correlated association rule}: Rule X -> Y for which $P(X,Y) < P(X)P(Y)$,  where X, Y disjoint
-\item data IS the population <- our assumption
-\item partial conditon maybe better than full condition
+\item negatively correlated itemsets
+\item negatively correlated association rules
 \end{itemize}
-% \end{multicols}
+\end{block}
 \end{frame}
 
 
 \begin{frame}
 \frametitle{Negatively correlated itemset}
 \begin{itemize}
-\item \textit{Negatively correlated itemset} is an itemset that is (considerably) less frequent than what we would guess by assuming that all the items are statistically independent.
+\item \textit{Negatively correlated itemset} is an itemset that is (considerably) less frequent than what we would estimate by assuming that all the items are statistically independent.
 \bigskip
 \item{ \textbf{Motivation:} Identification of \textit{competing items}, i.e. items that can be substituted for one another. E.g:
   \begin{itemize}
@@ -33,8 +29,141 @@ source("../arto/negatively_correlated_comput.R")
   \item desktop vs. laptop computers
   \end{itemize}
 }
+\bigskip
+\item \textbf{Mathematically:} Itemset $X$ consisting of items $x_1,\ldots{},x_k$ is negatively correlated if  $P(X) < \sum{}_{j=1}^{k}P(x_j)$
+\item What, Why?!? Let's start on the left hand side, $P(X)$, ...
+% \item Note that right hand side of the inequality $\sum{}_{j=1}^{k}P(x_j)$ , represents an estimate of the probability that all the items in $X$ are statistically independent.
 \end{itemize}
 \end{frame}
+
+
+
+\begin{frame}
+\frametitle{Relative frequency = Support = (marginal) Probability}
+\begin{itemize}
+\item $b=$ bread =  \textit{item}
+\item $\sigma(b)=$ \textit{support count} = "In how many transactions $b$ occurs"
+\item $N=|T|=$ "number of transactions"
+\end{itemize}
+\begin{eqnarray*}
+\frac{\sigma(b)}{N} & = & f(b)=\mbox{"\textit{relative frequency}"}\\
+ & = & s(b)=\mbox{"\textit{support}"}\\
+ & = & P(b)=\mbox{"\textit{(marginal) probability} of $b$ happening"}
+\end{eqnarray*}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example}
+\begin{columns}[c]
+\column{.40\textwidth}
+\centering
+b=bread, c=coffee
+<<negatively_correlated_comput_out1>>=
+n <- nrow(negap2$tab21)
+print(xtable(negap2$tab21[,1:2], digits=0),hline.after=c(-1,0,n-1,n))
+@
+\column{.60\textwidth}
+\begin{eqnarray*}
+P(b) & = & \frac{\sigma(b)}{N} = \frac{4}{6} = 0.67\\
+P(c) & = & \frac{\sigma(c)}{N} = \frac{3}{6} = 0.50
+\end{eqnarray*}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Joint probability of an itemset}
+\begin{itemize}
+\item $b,c$ are items
+\item can be thought to be singleton sets $\{b\}, \{c\}$
+\item so $b \cup c = \{b,c\}$ = itemset $X$
+\bigskip
+\end{itemize}
+\[
+\frac{\sigma(b\cup c)}{N} = \frac{\sigma(\{b,c\})}{N} = P(b,c) = P(X) 
+\]
+\centerline{="\textit{joint probability} of both $b$ and $c$
+happening at the same time"}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example}
+\begin{columns}[c]
+\column{.40\textwidth}
+\centering
+b=bread, c=coffee
+<<negatively_correlated_comput_out1>>=
+n <- nrow(negap2$tab21)
+print(xtable(negap2$tab21, digits=0),hline.after=c(-1,0,n-1,n))
+@
+\column{.60\textwidth}
+\begin{eqnarray*}
+P(b) & = & \frac{\sigma(b)}{N} = \frac{4}{6} = 0.67\\
+P(c) & = & \frac{\sigma(c)}{N} = \frac{3}{6} = 0.50\\
+P(b,c) & = & \frac{\sigma(\{b,c\})}{N} = \frac{2}{6} = 0.33
+\end{eqnarray*}
+\end{columns}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Negatively correlated itemset - part deux}
+\begin{itemize}
+\item Ok. So we now understand the left hand side, $P(X)$, of the inequality:
+\bigskip
+\item Itemset $X$ consisting of items $x_1,\ldots{},x_k$ is negatively correlated if  $P(X) < \sum{}_{j=1}^{k}P(x_j)$
+\bigskip
+\item but what about the right hand side, how is that related to statistical independence... 
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Statistical independence - joint probabilites}
+\begin{itemize}
+\item Axiom: $b$ and $c$ are independent if and only if their joint probability equals the product of their probabilities:
+\[
+b\bot c \Longleftrightarrow P(b,c)=P(b)P(c)
+\]
+\item let's first just do an example and later understand this with conditional probabilites...
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example}
+\begin{columns}[c]
+\column{.40\textwidth}
+\centering
+b=bread, c=coffee
+<<negatively_correlated_comput_out1>>=
+n <- nrow(negap2$tab21)
+print(xtable(negap2$tab21, digits=0),hline.after=c(-1,0,n-1,n))
+@
+\column{.60\textwidth}
+\begin{eqnarray*}
+P(b) & = & \frac{\sigma(b)}{N} = \frac{4}{6} = 0.67\\
+P(c) & = & \frac{\sigma(c)}{N} = \frac{3}{6} = 0.50\\
+P(b,c) & = & \frac{\sigma(\{b,c\})}{N} = \frac{2}{6} = 0.33\\
+P(b)P(c) & = &  \frac{4}{6} * \frac{3}{6} = \frac{12}{36} = \frac{1}{3} = 0.33
+\end{eqnarray*}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Statistical independence - conditional probabilites}
+\begin{itemize}
+\item independence $b\bot c$ means that the occurrence of one does not affect the probability of the other, i.e. $P(b)=P(b|c)$ and $P(c)=P(c|b)$.
+\item $P(b|c)=$ \textit{conditional probability} of $b$ given $c$ 
+\item = "If we know that b happened, how likely is c to happen"
+\end{itemize}
+\end{frame}
+
+
 
 
 \begin{frame}[fragile]
@@ -72,3 +201,27 @@ negap2$outme1()
 \end{columns}
 \end{frame}
 
+
+\begin{frame}
+\begin{itemize}
+\item \textit{Negatively correlated association rule}: Rule X -> Y for which $P(X,Y) < P(X)P(Y)$,  where X, Y disjoint
+\item partial conditon maybe better than full condition
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Notation: Rule confidence = Conditional probability}
+\begin{itemize}
+\item $L,R$ are itemsets
+\item $L\rightarrow R$ is an association rule
+\bigskip
+\item $\sigma(L\cup R) = P(L,R) =$ "\textit{joint probability} of both $L$ and $R$ happening at the same time"
+\end{itemize}
+\bigskip
+\begin{eqnarray*}
+\frac{\sigma(L\cup R)}{\sigma(L)} & = & c(L\rightarrow R)= \mbox{"\textit{confidence} of a rule \ensuremath{L\rightarrow R}"}\\
+ & = & \\
+\frac{P(L,R)}{P(L)} & = & P(R|L)= \mbox{"\textit{conditional probability} of \ensuremath{R} given \ensuremath{L}"} \\
+ & = & \mbox{"If we know that \ensuremath{L} happened, how likely is \ensuremath{R} to happen"}
+\end{eqnarray*}
+\end{frame}

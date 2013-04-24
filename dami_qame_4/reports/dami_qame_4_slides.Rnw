@@ -146,8 +146,8 @@ source("mysweave.R")
 
 % \SweaveInput{../arto/init.Rnw}
 
-\section{Notation}
-\SweaveInput{../arto/notation_slides}
+% \section{Notation}
+% \SweaveInput{../arto/notation_slides}
 
 \section{Infrequent patterns}
 \SweaveInput{../arto/infrequent_slides}
@@ -160,7 +160,6 @@ source("mysweave.R")
 
 \section{Negatively correlated patterns}
 \SweaveInput{../arto/negatively_correlated_slides}
-
 
 \section{Comparisons}
 \SweaveInput{../arto/comparisons_slides}
