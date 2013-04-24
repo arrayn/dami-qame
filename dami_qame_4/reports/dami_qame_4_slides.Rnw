@@ -164,7 +164,8 @@ source("mysweave.R")
 \section{Comparisons}
 \SweaveInput{../arto/comparisons_slides}
 \SweaveInput{../eric/comparison_slides}
-\SweaveInput{../arto/comparisons2_slides}
+\SweaveInput{../mirva/comparison}
+%\SweaveInput{../arto/comparisons2_slides}
 \SweaveInput{../quan/summary}
 \SweaveInput{../group/thank_you_slides}
 

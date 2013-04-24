@@ -1,0 +1,60 @@
+% !Rnw root = ../reports/dami_qame_4_slides.Rnw
+
+
+<<negatively_correlated_comput>>=
+source("../arto/negatively_correlated_comput.R")
+@
+
+\begin{frame}
+\frametitle{Contingancy table for association rule: Example}
+b = bread, c = coffee
+<<negatively_correlated_comput_out111>>=
+n <- nrow(negap2$tab111)
+print(xtable(negap2$tab111, digits=0),hline.after=c(-1,0,n-1,n))
+@
+\end{frame}
+
+\begin{frame}
+\frametitle{Contingancy table for association rule: Example}
+\begin{table}
+  {\renewcommand{\arraystretch}{0.9}
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+      & $C$                   & $\overline{C}$                   & \\
+      \hline
+      $B$       & $s(B \cup C)=1/6$       & $s(B \cup \overline{C})=3/6$       & $s(B) = 4/6$ \\
+      $\overline{B}$ & $s(\overline{B} \cup C)= 2/6$ & $s(\overline{B} \cup \overline{C}) = 0/6$ & $s(\overline{B})=2/6$ \\
+      \hline
+      & $s(C)=3/6$ & $s(\overline{C})=3/6$ & $1$ \\
+      \hline
+      \end{tabular}
+  }
+  \end{table}
+
+\begin{columns}[c]
+
+\column{.50\textwidth}
+\begin{eqnarray*}
+s(B \cup C)& = 1/6 = 0.17\\
+s(\overline{B} \cup C) & = 2/6 = 0.33\\
+s(B \cup \overline{C}) & = 3/6 = 0.5\\
+s(\overline{B} \cup \overline{C})& = 0/6 = 0\\
+% s(B) & = 4/6 = 0.67 \,\,
+% s(C)  = 3/6 = 0.5\\
+% s(!C) & = 3/6 = 0.5\\
+% s(!B) & = 2/6 = 0.33\\
+\end{eqnarray*}
+
+\column{.50\textwidth}
+
+\begin{eqnarray*}
+s(B) & = 4/6 = 0.67\\
+s(C) & = 3/6 = 0.5\\
+s(!C) & = 3/6 = 0.5\\
+s(!B) & = 2/6 = 0.33\\
+\end{eqnarray*}
+
+
+\end{columns}
+\end{frame}
+
