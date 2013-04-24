@@ -39,6 +39,15 @@ counts <- rbind(colSums(temp, na.rm=T))
 rownames(counts) <- "counts"
 negap2$tab101 <- rbind(temp, counts)
 
+temp <- cbind(c(1,1,1,1,NA,NA),c(NA,NA,NA,1,1,1),c(NA,NA,NA,NA,1,1),c(1,1,1,NA,NA,NA))
+temp <- cbind(temp, as.numeric(temp[,1] == 1 & temp[,2] == 1))
+temp <- cbind(temp, as.numeric(temp[,1] == 1 & temp[,4] == 1))
+temp <- cbind(temp, as.numeric(temp[,3] == 1 & temp[,2] == 1))
+temp <- cbind(temp, as.numeric(temp[,3] == 1 & temp[,4] == 1))
+colnames(temp) <- c("b","c","!b", "!c", "{b,c}","{b,!c}","{!b,c}","{!b,!c}")
+counts <- rbind(colSums(temp, na.rm=T))
+rownames(counts) <- "counts"
+negap2$tab111 <- rbind(temp, counts)
 
 #
 # outting function-closures

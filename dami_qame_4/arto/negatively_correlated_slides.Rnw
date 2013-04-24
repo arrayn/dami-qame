@@ -322,3 +322,4 @@ But with way 2, we claim independence:
 P(b)P(c)P(d) = \frac{4}{6}*\frac{3}{6}*\frac{3}{6}=\frac{1}{6}=0.17
 \]
 \end{frame}
+
