@@ -31,6 +31,15 @@ temp <- negap2$inner_worker(c(1,1,1,1,NA,NA), c(NA,NA,NA,1,1,1))
 negap2$tab31 <- temp[[1]]
 negap2$tab32 <- temp[[2]]
 
+temp <- cbind(c(1,1,1,1,NA,NA),c(NA,1,1,1,NA,NA),c(NA,NA,NA,1,1,1))
+temp <- cbind(temp, as.numeric(temp[,1] == 1 & temp[,2] == 1))
+temp <- cbind(temp, as.numeric(temp[,1] == 1 & temp[,2] == 1 & temp[,3]==1))
+colnames(temp) <- c("b","c","d","{b,c}","{b,c,d}")
+counts <- rbind(colSums(temp, na.rm=T))
+rownames(counts) <- "counts"
+negap2$tab101 <- rbind(temp, counts)
+
+
 #
 # outting function-closures
 #

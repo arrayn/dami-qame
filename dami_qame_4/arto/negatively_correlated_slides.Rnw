@@ -247,15 +247,17 @@ negap2$outme1()
 \frametitle{negatively correlated association rule}
 \begin{itemize}
 \item Two ways to define whether Rule $L\rightarrow R$ is \textit{negatively correlated association rule}:
+\medskip
 \item 1. way: $P(L,R) < P(L)P(R)$
 \item 2. way: $P(L,R) < \prod_{i}P(l_i)\prod_{j}P(r_j)$
-\item Let's see why first conditon is usually preferable...
+\medskip
+\item Let's see why first way is usually preferable...
 \end{itemize}
 \end{frame}
 
 
 \begin{frame}
-\frametitle{Notation: Rule confidence = Conditional probability}
+\frametitle{Rule confidence = Conditional probability}
 \begin{itemize}
 \item $L,R$ are itemsets
 \item $L\rightarrow R$ is an association rule
@@ -269,4 +271,54 @@ negap2$outme1()
 \frac{P(L,R)}{P(L)} & = & P(R|L)= \mbox{"\textit{conditional probability} of \ensuremath{R} given \ensuremath{L}"} \\
  & = & \mbox{"If we know that \ensuremath{L} happened, how likely is \ensuremath{R} to happen"}
 \end{eqnarray*}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Rule lift < 1 indicates negative correlation}
+Lift of a rule is:
+\[
+\frac{P(L|R)}{P(L)} = \frac{P(R,L)}{P(R)P(L)}
+\]
+
+\bigskip{}
+Therefore lift < 1 indicates negative correlation:
+\[
+P(R,L)<P(R)P(L)\Longleftrightarrow\frac{P(R,L)}{P(R)P(L)} <  1
+\]
+
+\bigskip
+$\Longrightarrow$ first way has a meaningful probabilistic interpretation \\
+
+\bigskip
+And let's examine an example where items in $L$ are positively correlated...
+
+\end{frame}
+
+\begin{frame}
+\begin{columns}[c]
+\column{.40\textwidth}
+\centering
+Rule: $L\rightarrow R$ \\ \bigskip
+$L=\{b,c\}, R=\{d\}$
+<<negatively_correlated_comput_out101>>=
+n <- nrow(negap2$tab101)
+print(xtable(negap2$tab101, digits=0),hline.after=c(-1,0,n-1,n))
+@
+\column{0.60\textwidth}
+\begin{eqnarray*}
+P(L) & = & P(\{b,c\})=3/6=0.50\\
+P(R) & = & P(\{d\})=3/6=0.50\\
+P(L,R) & = & P(\{b,c,d\})=1/6=0.17\\
+P(L)P(R) & = & (3/6)*(3/6)=1/4=0.25\\
+\\
+\frac{P(L,R)}{P(L)P(R)} & = & \frac{1/6}{1/4}=\frac{4}{6}=0.67<1
+\end{eqnarray*}
+With way 1 we claim negative correlation
+\end{columns}
+\bigskip
+But with way 2, we claim independence:
+\[
+P(b)P(c)P(d) = \frac{4}{6}*\frac{3}{6}*\frac{3}{6}=\frac{1}{6}=0.17
+\]
 \end{frame}
