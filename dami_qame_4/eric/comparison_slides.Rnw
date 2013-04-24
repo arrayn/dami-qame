@@ -34,6 +34,36 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{One derivation needed for the next thing...}
+  An association rule $X \rightarrow Y$ is negatively correlated if
+  $s(X \cup Y) < s(X)s(Y)$.
+  \begin{align*}
+    & s(X \cup Y) - s(X)s(Y)
+    \\
+    & = s(X \cup Y) - \big[ s(X \cup Y) + s(X \cup \overline{Y}) \big]
+                    \big[ s(X \cup Y) + s(\overline{X} \cup Y) \big]
+    \\
+    & = s(X \cup Y) \big[ 1 - s(X \cup Y) - s(X \cup \overline{Y}) -
+    s(\overline{X} \cup Y) \big] - s(X \cup \overline{Y}) s(\overline{X} \cup
+    Y)
+    \\
+    & = s(X \cup Y) s(\overline{X} \cup \overline{Y})
+      - s(X \cup \overline{Y}) s(\overline{X} \cup Y)
+    < 0
+  \end{align*}
+  ... and we get ...
+  $$
+    s(X \cup Y) s(\overline{X} \cup \overline{Y}) <
+    s(X \cup \overline{Y}) s(\overline{X} \cup Y)
+  $$
+  equivalently
+  $$
+    s(X \cup \overline{Y}) s(\overline{X} \cup Y) >
+    s(X \cup Y) s(\overline{X} \cup \overline{Y})
+  $$
+\end{frame}
+
+\begin{frame}
   \frametitle{Many negatively correlated patterns have coresponding negative
   patterns}
   \begin{itemize}
