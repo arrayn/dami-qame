@@ -26,7 +26,10 @@
 \begin{itemize}
 \item $L,R$ are itemsets
 \item $L\rightarrow R$ is an association rule
+\bigskip
+\item $\sigma(L\cup R) = P(L,R) =$ "\textit{joint probability} of both $L$ and $R$ happening at the same time"
 \end{itemize}
+\bigskip
 \begin{eqnarray*}
 \frac{\sigma(L\cup R)}{\sigma(L)} & = & c(L\rightarrow R)= \mbox{"\textit{confidence} of a rule \ensuremath{L\rightarrow R}"}\\
  & = & \\
