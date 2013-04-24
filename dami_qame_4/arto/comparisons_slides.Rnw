@@ -1,16 +1,22 @@
 % !Rnw root = ../reports/dami_qame_4_slides.Rnw
 
-\begin{frame}[fragile]
-\frametitle{Comparisons}
 
-% \begin{multicols}{2}
-
+\begin{frame}
+\begin{block}{{\Huge\centerline{Comparison of INNC-patterns}}}
+\bigskip
 \begin{itemize}
-\item with minsup 0.25 infrequent X U Y has to have frequent negative pattern (conttab sum =1)
-\item many neg.cor patterns have corresponding neg. patterns Inequality 7.6 and table 7.9
-\item infreq neg.cor patterns tend to be more interesting then frequent... hmmm
+\item infrequent patterns
+\item negative patterns
+\item negatively correlated patterns
 \end{itemize}
-
-% \end{multicols}
-
+\end{block}
 \end{frame}
+
+% \begin{frame}[fragile]
+% \frametitle{Comparisons}
+% \begin{itemize}
+% \item with minsup 0.25 infrequent X U Y has to have frequent negative pattern (conttab sum =1)
+% \item many neg.cor patterns have corresponding neg. patterns Inequality 7.6 and table 7.9
+% \item infreq neg.cor patterns tend to be more interesting then frequent... hmmm
+% \end{itemize}
+% \end{frame}

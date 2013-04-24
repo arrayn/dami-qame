@@ -246,10 +246,13 @@ negap2$outme1()
 \begin{frame}
 \frametitle{negatively correlated association rule}
 \begin{itemize}
-\item \textit{Negatively correlated association rule}: Rule X -> Y for which $P(X,Y) < P(X)P(Y)$,  where X, Y disjoint
-\item partial conditon maybe better than full condition
+\item Two ways to define whether Rule $L\rightarrow R$ is \textit{negatively correlated association rule}:
+\item 1. way: $P(L,R) < P(L)P(R)$
+\item 2. way: $P(L,R) < \prod_{i}P(l_i)\prod_{j}P(r_j)$
+\item Let's see why first conditon is usually preferable...
 \end{itemize}
 \end{frame}
+
 
 \begin{frame}
 \frametitle{Notation: Rule confidence = Conditional probability}

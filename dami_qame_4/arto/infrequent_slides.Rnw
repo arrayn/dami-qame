@@ -1,5 +1,16 @@
 % !Rnw root = ../reports/dami_qame_4_slides.Rnw
 
+\begin{frame}
+\begin{block}{{\Huge\centerline{Infrequent patterns}}}
+\bigskip
+\begin{itemize}
+\item what
+\item why
+\end{itemize}
+\end{block}
+\end{frame}
+
+
 \begin{frame}[fragile]
 \frametitle{Infrequent patterns}
 % \begin{multicols}{2}
