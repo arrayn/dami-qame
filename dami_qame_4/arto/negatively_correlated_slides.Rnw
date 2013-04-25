@@ -124,7 +124,7 @@ P(b,c) & = & \frac{\sigma(\{b,c\})}{N} = \frac{2}{6} = 0.33
 \begin{frame}
 \frametitle{Statistical independence - joint probabilites}
 \begin{itemize}
-\item Axiom: $b$ and $c$ are independent if and only if their joint probability equals the product of their probabilities:
+\item \textbf{Definition:} $b$ and $c$ are independent if and only if their joint probability equals the product of their probabilities:
 \[
 b\bot c \Longleftrightarrow P(b,c)=P(b)P(c)
 \]
@@ -164,9 +164,9 @@ P(b|c)=\frac{P(b,c)}{P(c)}
 \]
 \begin{itemize}
 \item independence $b\bot c$ means that the occurrence of one does not affect the probability of the other, i.e. $P(b)=P(b|c)$ and $P(c)=P(c|b)$.
-\item formally:
+\item formally (just divide py $P(c)$):
 \begin{eqnarray*}
-P(b)P(c) & = & P(b,c) \mbox{ \qquad from axiom}\\
+P(b)P(c) & = & P(b,c) \mbox{ \qquad definition}\\
 \Longleftrightarrow P(b) & = & \frac{P(b,c)}{P(c)}\\
 \Longleftrightarrow P(b) & = & P(b|c)
 \end{eqnarray*}
@@ -248,10 +248,10 @@ negap2$outme1()
 \begin{itemize}
 \item Two ways to define whether Rule $L\rightarrow R$ is \textit{negatively correlated association rule}:
 \medskip
-\item 1. way: $P(L,R) < P(L)P(R)$
-\item 2. way: $P(L,R) < \prod_{i}P(l_i)\prod_{j}P(r_j)$
+\item way 1: $P(L,R) < P(L)P(R)$
+\item way 2: $P(L,R) < \prod_{i}P(l_i)\prod_{j}P(r_j)$
 \medskip
-\item Let's see why first way is usually preferable...
+\item Let's see why way 1 is usually preferable...
 \end{itemize}
 \end{frame}
 
@@ -276,9 +276,9 @@ negap2$outme1()
 
 \begin{frame}
 \frametitle{Rule lift < 1 indicates negative correlation}
-Lift of a rule is:
+"How much observing $L$ \textit{lifts} the probability of seeing $R$":
 \[
-\frac{P(L|R)}{P(L)} = \frac{P(R,L)}{P(R)P(L)}
+\frac{P(R|L)}{P(R)} = \frac{P(R,L)}{P(R)P(L)}
 \]
 
 \bigskip{}
@@ -288,7 +288,7 @@ P(R,L)<P(R)P(L)\Longleftrightarrow\frac{P(R,L)}{P(R)P(L)} <  1
 \]
 
 \bigskip
-$\Longrightarrow$ first way has a meaningful probabilistic interpretation \\
+$\Longrightarrow$ way 1 has a meaningful probabilistic interpretation \\
 
 \bigskip
 And let's examine an example where items in $L$ are positively correlated...
@@ -299,8 +299,9 @@ And let's examine an example where items in $L$ are positively correlated...
 \begin{columns}[c]
 \column{.40\textwidth}
 \centering
-Rule: $L\rightarrow R$ \\ \bigskip
-$L=\{b,c\}, R=\{d\}$
+Rule: $L\rightarrow R$ \\ 
+$L=\{b,c\}, R=\{d\}$ \\ 
+b=bread, c=coffee,  d=decaf.coffee
 <<negatively_correlated_comput_out101>>=
 n <- nrow(negap2$tab101)
 print(xtable(negap2$tab101, digits=0),hline.after=c(-1,0,n-1,n))
@@ -317,7 +318,7 @@ P(L)P(R) & = & (3/6)*(3/6)=1/4=0.25\\
 With way 1 we claim negative correlation
 \end{columns}
 \bigskip
-But with way 2, we claim independence:
+But with way 2, we claim not correlated:
 \[
 P(b)P(c)P(d) = \frac{4}{6}*\frac{3}{6}*\frac{3}{6}=\frac{1}{6}=0.17
 \]
