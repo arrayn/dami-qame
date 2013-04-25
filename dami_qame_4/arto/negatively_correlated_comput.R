@@ -39,15 +39,42 @@ counts <- rbind(colSums(temp, na.rm=T))
 rownames(counts) <- "counts"
 negap2$tab101 <- rbind(temp, counts)
 
-temp <- cbind(c(1,1,1,1,NA,NA),c(NA,NA,NA,1,1,1),c(NA,NA,NA,NA,1,1),c(1,1,1,NA,NA,NA))
-temp <- cbind(temp, as.numeric(temp[,1] == 1 & temp[,2] == 1))
-temp <- cbind(temp, as.numeric(temp[,1] == 1 & temp[,4] == 1))
-temp <- cbind(temp, as.numeric(temp[,3] == 1 & temp[,2] == 1))
-temp <- cbind(temp, as.numeric(temp[,3] == 1 & temp[,4] == 1))
-colnames(temp) <- c("b","c","!b", "!c", "{b,c}","{b,!c}","{!b,c}","{!b,!c}")
-counts <- rbind(colSums(temp, na.rm=T))
-rownames(counts) <- "counts"
-negap2$tab111 <- rbind(temp, counts)
+#
+# 8-column tables
+#
+b <- c(1,1,1,1,NA,NA)
+c <- c(NA,NA,NA,1,1,1)
+negap2$inner_worker_8column <- function(b, c){
+  nb <- as.numeric(is.na(b))
+  nb[nb==0] <- NA
+  nc <- as.numeric(is.na(c))
+  nc[nc==0] <- NA
+  temp <- cbind(b,c,nb,nc)
+  temp <- cbind(temp, as.numeric(temp[,1] == 1 & temp[,2] == 1))
+  temp <- cbind(temp, as.numeric(temp[,1] == 1 & temp[,4] == 1))
+  temp <- cbind(temp, as.numeric(temp[,3] == 1 & temp[,2] == 1))
+  temp <- cbind(temp, as.numeric(temp[,3] == 1 & temp[,4] == 1))
+  colnames(temp) <- c("b","c","!b", "!c", "{b,c}","{b,!c}","{!b,c}","{!b,!c}")
+  counts <- rbind(colSums(temp, na.rm=T))  
+  ret <- rbind(temp, counts)
+  rownames(ret) <- c(paste(1:length(b)),"count")
+  ret
+} 
+
+negap2$tab111 <- negap2$inner_worker_8column(c(1,1,1,1,NA,NA),c(NA,NA,NA,1,1,1))
+negap2$tab121 <- negap2$inner_worker_8column(c(1,1,1,1,NA,NA),c(NA,NA,1,1,1,NA))
+negap2$tab131 <- negap2$inner_worker_8column(c(1,1,1,1,NA,NA),c(NA,1,1,1,NA,NA))
+
+# temp <- cbind(c(1,1,1,1,NA,NA),c(NA,NA,NA,1,1,1),c(NA,NA,NA,NA,1,1),c(1,1,1,NA,NA,NA))
+# temp <- cbind(temp, as.numeric(temp[,1] == 1 & temp[,2] == 1))
+# temp <- cbind(temp, as.numeric(temp[,1] == 1 & temp[,4] == 1))
+# temp <- cbind(temp, as.numeric(temp[,3] == 1 & temp[,2] == 1))
+# temp <- cbind(temp, as.numeric(temp[,3] == 1 & temp[,4] == 1))
+# colnames(temp) <- c("b","c","!b", "!c", "{b,c}","{b,!c}","{!b,c}","{!b,!c}")
+# counts <- rbind(colSums(temp, na.rm=T))
+# rownames(counts) <- "counts"
+# negap2$tab111 <- rbind(temp, counts)
+
 
 #
 # outting function-closures
