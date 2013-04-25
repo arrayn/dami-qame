@@ -54,7 +54,12 @@ s(!C) & = 3/6 = 0.5\\
 s(!B) & = 2/6 = 0.33\\
 \end{eqnarray*}
 
-
 \end{columns}
+
+ $$
+        s(B \cup \overline{C}) \times s(\overline{B} \cup C) >>
+        s(B \cup C) \times s(\overline{B} \cup \overline{C})
+      $$
+% $$ 3/6 \times 2/6 >> 1/6 \times 0 $$  
 \end{frame}
 
